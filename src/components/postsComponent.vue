@@ -5,7 +5,7 @@ export default defineComponent({
   components: {
     singlePostComponentVue,
   },
-  props: ["loggedIn"],
+  props: ["logout"],
   async beforeMount() {
     if (Date.now() > localStorage.getItem("expiration")) {
       console.log("hi");
@@ -26,6 +26,10 @@ export default defineComponent({
               "FirebaseAuth.iOS/8.15.0 AlexisBarreyat.BeReal/0.22.4 iPhone/15.5 hw/iPhone13_2",
             "x-firebase-locale": "en",
           },
+          body: JSON.stringify({
+            grant_type: "refresh_token",
+            refresh_token: localStorage.getItem("refreshToken"),
+          }),
         }
       )
         .then((res) => {
@@ -38,6 +42,11 @@ export default defineComponent({
             Date.now() + data.expires_in * 1000
           );
           localStorage.setItem("refreshToken", data.refresh_token);
+        })
+        .catch((err) => {
+          console.log(err);
+          localStorage.clear();
+          this.logout();
         });
     }
     fetch(

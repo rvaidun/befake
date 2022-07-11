@@ -25,5 +25,5 @@ export default defineComponent({
 
 <template>
   <loginComponent v-if="!loggedIn" :login="login" />
-  <postsComponentVue v-else />
+  <postsComponentVue v-else :logout="logout" />
 </template>
