@@ -66,6 +66,11 @@ export default defineComponent({
       .then((data) => {
         this.posts = data;
         this.isfetch1 = false;
+      })
+      .catch((err) => {
+        console.log(err);
+        localStorage.clear();
+        this.logout();
       });
     fetch(
       "https://arcane-woodland-79412.herokuapp.com/https://mobile.bereal.com/api/relationships/friends",
@@ -84,6 +89,11 @@ export default defineComponent({
       .then((data) => {
         this.friends = data.data;
         this.isfetch2 = false;
+      })
+      .catch((err) => {
+        console.log(err);
+        localStorage.clear();
+        this.logout();
       });
   },
   data() {
