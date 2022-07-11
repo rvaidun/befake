@@ -69,6 +69,9 @@ export default defineComponent({
           },
           body: JSON.stringify({
             phoneNumber: this.phone,
+            iosReceipt:
+              "AEFDNu9QZBdycrEZ8bM_2-Ei5kn6XNrxHplCLx2HYOoJAWx-uSYzMldf66-gI1vOzqxfuT4uJeMXdreGJP5V1pNen_IKJVED3EdKl0ldUyYJflW5rDVjaQiXpN0Zu2BNc1c",
+            iosSecret: "KKwuB8YqwuM3ku0z",
           }),
         }
       )
