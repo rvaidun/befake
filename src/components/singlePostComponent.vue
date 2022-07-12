@@ -17,13 +17,31 @@ export default defineComponent({
       );
     },
   },
+  computed: {
+    color() {
+      var letters = "0123456789ABCDEF";
+      var color = "";
+      for (var i = 0; i < 6; i++) {
+        color += letters[this.friend.username.charCodeAt(i) % 16];
+      }
+      return color;
+    },
+  },
 });
 </script>
 <template>
   <div class="flex flex-col ml-3">
     <div class="flex items-center">
       <img
-        v-bind:src="friend.profilePicture ? friend.profilePicture.url : nophoto"
+        v-bind:src="
+          friend.profilePicture
+            ? friend.profilePicture.url
+            : 'https://ui-avatars.com/api/?length=1' +
+              '&name=' +
+              friend.username +
+              '&background=' +
+              color
+        "
         class="w-36 h-36 rounded-[50%]"
       />
       <span class="font-bold ml-3">
