@@ -1,4 +1,5 @@
 <script>
+import moment from "moment";
 import { defineComponent } from "vue";
 import singlePostComponentVue from "./singlePostComponent.vue";
 export default defineComponent({
@@ -8,7 +9,6 @@ export default defineComponent({
   props: ["logout"],
   async beforeMount() {
     if (Date.now() > localStorage.getItem("expiration")) {
-      console.log("hi");
       await fetch(
         "https://arcane-woodland-79412.herokuapp.com/https://securetoken.googleapis.com/v1/token?key=AIzaSyDwjfEeparokD7sXPVQli9NsTuhT6fJ6iA",
         {
@@ -107,9 +107,27 @@ export default defineComponent({
       isfetch2: true,
     };
   },
+  methods: {
+    timenow() {
+      return moment().format("MMMM Do YYYY, h:mm:ss a");
+    },
+  },
 });
 </script>
 <template>
+  <!-- print time right now with moment -->
+  <div class="bg-blue-300 flex py-2">
+    <div class="mr-auto invisible"></div>
+    <div class="mr-auto">
+      <span class="bg-purple-400 text-3xl font-bold">{{ timenow() }}</span>
+    </div>
+    <button
+      @click="logout"
+      class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-3"
+    >
+      Logout
+    </button>
+  </div>
   <div v-for="post in posts" v-if="!isfetch1 && !isfetch2">
     <single-post-component-vue
       v-if="post.members.length > 0"
