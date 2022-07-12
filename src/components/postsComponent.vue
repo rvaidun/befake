@@ -49,46 +49,61 @@ export default defineComponent({
           this.logout();
         });
     }
-    fetch(
-      "https://arcane-woodland-79412.herokuapp.com/https://mobile.bereal.com/api/feeds/friends",
-      {
-        method: "GET",
-        headers: {
-          accept: "application/json",
-          "content-type": "application/json",
-          "user-agent": "BeReal/7242 CFNetwork/1333.0.4 Darwin/21.5.0",
-          "accept-language": "en-US,en;q=0.9",
-          authorization: localStorage.getItem("token") ?? "",
-        },
-      }
-    )
-      .then((res) => res.json())
-      .then((data) => {
-        this.posts = data;
-        this.isfetch1 = false;
-      })
-      .catch((err) => {
-        console.log(err);
-        localStorage.clear();
-        this.logout();
-      });
-    fetch(
-      "https://arcane-woodland-79412.herokuapp.com/https://mobile.bereal.com/api/relationships/friends",
-      {
-        method: "GET",
-        headers: {
-          accept: "application/json",
-          "content-type": "application/json",
-          "user-agent": "BeReal/7242 CFNetwork/1333.0.4 Darwin/21.5.0",
-          authorization: localStorage.getItem("token") ?? "",
-          "accept-language": "en-US,en;q=0.9",
-        },
-      }
-    )
-      .then((res) => res.json())
-      .then((data) => {
-        this.friends = data.data;
-        this.isfetch2 = false;
+    Promise.all([
+      fetch(
+        "https://arcane-woodland-79412.herokuapp.com/https://mobile.bereal.com/api/feeds/friends",
+        {
+          method: "GET",
+          headers: {
+            accept: "application/json",
+            "content-type": "application/json",
+            "user-agent": "BeReal/7242 CFNetwork/1333.0.4 Darwin/21.5.0",
+            "accept-language": "en-US,en;q=0.9",
+            authorization: localStorage.getItem("token") ?? "",
+          },
+        }
+      )
+        .then((res) => res.json())
+        .then((data) => {
+          this.posts = data;
+        }),
+      fetch(
+        "https://arcane-woodland-79412.herokuapp.com/https://mobile.bereal.com/api/relationships/friends",
+        {
+          method: "GET",
+          headers: {
+            accept: "application/json",
+            "content-type": "application/json",
+            "user-agent": "BeReal/7242 CFNetwork/1333.0.4 Darwin/21.5.0",
+            authorization: localStorage.getItem("token") ?? "",
+            "accept-language": "en-US,en;q=0.9",
+          },
+        }
+      )
+        .then((res) => res.json())
+        .then((data) => {
+          this.friends = data.data;
+        }),
+      fetch(
+        "https://arcane-woodland-79412.herokuapp.com/https://mobile.bereal.com/api/feeds/memories",
+        {
+          method: "GET",
+          headers: {
+            accept: "application/json",
+            "content-type": "application/json",
+            "user-agent": "BeReal/7242 CFNetwork/1333.0.4 Darwin/21.5.0",
+            authorization: localStorage.getItem("token") ?? "",
+            "accept-language": "en-US,en;q=0.9",
+          },
+        }
+      )
+        .then((res) => res.json())
+        .then((data) => {
+          this.memories = data.data;
+        }),
+    ])
+      .then(() => {
+        this.isfetch = false;
       })
       .catch((err) => {
         console.log(err);
@@ -103,8 +118,8 @@ export default defineComponent({
       code: "",
       posts: [],
       friends: [],
-      isfetch1: true,
-      isfetch2: true,
+      memories: [],
+      isfetch: true,
     };
   },
   methods: {
@@ -119,7 +134,7 @@ export default defineComponent({
   <div class="bg-blue-300 flex py-2">
     <div class="mr-auto invisible"></div>
     <div class="mr-auto">
-      <span class="bg-purple-400 text-3xl font-bold">{{ timenow() }}</span>
+      <span class="text-3xl font-bold">{{ timenow() }}</span>
     </div>
     <button
       @click="logout"
@@ -128,7 +143,7 @@ export default defineComponent({
       Logout
     </button>
   </div>
-  <div v-for="post in posts" v-if="!isfetch1 && !isfetch2">
+  <div v-for="post in posts" v-if="!isfetch">
     <single-post-component-vue
       v-if="post.members.length > 0"
       :post="post"
