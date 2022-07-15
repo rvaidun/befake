@@ -17,7 +17,7 @@ export default defineComponent({
       this.loggedIn = true;
     },
     logout() {
-      fetch("http://localhost:9000/delete", {
+      fetch("https://berealviewer.herokuapp.com/delete", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

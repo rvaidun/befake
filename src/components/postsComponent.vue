@@ -48,7 +48,7 @@ export default defineComponent({
       //     localStorage.clear();
       //     this.logout();
       //   });
-      await fetch("http://localhost:9000/getlogin", {
+      await fetch("https://berealviewer.herokuapp.com/getlogin", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

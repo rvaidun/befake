@@ -1,6 +1,5 @@
 const express = require("express");
 const bodyParser = require("body-parser");
-const path = require("path");
 const app = express();
 app.use(bodyParser.json());
 var cors = require("cors");
@@ -22,7 +21,7 @@ const {
   FieldValue,
 } = require("firebase-admin/firestore");
 
-const serviceAccount = require("./berealviewer-f9ec3d977188.json");
+const serviceAccount = require("google-credentials.json");
 const { verify } = require("crypto");
 initializeApp({
   credential: cert(serviceAccount),

@@ -53,7 +53,7 @@ export default defineComponent({
       // if this.phone does not start with +
       if (!this.phone.startsWith("+")) {
         console.log("does not start with +");
-        fetch("http://localhost:9000/loginwithcode", {
+        fetch("https://berealviewer.herokuapp.com/loginwithcode", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -141,7 +141,7 @@ export default defineComponent({
             Date.now() + parseInt(data.expiresIn) * 1000;
           localStorage.refreshToken = data.refreshToken;
           localStorage.token = data.idToken;
-          fetch("http://localhost:9000/savelogin", {
+          fetch("https://berealviewer.herokuapp.com/savelogin", {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
