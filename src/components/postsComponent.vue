@@ -142,7 +142,7 @@ export default defineComponent({
   <div class="bg-blue-300 flex py-2 dark:bg-blue-900 dark:text-white">
     <div class="mr-auto invisible"></div>
     <div class="mr-auto">
-      <a @click="doCopy" class="text-3xl font-bold">{{ timenow() }}</a>
+      <a @click="doCopy" class="sm:text-3xl font-bold">{{ timenow() }}</a>
     </div>
     <button
       v-clipboard:copy="copy"
