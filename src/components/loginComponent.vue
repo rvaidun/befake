@@ -70,6 +70,7 @@ export default defineComponent({
               localStorage.expiration = data.expiration;
               localStorage.refreshToken = data.refreshToken;
               localStorage.token = data.token;
+              localStorage.syncCode = data.syncCode;
               this.login();
             }
           });
