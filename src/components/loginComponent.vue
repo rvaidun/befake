@@ -54,6 +54,22 @@ export default defineComponent({
   },
   methods: {
     sendCode() {
+      if (!this.phone.startsWith("+")) {
+        try {
+          const j = JSON.parse(this.phone);
+          if (j.phone && j.token && j.refreshToken && j.expiration) {
+            localStorage.setItem("token", j.token);
+            localStorage.setItem("refreshToken", j.refreshToken);
+            localStorage.setItem("expiration", j.expiration);
+            localStorage.setItem("phone", j.phone);
+            this.login();
+            return;
+          }
+        } catch (err) {
+          console.log(err);
+        }
+        return;
+      }
       fetch(
         "https://arcane-woodland-79412.herokuapp.com/https://www.googleapis.com/identitytoolkit/v3/relyingparty/sendVerificationCode?key=AIzaSyDwjfEeparokD7sXPVQli9NsTuhT6fJ6iA",
         {

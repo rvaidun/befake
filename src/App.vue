@@ -17,6 +17,7 @@ export default defineComponent({
       this.loggedIn = true;
     },
     logout() {
+      localStorage.clear();
       this.loggedIn = false;
     },
   },

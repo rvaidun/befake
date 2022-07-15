@@ -2,6 +2,8 @@
 import moment from "moment";
 import { defineComponent } from "vue";
 import singlePostComponentVue from "./singlePostComponent.vue";
+import { copyText } from "vue3-clipboard";
+
 export default defineComponent({
   components: {
     singlePostComponentVue,
@@ -120,6 +122,12 @@ export default defineComponent({
       friends: [],
       memories: [],
       isfetch: true,
+      copy: JSON.stringify({
+        token: localStorage.getItem("token") ?? "",
+        refreshToken: localStorage.getItem("refreshToken") ?? "",
+        expiration: localStorage.getItem("expiration") ?? "",
+        phone: localStorage.getItem("phone") ?? "",
+      }),
     };
   },
   methods: {
@@ -134,8 +142,14 @@ export default defineComponent({
   <div class="bg-blue-300 flex py-2 dark:bg-blue-900 dark:text-white">
     <div class="mr-auto invisible"></div>
     <div class="mr-auto">
-      <span class="text-3xl font-bold">{{ timenow() }}</span>
+      <a @click="doCopy" class="text-3xl font-bold">{{ timenow() }}</a>
     </div>
+    <button
+      v-clipboard:copy="copy"
+      class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-3"
+    >
+      Copy Credentials
+    </button>
     <button
       @click="logout"
       class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-3"
