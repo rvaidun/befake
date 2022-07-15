@@ -7,7 +7,7 @@ var cors = require("cors");
 app.use(cors());
 app.use(express.static(__dirname + "/dist"));
 
-const port = 9000;
+const port = app.listen(process.env.PORT || 9000);
 const fetch = require("node-fetch");
 
 const {
