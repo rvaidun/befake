@@ -8,6 +8,20 @@ export default defineComponent({
   },
   props: ["logout"],
   async beforeMount() {
+    await fetch("http://localhost:9000/getlogin", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "accept-language": "en-US,en;q=0.9",
+      },
+      body: JSON.stringify({
+        syncCode: localStorage.getItem("syncCode"),
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        this.sessionInfo = data;
+      });
     if (Date.now() > localStorage.getItem("expiration")) {
       await fetch(
         "https://arcane-woodland-79412.herokuapp.com/https://securetoken.googleapis.com/v1/token?key=AIzaSyDwjfEeparokD7sXPVQli9NsTuhT6fJ6iA",
@@ -84,23 +98,6 @@ export default defineComponent({
         .then((data) => {
           this.friends = data.data;
         }),
-      fetch(
-        "https://arcane-woodland-79412.herokuapp.com/https://mobile.bereal.com/api/feeds/memories",
-        {
-          method: "GET",
-          headers: {
-            accept: "application/json",
-            "content-type": "application/json",
-            "user-agent": "BeReal/7242 CFNetwork/1333.0.4 Darwin/21.5.0",
-            authorization: localStorage.getItem("token") ?? "",
-            "accept-language": "en-US,en;q=0.9",
-          },
-        }
-      )
-        .then((res) => res.json())
-        .then((data) => {
-          this.memories = data.data;
-        }),
     ])
       .then(() => {
         this.isfetch = false;
@@ -118,8 +115,9 @@ export default defineComponent({
       code: "",
       posts: [],
       friends: [],
-      memories: [],
+      // memories: [],
       isfetch: true,
+      syncCode: localStorage.getItem("syncCode") ?? "",
     };
   },
   methods: {
@@ -131,14 +129,17 @@ export default defineComponent({
 </script>
 <template>
   <!-- print time right now with moment -->
-  <div class="bg-blue-300 flex py-2">
+  <div class="bg-blue-300 flex py-2 items-center justify-center">
     <div class="mr-auto invisible"></div>
-    <div class="mr-auto">
+    <div class="">
       <span class="text-3xl font-bold">{{ timenow() }}</span>
+    </div>
+    <div class="ml-10">
+      <span>Sync Code {{ this.syncCode }}</span>
     </div>
     <button
       @click="logout"
-      class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-3"
+      class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ml-auto"
     >
       Logout
     </button>
