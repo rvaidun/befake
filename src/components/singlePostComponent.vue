@@ -30,12 +30,11 @@ export default defineComponent({
 });
 </script>
 <template>
-  <a
-    href="#"
+  <div
     class="block p-6 max-w-5xl bg-white rounded-lg border border-gray-200 shadow-md hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700"
   >
-    <div class="flex flex-col ml-3">
-      <div class="flex items-center justify-center">
+    <div class="flex flex-col">
+      <div class="flex items-center sm:justify-center">
         <img
           v-bind:src="
             friend.profilePicture
@@ -46,15 +45,18 @@ export default defineComponent({
                 '&background=' +
                 color
           "
-          class="w-36 h-36 rounded-[50%]"
+          class="w-28 rounded-[50%]"
         />
 
         <span class="font-bold ml-3">
           {{ friend.fullname }}-{{ friend.username }}
         </span>
       </div>
-      <div class="flex items-center justify-center">
-        <img v-bind:src="post.photoURL" class="h-full ml-3 w-64 rounded-md" />
+      <div class="flex items-center justify-center flex-col mt-4 sm:flex-row">
+        <img
+          v-bind:src="post.photoURL"
+          class="h-full ml-3 w-64 rounded-md mb-3"
+        />
         <img
           v-bind:src="post.secondaryPhotoURL"
           class="h-full ml-3 w-64 rounded-md"
@@ -79,5 +81,5 @@ export default defineComponent({
         </div>
       </div>
     </div>
-  </a>
+  </div>
 </template>

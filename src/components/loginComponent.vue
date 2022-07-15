@@ -1,8 +1,10 @@
 <template>
   <div v-if="!sessionInfo">
-    <div class="flex items-center justify-center mt-[25%]">
-      <span class="mr-2"
-        >Enter your phone number with country code and +:
+    <div
+      class="flex items-center justify-center mt-[75%] flex-col sm:flex-row sm:mt-[25%]"
+    >
+      <span class="mr-2 dark:text-white">
+        Enter your phone number with country code and +:
       </span>
       <input
         type="text"
@@ -19,8 +21,10 @@
     </div>
   </div>
   <div v-else>
-    <div class="flex items-center justify-center mt-[25%]">
-      <span class="mr-2">Enter your code: </span>
+    <div
+      class="flex items-center justify-center mt-[75%] flex-col sm:flex-row sm:mt-[25%]"
+    >
+      <span class="mr-2 dark:text-white">Enter your code: </span>
       <input
         type="text"
         placeholder="123456"

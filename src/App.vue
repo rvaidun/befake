@@ -23,9 +23,7 @@ export default defineComponent({
 });
 </script>
 
-<template class="">
-  <div class="dark:bg-gray-900 dark:text-white">
-    <loginComponent v-if="!loggedIn" :login="login" />
-    <postsComponentVue v-else :logout="logout" />
-  </div>
+<template>
+  <loginComponent v-if="!loggedIn" :login="login" />
+  <postsComponentVue v-else :logout="logout" />
 </template>
