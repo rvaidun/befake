@@ -131,7 +131,7 @@ export default defineComponent({
 </script>
 <template>
   <!-- print time right now with moment -->
-  <div class="bg-blue-300 flex py-2 dark:bg-blue-900">
+  <div class="bg-blue-300 flex py-2 dark:bg-blue-900 dark:text-white">
     <div class="mr-auto invisible"></div>
     <div class="mr-auto">
       <span class="text-3xl font-bold">{{ timenow() }}</span>
@@ -146,7 +146,7 @@ export default defineComponent({
   <div
     v-for="post in posts"
     v-if="!isfetch"
-    class="flex flex-col justify-center items-center"
+    class="flex flex-col justify-center items-center dark:text-white"
   >
     <single-post-component-vue
       v-if="post.members.length > 0"
