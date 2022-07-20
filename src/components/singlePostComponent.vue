@@ -83,6 +83,19 @@ export default defineComponent({
         <span> {{ postdate() }} </span>
         <span class="ml-3">Retakes - {{ post.retakeCounter }}</span>
       </div>
+      <div class="flex flex-col">
+        <span v-if="post.caption">
+          <span class="font-bold">{{ friend.username + ": " }} </span>
+          {{ post.caption }}
+        </span>
+      </div>
+      <div v-if="post.comment" class="flex flex-col">
+        <div v-for="c in post.comment">
+          <span class="font-bold"> {{ c.userName + ": " }}</span>
+          {{ c.text }}
+        </div>
+      </div>
+
       <div class="flex flex-col mt-4">
         <div
           v-for="e in post.realMojis"
