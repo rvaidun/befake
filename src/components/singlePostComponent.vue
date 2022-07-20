@@ -16,6 +16,22 @@ export default defineComponent({
         "MM-DD-YYYY h:mm:ss"
       );
     },
+    replacebydef(e) {
+      console.log("Hi");
+      fetch(
+        `https://arcane-woodland-79412.herokuapp.com/https://mobile.bereal.com/api/person/profiles/${this.friend.id}`,
+        {
+          headers: {
+            authorization: localStorage.getItem("token"),
+            accept: "*/*",
+          },
+        }
+      )
+        .then((res) => res.json())
+        .then((data) => {
+          e.target.src = data.profilePicture.url;
+        });
+    },
   },
   computed: {
     color() {
@@ -46,6 +62,7 @@ export default defineComponent({
                 color
           "
           class="w-28 rounded-[50%]"
+          @error="replacebydef"
         />
 
         <span class="font-bold ml-3">
