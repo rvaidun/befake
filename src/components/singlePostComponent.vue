@@ -96,11 +96,8 @@ export default defineComponent({
         </div>
       </div>
 
-      <div class="flex flex-col mt-4">
-        <div
-          v-for="e in post.realMojis"
-          class="flex items-center justify-center"
-        >
+      <div class="flex flex-col mt-4 ml-[25%]">
+        <div v-for="e in post.realMojis" class="flex items-center mb-2">
           <div class="relative">
             <img v-bind:src="e.uri" class="w-24 rounded-[50%]" />
             <span class="absolute top-[50px] left-[60px] text-5xl"
