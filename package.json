@@ -12,6 +12,8 @@
   "dependencies": {
     "moment": "^2.29.4",
     "vue": "^3.2.37",
+    "vue-simple-spinner": "^1.2.10",
+    "vue-spinner": "^1.0.4",
     "vue3-clipboard": "^1.0.0"
   },
   "devDependencies": {
