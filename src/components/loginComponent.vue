@@ -1,4 +1,27 @@
+<style>
+.bounce-enter-active {
+  animation: bounce-in 0.5s;
+}
+.bounce-leave-active {
+  animation: bounce-in 0.5s reverse;
+}
+@keyframes bounce-in {
+  0% {
+    transform: scale(0);
+  }
+  50% {
+    transform: scale(1.25);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+</style>
 <template>
+  <Transition name="bounce">
+    <ErrorToast v-if="error.show" :text="error.text" />
+  </Transition>
+
   <div v-if="!sessionInfo">
     <div
       class="flex items-center justify-center mt-[75%] flex-col sm:flex-row sm:mt-[25%]"
@@ -20,6 +43,7 @@
       </button>
     </div>
   </div>
+
   <div v-else>
     <div
       class="flex items-center justify-center mt-[75%] flex-col sm:flex-row sm:mt-[25%]"
@@ -41,15 +65,22 @@
   </div>
 </template>
 <script lang="ts">
-import { logicalExpression } from "@babel/types";
 import { defineComponent } from "vue";
-export default defineComponent({
+import erroralertVue from "./errorToast.vue";
+import ErrorToast from "./errorToast.vue";
+
+export default {
+  components: { erroralertVue, ErrorToast },
   props: ["login"],
   data() {
     return {
       phone: "",
       sessionInfo: "",
       code: "",
+      error: {
+        text: "",
+        show: false,
+      },
     };
   },
   methods: {
@@ -64,12 +95,19 @@ export default defineComponent({
             localStorage.setItem("phone", j.phone);
             this.login();
             return;
+          } else {
+            throw "invalid json";
           }
         } catch (err) {
-          console.log(err);
+          this.error = {
+            show: true,
+            text: "Invalid phone number",
+          };
+          setTimeout(() => (this.error = false), 5000);
         }
         return;
       }
+      console.log("Doing fetch!");
       fetch(
         "https://arcane-woodland-79412.herokuapp.com/https://www.googleapis.com/identitytoolkit/v3/relyingparty/sendVerificationCode?key=AIzaSyDwjfEeparokD7sXPVQli9NsTuhT6fJ6iA",
         {
@@ -100,7 +138,18 @@ export default defineComponent({
           return res.json();
         })
         .then((data) => {
+          if (data.error) {
+            throw Error(data.error.message);
+          }
           this.sessionInfo = data.sessionInfo;
+        })
+        .catch((e) => {
+          console.log("hi");
+          this.error = {
+            show: true,
+            text: e,
+          };
+          setTimeout(() => (this.error = false), 5000);
         });
     },
     verifyCode() {
@@ -130,14 +179,26 @@ export default defineComponent({
       )
         .then((res) => res.json())
         .then((data) => {
+          if (data.error) {
+            throw Error(data.error.message);
+          }
           localStorage.phone = this.phone;
           localStorage.expiration =
             Date.now() + parseInt(data.expiresIn) * 1000;
           localStorage.refreshToken = data.refreshToken;
           localStorage.token = data.idToken;
           this.login();
+        })
+        .catch((e) => {
+          console.log("Hi");
+          console.log(e);
+          this.error = {
+            show: true,
+            text: e,
+          };
+          setTimeout(() => (this.error = false), 5000);
         });
     },
   },
-});
+};
 </script>

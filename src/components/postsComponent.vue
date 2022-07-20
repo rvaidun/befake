@@ -3,10 +3,12 @@ import moment from "moment";
 import { defineComponent } from "vue";
 import singlePostComponentVue from "./singlePostComponent.vue";
 import { copyText } from "vue3-clipboard";
+import PulseLoader from "vue-spinner/src/PulseLoader.vue";
 
 export default defineComponent({
   components: {
     singlePostComponentVue,
+    PulseLoader,
   },
   props: ["logout"],
   async beforeMount() {
@@ -167,6 +169,9 @@ export default defineComponent({
       :post="post"
       :friend="friends.find((o) => o['id'] === post['ownerID'])"
       class="mt-10"
-    ></single-post-component-vue>
+    />
+  </div>
+  <div v-else class="grid h-screen place-items-center">
+    <pulse-loader :loading="loading" :color="color" :size="size"></pulse-loader>
   </div>
 </template>
