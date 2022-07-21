@@ -18,13 +18,13 @@
 }
 @-webkit-keyframes bounce-in {
   0% {
-    transform: scale(0);
+    -webkit-transform: scale(0);
   }
   50% {
-    transform: scale(1.25);
+    -webkit-transform: scale(1.25);
   }
   100% {
-    transform: scale(1);
+    -webkit-transform: scale(1);
   }
 }
 </style>
