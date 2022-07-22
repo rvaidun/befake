@@ -32,6 +32,12 @@ export default defineComponent({
           e.target.src = data.profilePicture.url;
         });
     },
+    boldusername(s) {
+      return s.replace(
+        /@\w+/g,
+        "<span class='font-bold text-blue-200'>$&</span>"
+      );
+    },
   },
   computed: {
     color() {
@@ -92,7 +98,7 @@ export default defineComponent({
       <div v-if="post.comment" class="flex flex-col">
         <div v-for="c in post.comment">
           <span class="font-bold"> {{ c.userName + ": " }}</span>
-          {{ c.text }}
+          <span v-html="boldusername(c.text)"></span>
         </div>
       </div>
 
