@@ -46,12 +46,13 @@
         v-model="phone"
         class="border-black border-2 mr-2"
       />
-      <button
+      <div
         @click="sendCode"
-        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded cursor-pointer flex"
       >
-        Send
-      </button>
+        <span>Send</span>
+        <PulseLoader v-if="loading"></PulseLoader>
+      </div>
     </div>
   </div>
 
@@ -66,22 +67,22 @@
         v-model="code"
         class="border-black border-2 mr-2"
       />
-      <button
+      <div
         @click="verifyCode"
-        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded curosor-pointer flex"
       >
-        Verify
-      </button>
+        <span>Verify</span>
+        <PulseLoader v-if="loading"></PulseLoader>
+      </div>
     </div>
   </div>
 </template>
 <script lang="ts">
-import { defineComponent } from "vue";
 import erroralertVue from "./errorToast.vue";
 import ErrorToast from "./errorToast.vue";
-
+import PulseLoader from "vue-spinner/src/PulseLoader.vue";
 export default {
-  components: { erroralertVue, ErrorToast },
+  components: { erroralertVue, ErrorToast, PulseLoader },
   props: ["login"],
   data() {
     return {
@@ -92,11 +93,14 @@ export default {
         text: "",
         show: false,
       },
+      loading: false,
     };
   },
   methods: {
     sendCode() {
+      this.loading = true;
       if (!this.phone.startsWith("+")) {
+        console.log("does not start with +");
         try {
           const j = JSON.parse(this.phone);
           if (j.phone && j.token && j.refreshToken && j.expiration) {
@@ -105,7 +109,6 @@ export default {
             localStorage.setItem("expiration", j.expiration);
             localStorage.setItem("phone", j.phone);
             this.login();
-            return;
           } else {
             throw "invalid json";
           }
@@ -116,6 +119,7 @@ export default {
           };
           setTimeout(() => (this.error = false), 5000);
         }
+        this.loading = false;
         return;
       }
       console.log("Doing fetch!");
@@ -153,6 +157,7 @@ export default {
             throw Error(data.error.message);
           }
           this.sessionInfo = data.sessionInfo;
+          this.loading = false;
         })
         .catch((e) => {
           console.log("hi");
@@ -160,10 +165,12 @@ export default {
             show: true,
             text: e,
           };
+          this.loading = false;
           setTimeout(() => (this.error = false), 5000);
         });
     },
     verifyCode() {
+      this.loading = true;
       fetch(
         "https://arcane-woodland-79412.herokuapp.com/https://www.googleapis.com/identitytoolkit/v3/relyingparty/verifyPhoneNumber?key=AIzaSyDwjfEeparokD7sXPVQli9NsTuhT6fJ6iA",
         {
@@ -198,6 +205,7 @@ export default {
             Date.now() + parseInt(data.expiresIn) * 1000;
           localStorage.refreshToken = data.refreshToken;
           localStorage.token = data.idToken;
+          this.loading = false;
           this.login();
         })
         .catch((e) => {
@@ -207,6 +215,7 @@ export default {
             show: true,
             text: e,
           };
+          this.loading = false;
           setTimeout(() => (this.error = false), 5000);
         });
     },
