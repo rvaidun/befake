@@ -4,12 +4,13 @@ import moment from "moment";
 
 export default defineComponent({
   props: ["friend", "post"],
-  // data() {
-  //   return {
-  //     nophoto:
-  //       "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png",
-  //   };
-  // },
+  data() {
+    return {
+      iframesrc: this.post.location
+        ? `https://www.google.com/maps/embed/v1/place?key=AIzaSyDPvCQ4RXgvhbboTmKh2qLnfY50aJxcD0E&q=${this.post.location._latitude}, ${this.post.location._longitude}`
+        : "",
+    };
+  },
   methods: {
     postdate() {
       return moment(this.post.creationDate._seconds * 1000).format(
@@ -74,6 +75,18 @@ export default defineComponent({
         <span class="font-bold ml-3">
           {{ friend.fullname }}-{{ friend.username }}
         </span>
+        <iframe
+          class="ml-3"
+          width="400"
+          height="300"
+          style="border: 0"
+          loading="lazy"
+          v-if="post.location"
+          allowfullscreen
+          referrerpolicy="no-referrer-when-downgrade"
+          :src="iframesrc"
+        >
+        </iframe>
       </div>
       <div class="flex items-center justify-center flex-col mt-4 sm:flex-row">
         <img
