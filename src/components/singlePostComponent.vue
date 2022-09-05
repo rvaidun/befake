@@ -59,6 +59,7 @@ export default defineComponent({
     <div class="flex flex-col">
       <div class="flex items-center sm:justify-center">
         <img
+          referrerpolicy="no-referrer"
           v-bind:src="
             friend.profilePicture
               ? friend.profilePicture.url
@@ -69,7 +70,13 @@ export default defineComponent({
                 color
           "
           class="w-28 rounded-[50%]"
-          @error="replacebydef"
+          @error="
+            'https://ui-avatars.com/api/?length=1' +
+              '&name=' +
+              friend.username +
+              '&background=' +
+              color
+          "
         />
 
         <span class="font-bold ml-3">
@@ -90,10 +97,12 @@ export default defineComponent({
       </div>
       <div class="flex items-center justify-center flex-col mt-4 sm:flex-row">
         <img
+          referrerpolicy="no-referrer"
           v-bind:src="post.photoURL"
           class="h-full ml-3 w-64 rounded-md mb-3"
         />
         <img
+          referrerpolicy="no-referrer"
           v-bind:src="post.secondaryPhotoURL"
           class="h-full ml-3 w-64 rounded-md"
         />
