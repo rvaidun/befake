@@ -128,9 +128,9 @@ export default defineComponent({
         <div v-for="e in post.realMojis" class="flex items-center mb-2">
           <div class="relative">
             <img
+              referrerpolicy="no-referrer"
               v-bind:src="e.uri"
               class="w-24 rounded-[50%]"
-              referrerpolicy="no-referrer"
             />
 
             <span class="absolute top-[50px] left-[60px] text-5xl"
