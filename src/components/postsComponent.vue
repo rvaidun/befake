@@ -71,40 +71,40 @@ export default defineComponent({
         .then((data) => {
           this.posts = data;
         }),
-      fetch(
-        "https://arcane-woodland-79412.herokuapp.com/https://mobile.bereal.com/api/relationships/friends",
-        {
-          method: "GET",
-          headers: {
-            accept: "application/json",
-            "content-type": "application/json",
-            "user-agent": "BeReal/7242 CFNetwork/1333.0.4 Darwin/21.5.0",
-            authorization: localStorage.getItem("token") ?? "",
-            "accept-language": "en-US,en;q=0.9",
-          },
-        }
-      )
-        .then((res) => res.json())
-        .then((data) => {
-          this.friends = data.data;
-        }),
-      fetch(
-        "https://arcane-woodland-79412.herokuapp.com/https://mobile.bereal.com/api/feeds/memories",
-        {
-          method: "GET",
-          headers: {
-            accept: "application/json",
-            "content-type": "application/json",
-            "user-agent": "BeReal/7242 CFNetwork/1333.0.4 Darwin/21.5.0",
-            authorization: localStorage.getItem("token") ?? "",
-            "accept-language": "en-US,en;q=0.9",
-          },
-        }
-      )
-        .then((res) => res.json())
-        .then((data) => {
-          this.memories = data.data;
-        }),
+      // fetch(
+      //   "https://arcane-woodland-79412.herokuapp.com/https://mobile.bereal.com/api/relationships/friends",
+      //   {
+      //     method: "GET",
+      //     headers: {
+      //       accept: "application/json",
+      //       "content-type": "application/json",
+      //       "user-agent": "BeReal/7242 CFNetwork/1333.0.4 Darwin/21.5.0",
+      //       authorization: localStorage.getItem("token") ?? "",
+      //       "accept-language": "en-US,en;q=0.9",
+      //     },
+      //   }
+      // )
+      //   .then((res) => res.json())
+      //   .then((data) => {
+      //     this.friends = data.data;
+      //   }),
+      // fetch(
+      //   "https://arcane-woodland-79412.herokuapp.com/https://mobile.bereal.com/api/feeds/memories",
+      //   {
+      //     method: "GET",
+      //     headers: {
+      //       accept: "application/json",
+      //       "content-type": "application/json",
+      //       "user-agent": "BeReal/7242 CFNetwork/1333.0.4 Darwin/21.5.0",
+      //       authorization: localStorage.getItem("token") ?? "",
+      //       "accept-language": "en-US,en;q=0.9",
+      //     },
+      //   }
+      // )
+      //   .then((res) => res.json())
+      //   .then((data) => {
+      //     this.memories = data.data;
+      //   }),
     ])
       .then(() => {
         this.isfetch = false;
@@ -146,6 +146,9 @@ export default defineComponent({
     <div class="mr-auto">
       <a @click="doCopy" class="sm:text-3xl font-bold">{{ timenow() }}</a>
     </div>
+    <a href="https://github.com/rvaidun/berealviewer" class="mr-3 fill-white">
+      <img src="../assets/github-svgrepo-com.svg" class="fill-white" />
+    </a>
     <button
       v-clipboard:copy="copy"
       class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-3"
@@ -165,7 +168,6 @@ export default defineComponent({
     class="flex flex-col justify-center items-center dark:text-white"
   >
     <single-post-component-vue
-      v-if="post.members.length > 0"
       :post="post"
       :friend="friends.find((o) => o['id'] === post['ownerID'])"
       class="mt-10"
