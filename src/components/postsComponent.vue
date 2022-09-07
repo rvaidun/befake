@@ -4,7 +4,7 @@ import { defineComponent } from "vue";
 import singlePostComponentVue from "./singlePostComponent.vue";
 import { copyText } from "vue3-clipboard";
 import PulseLoader from "vue-spinner/src/PulseLoader.vue";
-
+import { event } from "vue-gtag";
 export default defineComponent({
   components: {
     singlePostComponentVue,
@@ -12,6 +12,10 @@ export default defineComponent({
   },
   props: ["logout"],
   async beforeMount() {
+    event("view_posts", {
+      event_category: "posts",
+      event_label: "view_posts",
+    });
     if (Date.now() > localStorage.getItem("expiration")) {
       await fetch(
         "https://arcane-woodland-79412.herokuapp.com/https://securetoken.googleapis.com/v1/token?key=AIzaSyDwjfEeparokD7sXPVQli9NsTuhT6fJ6iA",

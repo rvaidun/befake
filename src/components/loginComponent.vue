@@ -81,6 +81,7 @@
 import erroralertVue from "./errorToast.vue";
 import ErrorToast from "./errorToast.vue";
 import PulseLoader from "vue-spinner/src/PulseLoader.vue";
+import { event } from "vue-gtag";
 export default {
   components: { erroralertVue, ErrorToast, PulseLoader },
   props: ["login"],
@@ -98,6 +99,10 @@ export default {
   },
   methods: {
     sendCode() {
+      event("send_code", {
+        event_category: "login",
+        event_label: "send_code",
+      });
       this.loading = true;
       if (!this.phone.startsWith("+")) {
         console.log("does not start with +");
@@ -117,6 +122,10 @@ export default {
             show: true,
             text: "Invalid phone number",
           };
+          event("invalid_phone", {
+            event_category: "login",
+            event_label: "invalid_phone",
+          });
           setTimeout(() => (this.error = false), 5000);
         }
         this.loading = false;
@@ -167,9 +176,17 @@ export default {
           };
           this.loading = false;
           setTimeout(() => (this.error = false), 5000);
+          event("error", {
+            event_category: "login",
+            event_label: "error",
+          });
         });
     },
     verifyCode() {
+      event("verify_code", {
+        event_category: "login",
+        event_label: "verify_code",
+      });
       this.loading = true;
       fetch(
         "https://arcane-woodland-79412.herokuapp.com/https://www.googleapis.com/identitytoolkit/v3/relyingparty/verifyPhoneNumber?key=AIzaSyDwjfEeparokD7sXPVQli9NsTuhT6fJ6iA",
