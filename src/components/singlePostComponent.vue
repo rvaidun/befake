@@ -45,7 +45,7 @@ export default defineComponent({
       var letters = "0123456789ABCDEF";
       var color = "";
       for (var i = 0; i < 6; i++) {
-        color += letters[this.friend.username.charCodeAt(i) % 16];
+        color += letters[this.post.user.username.charCodeAt(i) % 16];
       }
       return color;
     },
@@ -61,11 +61,11 @@ export default defineComponent({
         <img
           referrerpolicy="no-referrer"
           v-bind:src="
-            friend.profilePicture
-              ? friend.profilePicture.url
+            post.user.profilePicture
+              ? post.user.profilePicture.url
               : 'https://ui-avatars.com/api/?length=1' +
                 '&name=' +
-                friend.username +
+                post.user.username +
                 '&background=' +
                 color
           "
@@ -73,14 +73,14 @@ export default defineComponent({
           @error="
             'https://ui-avatars.com/api/?length=1' +
               '&name=' +
-              friend.username +
+              post.user.username +
               '&background=' +
               color
           "
         />
 
         <span class="font-bold ml-3">
-          {{ friend.fullname }}-{{ friend.username }}
+          {{ post.user.username }}
         </span>
         <iframe
           class="ml-3"
@@ -113,7 +113,7 @@ export default defineComponent({
       </div>
       <div class="flex flex-col">
         <span v-if="post.caption">
-          <span class="font-bold">{{ friend.username + ": " }} </span>
+          <span class="font-bold">{{ post.user.username + ": " }} </span>
           {{ post.caption }}
         </span>
       </div>
