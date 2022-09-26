@@ -20,7 +20,7 @@ export default defineComponent({
     replacebydef(e) {
       console.log("Hi");
       fetch(
-        `https://arcane-woodland-79412.herokuapp.com/https://mobile.bereal.com/api/person/profiles/${this.friend.id}`,
+        `https://warm-scrubland-06418.herokuapp.com/https://mobile.bereal.com/api/person/profiles/${this.friend.id}`,
         {
           headers: {
             authorization: localStorage.getItem("token"),
