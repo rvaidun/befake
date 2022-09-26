@@ -16,9 +16,10 @@ export default defineComponent({
       event_category: "posts",
       event_label: "view_posts",
     });
+    console.log("Sent view_posts event");
     if (Date.now() > localStorage.getItem("expiration")) {
       await fetch(
-        "https://arcane-woodland-79412.herokuapp.com/https://securetoken.googleapis.com/v1/token?key=AIzaSyDwjfEeparokD7sXPVQli9NsTuhT6fJ6iA",
+        "https://warm-scrubland-06418.herokuapp.com/https://securetoken.googleapis.com/v1/token?key=AIzaSyDwjfEeparokD7sXPVQli9NsTuhT6fJ6iA",
         {
           method: "POST",
           headers: {
@@ -59,7 +60,7 @@ export default defineComponent({
     }
     Promise.all([
       fetch(
-        "https://arcane-woodland-79412.herokuapp.com/https://mobile.bereal.com/api/feeds/friends",
+        "https://warm-scrubland-06418.herokuapp.com/https://mobile.bereal.com/api/feeds/friends",
         {
           method: "GET",
           headers: {
