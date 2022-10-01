@@ -5,12 +5,11 @@ import singlePostComponentVue from "./singlePostComponent.vue";
 import { copyText } from "vue3-clipboard";
 import PulseLoader from "vue-spinner/src/PulseLoader.vue";
 import { event } from "vue-gtag";
-export default defineComponent({
+export default {
   components: {
     singlePostComponentVue,
     PulseLoader,
   },
-  props: ["logout"],
   async beforeMount() {
     event("view_posts", {
       event_category: "posts",
@@ -55,7 +54,7 @@ export default defineComponent({
         .catch((err) => {
           console.log(err);
           localStorage.clear();
-          this.logout();
+          this.$store.commit("logout");
         });
     }
     Promise.all([
@@ -117,7 +116,7 @@ export default defineComponent({
       .catch((err) => {
         console.log(err);
         localStorage.clear();
-        this.logout();
+        this.$store.commit("logout");
       });
   },
   data() {
@@ -129,12 +128,6 @@ export default defineComponent({
       friends: [],
       memories: [],
       isfetch: true,
-      copy: JSON.stringify({
-        token: localStorage.getItem("token") ?? "",
-        refreshToken: localStorage.getItem("refreshToken") ?? "",
-        expiration: localStorage.getItem("expiration") ?? "",
-        phone: localStorage.getItem("phone") ?? "",
-      }),
     };
   },
   methods: {
@@ -142,31 +135,10 @@ export default defineComponent({
       return moment().format("MMMM Do YYYY, h:mm:ss a");
     },
   },
-});
+};
 </script>
 <template>
   <!-- print time right now with moment -->
-  <div class="bg-blue-300 flex py-2 dark:bg-blue-900 dark:text-white">
-    <div class="mr-auto invisible"></div>
-    <div class="mr-auto">
-      <a @click="doCopy" class="sm:text-3xl font-bold">{{ timenow() }}</a>
-    </div>
-    <a href="https://github.com/rvaidun/berealviewer" class="mr-3 fill-white">
-      <img src="../assets/github-svgrepo-com.svg" class="fill-white" />
-    </a>
-    <button
-      v-clipboard:copy="copy"
-      class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-3"
-    >
-      Copy Credentials
-    </button>
-    <button
-      @click="logout"
-      class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-3"
-    >
-      Logout
-    </button>
-  </div>
   <div
     v-for="post in posts"
     v-if="!isfetch"

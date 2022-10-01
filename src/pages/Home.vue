@@ -1,6 +1,6 @@
 <script>
-import loginComponent from "./loginComponent.vue";
-import postsComponentVue from "./postsComponent.vue";
+import loginComponent from "../components/loginComponent.vue";
+import postsComponentVue from "../components/postsComponent.vue";
 
 export default {
   components: {
@@ -13,11 +13,7 @@ export default {
     };
   },
   methods: {
-    login() {
-      this.loggedIn = true;
-    },
     logout() {
-      localStorage.clear();
       this.loggedIn = false;
     },
   },
