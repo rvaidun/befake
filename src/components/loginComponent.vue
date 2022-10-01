@@ -113,7 +113,7 @@ export default {
             localStorage.setItem("refreshToken", j.refreshToken);
             localStorage.setItem("expiration", j.expiration);
             localStorage.setItem("phone", j.phone);
-            this.login();
+            this.$store.commit("login");
           } else {
             throw "invalid json";
           }
@@ -223,7 +223,7 @@ export default {
           localStorage.refreshToken = data.refreshToken;
           localStorage.token = data.idToken;
           this.loading = false;
-          this.login();
+          this.$store.commit("login");
         })
         .catch((e) => {
           console.log("Hi");

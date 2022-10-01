@@ -1342,6 +1342,11 @@
     "@vue/compiler-dom" "3.2.37"
     "@vue/shared" "3.2.37"
 
+"@vue/devtools-api@^6.0.0-beta.11":
+  version "6.4.2"
+  resolved "https://registry.yarnpkg.com/@vue/devtools-api/-/devtools-api-6.4.2.tgz#faf303a70cd9f8662896d663a195df41a8af1e53"
+  integrity sha512-6hNZ23h1M2Llky+SIAmVhL7s6BjLtZBCzjIz9iRSBUsysjE7kC39ulW0dH4o/eZtycmSt4qEr6RDVGTIuWu+ow==
+
 "@vue/devtools-api@^6.1.4":
   version "6.2.1"
   resolved "https://registry.yarnpkg.com/@vue/devtools-api/-/devtools-api-6.2.1.tgz#6f2948ff002ec46df01420dfeff91de16c5b4092"
@@ -3991,6 +3996,11 @@ vue-eslint-parser@^9.0.1:
     lodash "^4.17.21"
     semver "^7.3.6"
 
+vue-gtag@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/vue-gtag/-/vue-gtag-2.0.1.tgz#d4dc1b9cf79809c37ce844824c0f7fa97af520dd"
+  integrity sha512-aM4A58FVL0wV2ptYi+xzAjeg+pQVRyUcfBc5UkXAwQrR4t3WBhor50Izp2I+3Oo7+l+vWJ7u78DGcNzReb8S/A==
+
 vue-router@^4.1.5:
   version "4.1.5"
   resolved "https://registry.yarnpkg.com/vue-router/-/vue-router-4.1.5.tgz#256f597e3f5a281a23352a6193aa6e342c8d9f9a"
@@ -4025,6 +4035,13 @@ vue@^3.2.37:
     "@vue/runtime-dom" "3.2.37"
     "@vue/server-renderer" "3.2.37"
     "@vue/shared" "3.2.37"
+
+vuex@^4.0.2:
+  version "4.0.2"
+  resolved "https://registry.yarnpkg.com/vuex/-/vuex-4.0.2.tgz#f896dbd5bf2a0e963f00c67e9b610de749ccacc9"
+  integrity sha512-M6r8uxELjZIK8kTKDGgZTYX/ahzblnzC4isU1tpmEuOIIKmV+TRdc+H4s8ds2NuZ7wpUTdGRzJRtoj+lI+pc0Q==
+  dependencies:
+    "@vue/devtools-api" "^6.0.0-beta.11"
 
 webidl-conversions@^4.0.2:
   version "4.0.2"
