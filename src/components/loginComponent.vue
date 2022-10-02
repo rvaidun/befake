@@ -98,7 +98,7 @@ export default {
     };
   },
   methods: {
-    sendCode() {
+    async sendCode() {
       event("send_code", {
         event_category: "login",
         event_label: "send_code",
@@ -113,7 +113,7 @@ export default {
             localStorage.setItem("refreshToken", j.refreshToken);
             localStorage.setItem("expiration", j.expiration);
             localStorage.setItem("phone", j.phone);
-            this.$store.commit("login");
+            await this.$store.dispatch("login");
           } else {
             throw "invalid json";
           }

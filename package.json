@@ -12,6 +12,7 @@
   "dependencies": {
     "d3": "^7.6.1",
     "moment": "^2.29.4",
+    "uuid": "^9.0.0",
     "vue": "^3.2.37",
     "vue-gtag": "^2.0.1",
     "vue-router": "^4.1.5",
