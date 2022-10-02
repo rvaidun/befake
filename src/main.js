@@ -31,6 +31,31 @@ const store = createStore({
     login(state) {
       state.loggedIn = true;
     },
+    user(state, user) {
+      state.user = user;
+    },
+  },
+  actions: {
+    async login({ commit }) {
+      await fetch(
+        "https://warm-scrubland-06418.herokuapp.com/https://mobile.bereal.com/api/person/me",
+        {
+          method: "GET",
+          headers: {
+            accept: "application/json",
+            "content-type": "application/json",
+            "user-agent": "BeReal/7242 CFNetwork/1333.0.4 Darwin/21.5.0",
+            "accept-language": "en-US,en;q=0.9",
+            authorization: localStorage.getItem("token") ?? "",
+          },
+        }
+      )
+        .then((res) => res.json())
+        .then((data) => {
+          commit("user", data);
+        });
+      commit("login");
+    },
   },
 });
 

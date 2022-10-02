@@ -6,11 +6,13 @@ import { copyText } from "vue3-clipboard";
 import PulseLoader from "vue-spinner/src/PulseLoader.vue";
 import { event } from "vue-gtag";
 import NavbarVue from "./Navbar.vue";
+import UploadPost from "./uploadPost.vue";
 export default {
   components: {
     singlePostComponentVue,
     PulseLoader,
     NavbarVue,
+    UploadPost,
   },
   async beforeMount() {
     event("view_posts", {
@@ -110,6 +112,23 @@ export default {
       //   .then((data) => {
       //     this.memories = data.data;
       //   }),
+      fetch(
+        "https://warm-scrubland-06418.herokuapp.com/https://mobile.bereal.com/api/person/me",
+        {
+          method: "GET",
+          headers: {
+            accept: "application/json",
+            "content-type": "application/json",
+            "user-agent": "BeReal/7242 CFNetwork/1333.0.4 Darwin/21.5.0",
+            "accept-language": "en-US,en;q=0.9",
+            authorization: localStorage.getItem("token") ?? "",
+          },
+        }
+      )
+        .then((res) => res.json())
+        .then((data) => {
+          this.user = data;
+        }),
     ])
       .then(() => {
         this.isfetch = false;
@@ -129,6 +148,7 @@ export default {
       friends: [],
       memories: [],
       isfetch: true,
+      user: {},
     };
   },
   methods: {
@@ -161,10 +181,7 @@ export default {
 </script>
 <template>
   <NavbarVue />
-  <div
-    v-if="!UserPosted"
-    class="flex flex-col justify-center items-center dark:text-white"
-  ></div>
+  <UploadPost v-if="!isfetch && !UserPosted" :user="user" />
   <div
     v-for="post in posts"
     v-if="!isfetch"
