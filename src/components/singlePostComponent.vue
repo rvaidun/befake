@@ -9,6 +9,8 @@ export default defineComponent({
       iframesrc: this.post.location
         ? `https://www.google.com/maps/embed/v1/place?key=AIzaSyDPvCQ4RXgvhbboTmKh2qLnfY50aJxcD0E&q=${this.post.location._latitude}, ${this.post.location._longitude}`
         : "",
+      reverseGeo: "",
+      revbgeo: "",
     };
   },
   methods: {
@@ -50,11 +52,27 @@ export default defineComponent({
       return color;
     },
   },
+  async beforeMount() {
+    if (this.post.location) {
+      // `https://nominatim.openstreetmap.org/reverse?format=json&lat=${this.post.location._latitude}&lon=&zoom=18&addressdetails=1`,
+      fetch(
+        `https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/reverseGeocode?location=${this.post.location._longitude}%2C${this.post.location._latitude}&langCode=fr&outSR=&forStorage=false&f=pjson`
+      )
+        .then((res) => res.json())
+        .then((data) => {
+          this.revbgeo = data;
+          this.reverseGeo = data.address.City + ", " + data.address.CntryName;
+        })
+        .catch((err) => {
+          console.log("error in reverse geocoding");
+        });
+    }
+  },
 });
 </script>
 <template>
   <div
-    class="block p-6 w-[90%] sm:w-auto bg-white rounded-lg border border-gray-200 shadow-md hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700"
+    class="block p-3 w-[100%] sm:p-6, sm:w-auto bg-white rounded-lg border border-gray-200 shadow-md hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700"
   >
     <div class="flex flex-col">
       <div class="flex items-center sm:justify-center">
@@ -69,7 +87,7 @@ export default defineComponent({
                 '&background=' +
                 color
           "
-          class="w-28 rounded-[50%]"
+          class="w-10 rounded-[50%] sm:w-28"
           @error="
             'https://ui-avatars.com/api/?length=1' +
               '&name=' +
@@ -78,11 +96,20 @@ export default defineComponent({
               color
           "
         />
+        <div>
+          <div>
+            <span class="font-bold ml-3">
+              {{ post.user.username }}
+            </span>
+          </div>
+          <div class="mt-[-3%]">
+            <span class="ml-3 text-sm">
+              {{ reverseGeo }}
+            </span>
+          </div>
+        </div>
 
-        <span class="font-bold ml-3">
-          {{ post.user.username }}
-        </span>
-        <iframe
+        <!-- <iframe
           class="ml-3"
           width="400"
           height="300"
@@ -93,18 +120,18 @@ export default defineComponent({
           referrerpolicy="no-referrer-when-downgrade"
           :src="iframesrc"
         >
-        </iframe>
+        </iframe> -->
       </div>
       <div class="flex items-center justify-center flex-col mt-4 sm:flex-row">
         <img
           referrerpolicy="no-referrer"
           v-bind:src="post.photoURL"
-          class="h-full ml-3 w-64 rounded-md mb-3"
+          class="h-full w-full ml-3 sm:w-64 rounded-md mb-3"
         />
         <img
           referrerpolicy="no-referrer"
           v-bind:src="post.secondaryPhotoURL"
-          class="h-full ml-3 w-64 rounded-md"
+          class="h-full w-full ml-3 sm:w-64 rounded-md mb-3"
         />
       </div>
       <div class="flex items-center font-bold mt-2 justify-center">
