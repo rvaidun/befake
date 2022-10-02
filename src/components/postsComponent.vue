@@ -136,10 +136,35 @@ export default {
       return moment().format("MMMM Do YYYY, h:mm:ss a");
     },
   },
+  computed: {
+    UserPosted() {
+      if (this.posts.length > 0) {
+        console.log("here");
+        var base64Url = localStorage.getItem("token");
+        base64Url = base64Url.split(".")[1];
+        var base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
+        var jsonPayload = decodeURIComponent(
+          window
+            .atob(base64)
+            .split("")
+            .map(function (c) {
+              return "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2);
+            })
+            .join("")
+        );
+        var my_id = JSON.parse(jsonPayload).user_id;
+        return this.posts.filter((post) => post.ownerID === my_id).length > 0;
+      }
+    },
+  },
 };
 </script>
 <template>
   <NavbarVue />
+  <div
+    v-if="!UserPosted"
+    class="flex flex-col justify-center items-center dark:text-white"
+  ></div>
   <div
     v-for="post in posts"
     v-if="!isfetch"

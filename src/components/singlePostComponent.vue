@@ -115,7 +115,7 @@ export default defineComponent({
           <template v-slot:body>
             <iframe
               class="ml-3"
-              width="400"
+              width="300"
               height="300"
               style="border: 0"
               loading="lazy"
