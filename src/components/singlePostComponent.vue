@@ -1,6 +1,7 @@
 <script>
 import { defineComponent } from "vue";
 import moment from "moment";
+import GoogleMapsModal from "./GoogleMapsModal.vue";
 
 export default defineComponent({
   props: ["friend", "post"],
@@ -11,6 +12,7 @@ export default defineComponent({
         : "",
       reverseGeo: "",
       revbgeo: "",
+      showModal: false,
     };
   },
   methods: {
@@ -56,7 +58,7 @@ export default defineComponent({
     if (this.post.location) {
       // `https://nominatim.openstreetmap.org/reverse?format=json&lat=${this.post.location._latitude}&lon=&zoom=18&addressdetails=1`,
       fetch(
-        `https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/reverseGeocode?location=${this.post.location._longitude}%2C${this.post.location._latitude}&langCode=fr&outSR=&forStorage=false&f=pjson`
+        `https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/reverseGeocode?location=${this.post.location._longitude},${this.post.location._latitude}&langCode=fr&outSR=&forStorage=false&f=pjson`
       )
         .then((res) => res.json())
         .then((data) => {
@@ -68,6 +70,7 @@ export default defineComponent({
         });
     }
   },
+  components: { GoogleMapsModal },
 });
 </script>
 <template>
@@ -103,24 +106,27 @@ export default defineComponent({
             </span>
           </div>
           <div class="mt-[-3%]">
-            <span class="ml-3 text-sm">
+            <span class="ml-3 text-sm cursor-pointer" @click="showModal = true">
               {{ reverseGeo }}
             </span>
           </div>
         </div>
-
-        <!-- <iframe
-          class="ml-3"
-          width="400"
-          height="300"
-          style="border: 0"
-          loading="lazy"
-          v-if="post.location"
-          allowfullscreen
-          referrerpolicy="no-referrer-when-downgrade"
-          :src="iframesrc"
-        >
-        </iframe> -->
+        <GoogleMapsModal v-if="showModal" @close="showModal = false">
+          <template v-slot:body>
+            <iframe
+              class="ml-3"
+              width="400"
+              height="300"
+              style="border: 0"
+              loading="lazy"
+              v-if="post.location"
+              allowfullscreen
+              referrerpolicy="no-referrer-when-downgrade"
+              :src="iframesrc"
+            >
+            </iframe>
+          </template>
+        </GoogleMapsModal>
       </div>
       <div class="flex items-center justify-center flex-col mt-4 sm:flex-row">
         <img
