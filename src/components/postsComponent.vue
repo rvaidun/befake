@@ -5,17 +5,18 @@ import singlePostComponentVue from "./singlePostComponent.vue";
 import { copyText } from "vue3-clipboard";
 import PulseLoader from "vue-spinner/src/PulseLoader.vue";
 import { event } from "vue-gtag";
+import NavbarVue from "./Navbar.vue";
 export default {
   components: {
     singlePostComponentVue,
     PulseLoader,
+    NavbarVue,
   },
   async beforeMount() {
     event("view_posts", {
       event_category: "posts",
       event_label: "view_posts",
     });
-    console.log("Sent view_posts event");
     if (Date.now() > localStorage.getItem("expiration")) {
       await fetch(
         "https://warm-scrubland-06418.herokuapp.com/https://securetoken.googleapis.com/v1/token?key=AIzaSyDwjfEeparokD7sXPVQli9NsTuhT6fJ6iA",
@@ -138,7 +139,7 @@ export default {
 };
 </script>
 <template>
-  <!-- print time right now with moment -->
+  <NavbarVue />
   <div
     v-for="post in posts"
     v-if="!isfetch"
