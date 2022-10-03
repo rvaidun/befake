@@ -2,9 +2,12 @@
 import UploadPostImage from "./uploadPostImage.vue";
 import { v4 as uuidv4 } from "uuid";
 import moment from "moment";
+import PulseLoader from "vue-spinner/src/PulseLoader.vue";
+import { mapState } from "vuex";
 export default {
   data() {
     return {
+      loading: true,
       primary: {},
       secondary: {},
       location: {
@@ -16,8 +19,7 @@ export default {
       caption: "",
     };
   },
-  props: ["user"],
-  components: { UploadPostImage },
+  components: { UploadPostImage, PulseLoader },
   methods: {
     async upload(file, secondary) {
       console.log(file.size);
@@ -152,6 +154,7 @@ export default {
         })
         .then((data) => {
           console.log(data);
+          this.$store.dispatch("getPosts");
         });
     },
     isNumber: function (evt) {
@@ -168,6 +171,7 @@ export default {
       }
     },
   },
+  computed: mapState(["user"]),
 };
 </script>
 <template>
@@ -184,17 +188,11 @@ export default {
                 ? user.profilePicture.url
                 : 'https://ui-avatars.com/api/?length=1' +
                   '&name=' +
-                  user.username +
-                  '&background=' +
-                  color
+                  user.username
             "
             class="w-10 rounded-[50%] sm:w-28"
             @error="
-              'https://ui-avatars.com/api/?length=1' +
-                '&name=' +
-                user.username +
-                '&background=' +
-                color
+              'https://ui-avatars.com/api/?length=1' + '&name=' + user.username
             "
           />
           <div>
@@ -242,6 +240,7 @@ export default {
           @click="submitPost"
         >
           Submit
+          <PulseLoader v-if="loading"></PulseLoader>
         </button>
       </div>
     </div>

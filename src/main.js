@@ -22,6 +22,8 @@ const store = createStore({
   state() {
     return {
       loggedIn: localStorage.getItem("token") ? true : false,
+      posts: [],
+      user: {},
     };
   },
   mutations: {
@@ -35,9 +37,41 @@ const store = createStore({
     user(state, user) {
       state.user = user;
     },
+    posts(state, posts) {
+      state.posts = posts;
+    },
   },
   actions: {
-    async login({ commit }) {
+    async login({ commit, dispatch }) {
+      dispatch("getUser");
+      commit("login");
+    },
+    getPosts({ commit }) {
+      return new Promise((resolve, reject) => {
+        fetch(
+          "https://warm-scrubland-06418.herokuapp.com/https://mobile.bereal.com/api/feeds/friends",
+          {
+            method: "GET",
+            headers: {
+              accept: "application/json",
+              "content-type": "application/json",
+              "user-agent": "BeReal/7242 CFNetwork/1333.0.4 Darwin/21.5.0",
+              "accept-language": "en-US,en;q=0.9",
+              authorization: localStorage.getItem("token") ?? "",
+            },
+          }
+        )
+          .then((res) => res.json())
+          .then((data) => {
+            commit("posts", data);
+            resolve(data);
+          })
+          .catch((err) => {
+            reject(err);
+          });
+      });
+    },
+    async getUser({ commit }) {
       await fetch(
         "https://warm-scrubland-06418.herokuapp.com/https://mobile.bereal.com/api/person/me",
         {
@@ -55,7 +89,6 @@ const store = createStore({
         .then((data) => {
           commit("user", data);
         });
-      commit("login");
     },
   },
 });

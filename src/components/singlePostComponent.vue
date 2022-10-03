@@ -4,7 +4,7 @@ import moment from "moment";
 import GoogleMapsModal from "./GoogleMapsModal.vue";
 
 export default defineComponent({
-  props: ["friend", "post"],
+  props: ["post"],
   data() {
     return {
       iframesrc: this.post.location
@@ -20,22 +20,6 @@ export default defineComponent({
       return moment(this.post.creationDate._seconds * 1000).format(
         "MM-DD-YYYY h:mm:ss"
       );
-    },
-    replacebydef(e) {
-      console.log("Hi");
-      fetch(
-        `https://warm-scrubland-06418.herokuapp.com/https://mobile.bereal.com/api/person/profiles/${this.friend.id}`,
-        {
-          headers: {
-            authorization: localStorage.getItem("token"),
-            accept: "*/*",
-          },
-        }
-      )
-        .then((res) => res.json())
-        .then((data) => {
-          e.target.src = data.profilePicture.url;
-        });
     },
     boldusername(s) {
       return s.replace(

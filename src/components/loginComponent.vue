@@ -223,7 +223,7 @@ export default {
           localStorage.refreshToken = data.refreshToken;
           localStorage.token = data.idToken;
           this.loading = false;
-          this.$store.commit("login");
+          this.$store.dispatch("login");
         })
         .catch((e) => {
           console.log("Hi");
