@@ -7,6 +7,7 @@ import VueClipboard from "vue3-clipboard";
 import { createRouter, createWebHistory } from "vue-router";
 import VueGtag from "vue-gtag";
 import { createStore } from "vuex";
+
 const routes = [
   { path: "/", component: Home },
   // { path: "/graph", component: Graph },
@@ -58,7 +59,6 @@ const store = createStore({
     },
   },
 });
-
 const app = createApp(App);
 app.use(store);
 app.use(router);

@@ -20,5 +20,5 @@ export default {
 
 <template>
   <loginComponent v-if="!this.$store.state.loggedIn" :login="login" />
-  <postsComponentVue v-else :logout="logout" />
+  <postsComponentVue v-else />
 </template>

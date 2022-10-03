@@ -7,6 +7,13 @@ export default {
     return {
       primary: {},
       secondary: {},
+      location: {
+        postwithlocation: false,
+        lat: null,
+        lng: null,
+        devicelocation: false,
+      },
+      caption: "",
     };
   },
   props: ["user"],
@@ -102,8 +109,8 @@ export default {
         isLate: false,
         retakeCounter: 0,
         takenAt: taken_at,
-        location: { latitude: "37.2297175", longitude: "-115.7911082" },
-        caption: "Testing 123123",
+        // location: { latitude: "37.2297175", longitude: "-115.7911082" },
+        // caption: "Testing 123123",
         backCamera: {
           bucket: "storage.bere.al",
           height: this.primary.height,
@@ -117,6 +124,15 @@ export default {
           path: this.secondary.url.replace("https://storage.bere.al/", ""),
         },
       };
+      if (this.location.postwithlocation) {
+        payload.location = {
+          latitude: this.location.lat,
+          longitude: this.location.lng,
+        };
+      }
+      if (this.caption && this.caption !== "") {
+        payload.caption = this.caption;
+      }
       const h1 = {
         "content-type": "application/json",
         authorization: `${localStorage.getItem("token")}`,
@@ -137,6 +153,19 @@ export default {
         .then((data) => {
           console.log(data);
         });
+    },
+    isNumber: function (evt) {
+      evt = evt ? evt : window.event;
+      var charCode = evt.which ? evt.which : evt.keyCode;
+      if (
+        charCode > 31 &&
+        (charCode < 48 || charCode > 57) &&
+        charCode !== 46
+      ) {
+        evt.preventDefault();
+      } else {
+        return true;
+      }
     },
   },
 };
@@ -178,8 +207,34 @@ export default {
         </div>
       </div>
       Upload a post
-      <UploadPostImage :secondary="false" @upload="upload" />
-      <UploadPostImage :secondary="true" @upload="upload" />
+      <div class="sm:flex">
+        <UploadPostImage :secondary="false" @upload="upload" class="m-1" />
+        <UploadPostImage :secondary="true" @upload="upload" class="m-1" />
+      </div>
+      <input
+        type="text"
+        class="border border-gray-300 rounded-lg w-full p-2 text-black m-1"
+        placeholder="Caption"
+        v-model="caption"
+      />
+      <input type="checkbox" class="m-1" v-model="location.postwithlocation" />
+      <span class="m-1">Post with location</span>
+      <div v-if="location.postwithlocation">
+        <input
+          type="text"
+          class="border border-gray-300 rounded-lg w-full p-2 text-black m-1"
+          placeholder="Latitude"
+          v-model="location.lat"
+          @keypress="isNumber($event)"
+        />
+        <input
+          type="text"
+          class="border border-gray-300 rounded-lg w-full p-2 text-black m-1"
+          placeholder="Longitude"
+          v-model="location.lng"
+          @keypress="isNumber($event)"
+        />
+      </div>
       <!-- Submit -->
       <div class="flex justify-center">
         <button

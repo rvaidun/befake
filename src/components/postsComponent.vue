@@ -194,6 +194,6 @@ export default {
     />
   </div>
   <div v-else class="grid h-screen place-items-center">
-    <pulse-loader :loading="loading" :color="color" :size="size"></pulse-loader>
+    <pulse-loader></pulse-loader>
   </div>
 </template>
