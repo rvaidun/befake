@@ -69,7 +69,7 @@
       />
       <div
         @click="verifyCode"
-        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded curosor-pointer flex"
+        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded cursor-pointer flex"
       >
         <span>Verify</span>
         <PulseLoader v-if="loading"></PulseLoader>

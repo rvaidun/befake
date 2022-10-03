@@ -7,7 +7,7 @@ import { mapState } from "vuex";
 export default {
   data() {
     return {
-      loading: true,
+      loading: false,
       primary: {},
       secondary: {},
       location: {
@@ -101,8 +101,13 @@ export default {
       });
     },
     async submitPost() {
-      await this.uploadPhotoToBeReal(this.primary.file, false);
-      await this.uploadPhotoToBeReal(this.secondary.file, true);
+      this.loading = true;
+      try {
+        await this.uploadPhotoToBeReal(this.primary.file, false);
+        await this.uploadPhotoToBeReal(this.secondary.file, true);
+      } catch (e) {
+        this.loading = false;
+      }
       const nowt = moment();
       // moment to date string
       const taken_at = nowt.format("YYYY-MM-DDTHH:mm:ss.SSSZ");
@@ -148,13 +153,18 @@ export default {
         }
       )
         .then((res) => {
-          if (res.status !== 200 || res.status !== 201)
-            throw new Error("Failed to upload");
+          if (res.status !== 201) throw new Error("Failed to upload");
           return res.json();
         })
         .then((data) => {
           console.log(data);
-          this.$store.dispatch("getPosts");
+          this.$store.dispatch("getPosts").then((d) => {
+            this.loading = false;
+          });
+        })
+        .catch((e) => {
+          this.loading = false;
+          console.log(e);
         });
     },
     isNumber: function (evt) {
