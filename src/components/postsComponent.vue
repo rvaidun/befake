@@ -7,6 +7,7 @@ import PulseLoader from "vue-spinner/src/PulseLoader.vue";
 import { event } from "vue-gtag";
 import NavbarVue from "./Navbar.vue";
 import UploadPost from "./uploadPost.vue";
+import { mapState } from "vuex";
 export default {
   components: {
     singlePostComponentVue,
@@ -61,23 +62,8 @@ export default {
         });
     }
     Promise.all([
-      fetch(
-        "https://warm-scrubland-06418.herokuapp.com/https://mobile.bereal.com/api/feeds/friends",
-        {
-          method: "GET",
-          headers: {
-            accept: "application/json",
-            "content-type": "application/json",
-            "user-agent": "BeReal/7242 CFNetwork/1333.0.4 Darwin/21.5.0",
-            "accept-language": "en-US,en;q=0.9",
-            authorization: localStorage.getItem("token") ?? "",
-          },
-        }
-      )
-        .then((res) => res.json())
-        .then((data) => {
-          this.posts = data;
-        }),
+      this.$store.dispatch("getPosts"),
+      this.$store.dispatch("getUser"),
       // fetch(
       //   "https://arcane-woodland-79412.herokuapp.com/https://mobile.bereal.com/api/relationships/friends",
       //   {
@@ -112,23 +98,6 @@ export default {
       //   .then((data) => {
       //     this.memories = data.data;
       //   }),
-      fetch(
-        "https://warm-scrubland-06418.herokuapp.com/https://mobile.bereal.com/api/person/me",
-        {
-          method: "GET",
-          headers: {
-            accept: "application/json",
-            "content-type": "application/json",
-            "user-agent": "BeReal/7242 CFNetwork/1333.0.4 Darwin/21.5.0",
-            "accept-language": "en-US,en;q=0.9",
-            authorization: localStorage.getItem("token") ?? "",
-          },
-        }
-      )
-        .then((res) => res.json())
-        .then((data) => {
-          this.user = data;
-        }),
     ])
       .then(() => {
         this.isfetch = false;
@@ -144,11 +113,11 @@ export default {
       phone: "",
       sessionInfo: "",
       code: "",
-      posts: [],
+      // posts: [],
       friends: [],
       memories: [],
       isfetch: true,
-      user: {},
+      // user: {},
     };
   },
   methods: {
@@ -176,6 +145,10 @@ export default {
         return this.posts.filter((post) => post.ownerID === my_id).length > 0;
       }
     },
+    ...mapState({
+      user: (state) => state.user,
+      posts: (state) => state.posts,
+    }),
   },
 };
 </script>
@@ -187,11 +160,7 @@ export default {
     v-if="!isfetch"
     class="flex flex-col justify-center items-center dark:text-white"
   >
-    <single-post-component-vue
-      :post="post"
-      :friend="friends.find((o) => o['id'] === post['ownerID'])"
-      class="mt-10"
-    />
+    <single-post-component-vue :post="post" class="mt-10" />
   </div>
   <div v-else class="grid h-screen place-items-center">
     <pulse-loader></pulse-loader>
