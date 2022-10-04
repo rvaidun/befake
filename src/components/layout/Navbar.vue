@@ -21,15 +21,9 @@ export default {
       <a class="sm:text-3xl font-bold">BeFake</a>
     </div>
     <a href="https://github.com/rvaidun/berealviewer" class="mr-3 fill-white">
-      <img src="../assets/github-svgrepo-com.svg" class="fill-white" />
+      <img src="../../assets/github-svgrepo-com.svg" class="fill-white" />
     </a>
     <MyButton v-clipboard:copy="copy">Copy Credentials</MyButton>
-    <!-- <button
-      v-clipboard:copy="copy"
-      class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-3"
-    >
-      Copy Credentials
-    </button> -->
     <MyButton @clickedd="this.$store.commit('logout')"> Logout </MyButton>
   </div>
 </template>

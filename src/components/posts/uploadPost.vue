@@ -2,8 +2,8 @@
 import UploadPostImage from "./uploadPostImage.vue";
 import { v4 as uuidv4 } from "uuid";
 import moment from "moment";
-import PulseLoader from "vue-spinner/src/PulseLoader.vue";
 import { mapState } from "vuex";
+import MyButton from "../ui/Button.vue";
 export default {
   data() {
     return {
@@ -19,7 +19,7 @@ export default {
       caption: "",
     };
   },
-  components: { UploadPostImage, PulseLoader },
+  components: { UploadPostImage, MyButton },
   methods: {
     async upload(file, secondary) {
       console.log(file.size);
@@ -245,13 +245,7 @@ export default {
       </div>
       <!-- Submit -->
       <div class="flex justify-center">
-        <button
-          class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-          @click="submitPost"
-        >
-          Submit
-          <PulseLoader v-if="loading"></PulseLoader>
-        </button>
+        <MyButton @clickedd="submitPost"> Submit </MyButton>
       </div>
     </div>
   </div>
