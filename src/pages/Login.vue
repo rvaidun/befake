@@ -77,13 +77,12 @@
     </div>
   </div>
 </template>
-<script lang="ts">
-import erroralertVue from "./errorToast.vue";
-import ErrorToast from "./errorToast.vue";
+<script>
+import ErrorToast from "../components/errorToast.vue";
 import PulseLoader from "vue-spinner/src/PulseLoader.vue";
 import { event } from "vue-gtag";
 export default {
-  components: { erroralertVue, ErrorToast, PulseLoader },
+  components: { ErrorToast, PulseLoader },
   props: ["login"],
   data() {
     return {

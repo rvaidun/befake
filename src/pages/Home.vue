@@ -1,11 +1,11 @@
 <script>
-import loginComponent from "../components/loginComponent.vue";
-import postsComponentVue from "../components/postsComponent.vue";
+import loginComponent from "./Login.vue";
+import postsComponent from "./Posts.vue";
 
 export default {
   components: {
     loginComponent,
-    postsComponentVue,
+    postsComponent,
   },
   data() {
     return {};
@@ -20,5 +20,5 @@ export default {
 
 <template>
   <loginComponent v-if="!this.$store.state.loggedIn" :login="login" />
-  <postsComponentVue v-else />
+  <postsComponent v-else />
 </template>
