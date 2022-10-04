@@ -1,3 +1,9 @@
+<script>
+import MyButton from "../ui/Button.vue";
+export default {
+  components: { MyButton },
+};
+</script>
 <template>
   <transition name="modal">
     <div class="modal-mask">
@@ -9,12 +15,7 @@
 
           <div class="modal-footer">
             default footer
-            <button
-              class="modal-default-button text-black"
-              @click="$emit('close')"
-            >
-              close
-            </button>
+            <MyButton @click="$emit('close')"> close </MyButton>
           </div>
         </div>
       </div>
