@@ -46,13 +46,7 @@
         v-model="phone"
         class="border-black border-2 mr-2"
       />
-      <div
-        @click="sendCode"
-        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded cursor-pointer flex"
-      >
-        <span>Send</span>
-        <PulseLoader v-if="loading"></PulseLoader>
-      </div>
+      <MyButton @clickedd="sendCode" :loading="loading">Send</MyButton>
     </div>
   </div>
 
@@ -67,22 +61,17 @@
         v-model="code"
         class="border-black border-2 mr-2"
       />
-      <div
-        @click="verifyCode"
-        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded cursor-pointer flex"
-      >
-        <span>Verify</span>
-        <PulseLoader v-if="loading"></PulseLoader>
-      </div>
+      <MyButton @clickedd="verifyCode" :loading="loading">Verify</MyButton>
     </div>
   </div>
 </template>
 <script>
 import ErrorToast from "../components/errorToast.vue";
 import PulseLoader from "vue-spinner/src/PulseLoader.vue";
+import MyButton from "../components/ui/Button.vue";
 import { event } from "vue-gtag";
 export default {
-  components: { ErrorToast, PulseLoader },
+  components: { ErrorToast, PulseLoader, MyButton },
   props: ["login"],
   data() {
     return {

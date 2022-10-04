@@ -1,5 +1,7 @@
 <script>
+import MyButton from "../ui/Button.vue";
 export default {
+  components: { MyButton },
   data() {
     return {
       copy: JSON.stringify({
@@ -21,17 +23,13 @@ export default {
     <a href="https://github.com/rvaidun/berealviewer" class="mr-3 fill-white">
       <img src="../assets/github-svgrepo-com.svg" class="fill-white" />
     </a>
-    <button
+    <MyButton v-clipboard:copy="copy">Copy Credentials</MyButton>
+    <!-- <button
       v-clipboard:copy="copy"
       class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-3"
     >
       Copy Credentials
-    </button>
-    <button
-      @click="this.$store.commit('logout')"
-      class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-3"
-    >
-      Logout
-    </button>
+    </button> -->
+    <MyButton @clickedd="this.$store.commit('logout')"> Logout </MyButton>
   </div>
 </template>
