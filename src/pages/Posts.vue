@@ -113,11 +113,9 @@ export default {
       phone: "",
       sessionInfo: "",
       code: "",
-      // posts: [],
       friends: [],
       memories: [],
       isfetch: true,
-      // user: {},
     };
   },
   methods: {
