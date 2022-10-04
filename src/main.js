@@ -46,7 +46,7 @@ const store = createStore({
       dispatch("getUser");
       commit("login");
     },
-    getPosts({ commit }) {
+    getPosts({ commit, state }) {
       return new Promise((resolve, reject) => {
         fetch(
           "https://warm-scrubland-06418.herokuapp.com/https://mobile.bereal.com/api/feeds/friends",
@@ -63,6 +63,13 @@ const store = createStore({
         )
           .then((res) => res.json())
           .then((data) => {
+            // move user to the top of the list
+            data.forEach(function (item, i) {
+              if (item.ownerID === state.user.id) {
+                data.splice(i, 1);
+                data.unshift(item);
+              }
+            });
             commit("posts", data);
             resolve(data);
           })
