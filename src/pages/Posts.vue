@@ -1,12 +1,12 @@
 <script>
 import moment from "moment";
 import { defineComponent } from "vue";
-import singlePostComponentVue from "./singlePostComponent.vue";
+import singlePostComponentVue from "../components/posts/singlePostComponent.vue";
 import { copyText } from "vue3-clipboard";
 import PulseLoader from "vue-spinner/src/PulseLoader.vue";
 import { event } from "vue-gtag";
-import NavbarVue from "./Navbar.vue";
-import UploadPost from "./uploadPost.vue";
+import NavbarVue from "../components/layout/Navbar.vue";
+import UploadPost from "../components/posts/uploadPost.vue";
 import { mapState } from "vuex";
 export default {
   components: {
