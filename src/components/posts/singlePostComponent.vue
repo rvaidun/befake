@@ -85,7 +85,7 @@ export default defineComponent({
                 fromUserName: this.$store.state.user.username,
                 photoID: this.post.id,
                 ownerID: this.post.ownerID,
-                text: caption,
+                text: this.caption,
               },
             }),
           }
