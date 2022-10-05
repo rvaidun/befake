@@ -2,6 +2,7 @@
 import { defineComponent } from "vue";
 import moment from "moment";
 import GoogleMapsModal from "./GoogleMapsModal.vue";
+import MyButton from "../ui/Button.vue";
 
 export default defineComponent({
   props: ["post"],
@@ -13,6 +14,8 @@ export default defineComponent({
       reverseGeo: "",
       revbgeo: "",
       showModal: false,
+      comment: "",
+      submitCommentLoading: false,
     };
   },
   methods: {
@@ -27,6 +30,73 @@ export default defineComponent({
         "<span class='font-bold text-blue-200'>$&</span>"
       );
     },
+    submitComment() {
+      this.submitCommentLoading = true;
+      fetch(
+        "https://us-central1-alexisbarreyat-bereal.cloudfunctions.net/setCommentPost",
+        {
+          method: "POST",
+          headers: {
+            accept: "*/*",
+            "content-type": "application/json",
+            "firebase-instance-id-token":
+              "dNImAUSRYk4dkZ_hv9N1lG:APA91bH3DP5Be4lqcvI_43kdpxl1vCxn5r2-AL9wJFN9T3lPB7mMM3P4rY5v6N2-B-yDvA41e3aDG1gEuMxNgF5qsC2IaXhHKgXK0z1RzYfT5SSMVzEljnzhRAzHiR8Z8hPVKBUOTZDi",
+            "accept-language": "en-US,en;q=0.9",
+            "user-agent":
+              "AlexisBarreyat.BeReal/0.24.0 iPhone/16.0.2 hw/iPhone14_5",
+            authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+          body: JSON.stringify({
+            data: {
+              userId: this.post.ownerID,
+              text: this.comment,
+            },
+          }),
+        }
+      )
+        .then((res) => res.json())
+        .then((data) => {
+          console.log(data);
+          this.comment = "";
+          this.$store.dispatch("getPosts");
+          this.submitCommentLoading = false;
+        });
+      fetch(
+        "https://us-central1-alexisbarreyat-bereal.cloudfunctions.net/sendNewCommentPush",
+        {
+          method: "POST",
+          headers: {
+            accept: "*/*",
+            "content-type": "application/json",
+            "firebase-instance-id-token":
+              "dNImAUSRYk4dkZ_hv9N1lG:APA91bH3DP5Be4lqcvI_43kdpxl1vCxn5r2-AL9wJFN9T3lPB7mMM3P4rY5v6N2-B-yDvA41e3aDG1gEuMxNgF5qsC2IaXhHKgXK0z1RzYfT5SSMVzEljnzhRAzHiR8Z8hPVKBUOTZDi",
+            "accept-language": "en-US,en;q=0.9",
+            "user-agent":
+              "AlexisBarreyat.BeReal/0.24.0 iPhone/16.0.2 hw/iPhone14_5",
+            authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+          body: JSON.stringify({
+            data: {
+              fromUserID: this.$store.state.user.id,
+              photoURL: this.$store.state.user.profilePicture
+                ? this.$store.state.user.profilePicture.url.replace(
+                    "https://cdn.bereal.network/",
+                    ""
+                  )
+                : "",
+              fromUserName: this.$store.state.user.username,
+              photoID: this.post.id,
+              ownerID: this.post.ownerID,
+              text: "wow so cool!",
+            },
+          }),
+        }
+      )
+        .then((res) => res.json())
+        .then((data) => {
+          console.log(data);
+        });
+    },
   },
   computed: {
     color() {
@@ -40,7 +110,6 @@ export default defineComponent({
   },
   async beforeMount() {
     if (this.post.location) {
-      // `https://nominatim.openstreetmap.org/reverse?format=json&lat=${this.post.location._latitude}&lon=&zoom=18&addressdetails=1`,
       fetch(
         `https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/reverseGeocode?location=${this.post.location._longitude},${this.post.location._latitude}&langCode=fr&outSR=&forStorage=false&f=pjson`
       )
@@ -54,7 +123,7 @@ export default defineComponent({
         });
     }
   },
-  components: { GoogleMapsModal },
+  components: { GoogleMapsModal, MyButton },
 });
 </script>
 <template>
@@ -157,6 +226,17 @@ export default defineComponent({
           <span class="font-bold ml-4">{{ e.userName }}</span>
         </div>
       </div>
+    </div>
+    <div class="flex">
+      <input
+        type="text"
+        class="border border-gray-300 rounded-lg w-full p-2 text-black m-1"
+        placeholder="Comment"
+        v-model="comment"
+      />
+      <MyButton @clickedd="submitComment" :loading="submitCommentLoading"
+        >Submit</MyButton
+      >
     </div>
   </div>
 </template>
