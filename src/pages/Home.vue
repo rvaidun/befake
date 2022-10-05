@@ -7,18 +7,10 @@ export default {
     loginComponent,
     postsComponent,
   },
-  data() {
-    return {};
-  },
-  methods: {
-    logout() {
-      this.loggedIn = false;
-    },
-  },
 };
 </script>
 
 <template>
-  <loginComponent v-if="!this.$store.state.loggedIn" :login="login" />
+  <loginComponent v-if="!this.$store.state.loggedIn" />
   <postsComponent v-else />
 </template>
