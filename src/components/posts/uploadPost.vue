@@ -245,7 +245,7 @@ export default {
       </div>
       <!-- Submit -->
       <div class="flex justify-center">
-        <MyButton @clickedd="submitPost"> Submit </MyButton>
+        <MyButton @clickedd="submitPost" :loading="loading"> Submit </MyButton>
       </div>
     </div>
   </div>
