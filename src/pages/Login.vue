@@ -92,8 +92,10 @@ export default {
         event_label: "send_code",
       });
       this.loading = true;
-      if (!this.phone.startsWith("+")) {
-        console.log("does not start with +");
+      // Check if phone number is valid
+      const phoneRegex = "^\+[1-9]{1}[0-9]{3,14}$";
+      if (!this.phone.match(phoneRegex)) {
+        console.log("is not a phone number");
         try {
           const j = JSON.parse(this.phone);
           if (j.phone && j.token && j.refreshToken && j.expiration) {
