@@ -3,7 +3,7 @@ import { defineComponent } from "vue";
 import moment from "moment";
 import GoogleMapsModal from "./GoogleMapsModal.vue";
 import MyButton from "../ui/Button.vue";
-
+import MyInput from "../ui/Input.vue";
 export default defineComponent({
   props: ["post"],
   data() {
@@ -126,7 +126,7 @@ export default defineComponent({
         });
     }
   },
-  components: { GoogleMapsModal, MyButton },
+  components: { GoogleMapsModal, MyButton, MyInput },
 });
 </script>
 <template>
@@ -231,12 +231,13 @@ export default defineComponent({
       </div>
     </div>
     <div class="flex">
-      <input
+      <MyInput v-model="comment" placeholder="Comment" />
+      <!-- <input
         type="text"
         class="border border-gray-300 rounded-lg w-full p-2 text-black m-1"
         placeholder="Comment"
         v-model="comment"
-      />
+      /> -->
       <MyButton @clickedd="submitComment" :loading="submitCommentLoading"
         >Submit</MyButton
       >

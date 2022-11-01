@@ -4,6 +4,7 @@ import { v4 as uuidv4 } from "uuid";
 import moment from "moment";
 import { mapState } from "vuex";
 import MyButton from "../ui/Button.vue";
+import MyInput from "../ui/Input.vue";
 export default {
   data() {
     return {
@@ -19,7 +20,7 @@ export default {
       caption: "",
     };
   },
-  components: { UploadPostImage, MyButton },
+  components: { UploadPostImage, MyButton, MyInput },
   methods: {
     async upload(file, secondary) {
       console.log(file.size);
@@ -219,27 +220,24 @@ export default {
         <UploadPostImage :secondary="false" @upload="upload" class="m-1" />
         <UploadPostImage :secondary="true" @upload="upload" class="m-1" />
       </div>
-      <input
+      <!-- <input
         type="text"
         class="border border-gray-300 rounded-lg w-full p-2 text-black m-1"
         placeholder="Caption"
         v-model="caption"
-      />
+      /> -->
+      <MyInput v-model="caption" placeholder="Caption" />
       <input type="checkbox" class="m-1" v-model="location.postwithlocation" />
       <span class="m-1">Post with location</span>
       <div v-if="location.postwithlocation">
-        <input
-          type="text"
-          class="border border-gray-300 rounded-lg w-full p-2 text-black m-1"
-          placeholder="Latitude"
+        <MyInput
           v-model="location.lat"
+          placeholder="Latitude"
           @keypress="isNumber($event)"
         />
-        <input
-          type="text"
-          class="border border-gray-300 rounded-lg w-full p-2 text-black m-1"
-          placeholder="Longitude"
+        <MyInput
           v-model="location.lng"
+          placeholder="Longitude"
           @keypress="isNumber($event)"
         />
       </div>

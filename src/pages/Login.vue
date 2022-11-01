@@ -34,19 +34,21 @@
   </Transition>
 
   <div v-if="!sessionInfo">
+    <div class="text-center text-white pt-10">
+      <h1 class="font-bold mt-0 mb-6 text-9xl">BeFake</h1>
+      <h3 class="text-2xl font-bold mb-8">A BeReal Viewer</h3>
+    </div>
     <div
-      class="flex items-center justify-center mt-[75%] flex-col sm:flex-row sm:mt-[25%]"
+      class="flex items-center justify-center mt-[75%] flex-col sm:flex-row sm:mt-[15%]"
     >
-      <VueCountryCode />
-      <span class="mr-2 dark:text-white">
-        Enter your phone number with country code and +:
-      </span>
-      <input
+      <VueCountryCode @asdfasdf="setCountryCode" class="max-w-[100px]" />
+      <!-- <input
         type="text"
-        placeholder="+11234567890"
+        placeholder="Phone Number"
         v-model="phone"
         class="border-black border-2 mr-2"
-      />
+      /> -->
+      <MyInput v-model="phone" placeholder="Phone Number" class="max-w-sm" />
       <MyButton @clickedd="sendCode" :loading="loading">Send</MyButton>
     </div>
   </div>
@@ -71,13 +73,15 @@ import ErrorToast from "../components/errorToast.vue";
 import PulseLoader from "vue-spinner/src/PulseLoader.vue";
 import MyButton from "../components/ui/Button.vue";
 import VueCountryCode from "../components/login/countrypicker.vue";
+import MyInput from "../components/ui/Input.vue";
 
 import { event } from "vue-gtag";
 export default {
-  components: { ErrorToast, PulseLoader, MyButton, VueCountryCode },
+  components: { ErrorToast, PulseLoader, MyButton, VueCountryCode, MyInput },
   props: ["login"],
   data() {
     return {
+      cc: "+1",
       phone: "",
       sessionInfo: "",
       code: "",
@@ -89,6 +93,11 @@ export default {
     };
   },
   methods: {
+    setCountryCode(country) {
+      console.log(country);
+      this.cc = country;
+      console.log(this.cc);
+    },
     async sendCode() {
       event("send_code", {
         event_category: "login",
@@ -97,8 +106,8 @@ export default {
       this.loading = true;
       // Check if phone number is valid
       // check if the string starts with a +
-      if (!this.phone.startsWith("+")) {
-        console.log("is not a phone number");
+      if (this.phone.startsWith("{")) {
+        console.log("is json");
         try {
           const j = JSON.parse(this.phone);
           if (j.phone && j.token && j.refreshToken && j.expiration) {
@@ -143,10 +152,10 @@ export default {
             "x-firebase-locale": "en",
           },
           body: JSON.stringify({
-            phoneNumber: this.phone,
+            phoneNumber: this.cc + this.phone,
             iosReceipt:
-              "BEFDNu9QZBdycrEZ8bM_2-Ei5kn6XNrxHplCLx2HYOoJAWx-uSYzMldf66-gI1vOzqxfuT4uJeMXdreGJP5V1pNen_IKJVED3EdKl0ldUyYJflW5rDVjaQiXpN0Zu2BNc1c",
-            iosSecret: "A",
+              "AEFDNu9QZBdycrEZ8bM_2-Ei5kn6XNrxHplCLx2HYOoJAWx-uSYzMldf66-gI1vOzqxfuT4uJeMXdreGJP5V1pNen_IKJVED3EdKl0ldUyYJflW5rDVjaQiXpN0Zu2BNc1c",
+            iosSecret: "KKwuB8YqwuM3ku0z",
           }),
         }
       )
