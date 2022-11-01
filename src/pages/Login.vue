@@ -37,6 +37,7 @@
     <div
       class="flex items-center justify-center mt-[75%] flex-col sm:flex-row sm:mt-[25%]"
     >
+      <VueCountryCode />
       <span class="mr-2 dark:text-white">
         Enter your phone number with country code and +:
       </span>
@@ -69,9 +70,11 @@
 import ErrorToast from "../components/errorToast.vue";
 import PulseLoader from "vue-spinner/src/PulseLoader.vue";
 import MyButton from "../components/ui/Button.vue";
+import VueCountryCode from "../components/login/countrypicker.vue";
+
 import { event } from "vue-gtag";
 export default {
-  components: { ErrorToast, PulseLoader, MyButton },
+  components: { ErrorToast, PulseLoader, MyButton, VueCountryCode },
   props: ["login"],
   data() {
     return {
@@ -93,8 +96,8 @@ export default {
       });
       this.loading = true;
       // Check if phone number is valid
-      const phoneRegex = "^\+[1-9]{1}[0-9]{3,14}$";
-      if (!this.phone.match(phoneRegex)) {
+      // check if the string starts with a +
+      if (!this.phone.startsWith("+")) {
         console.log("is not a phone number");
         try {
           const j = JSON.parse(this.phone);
@@ -142,8 +145,8 @@ export default {
           body: JSON.stringify({
             phoneNumber: this.phone,
             iosReceipt:
-              "AEFDNu9QZBdycrEZ8bM_2-Ei5kn6XNrxHplCLx2HYOoJAWx-uSYzMldf66-gI1vOzqxfuT4uJeMXdreGJP5V1pNen_IKJVED3EdKl0ldUyYJflW5rDVjaQiXpN0Zu2BNc1c",
-            iosSecret: "KKwuB8YqwuM3ku0z",
+              "BEFDNu9QZBdycrEZ8bM_2-Ei5kn6XNrxHplCLx2HYOoJAWx-uSYzMldf66-gI1vOzqxfuT4uJeMXdreGJP5V1pNen_IKJVED3EdKl0ldUyYJflW5rDVjaQiXpN0Zu2BNc1c",
+            iosSecret: "A",
           }),
         }
       )
