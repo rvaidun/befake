@@ -32,7 +32,7 @@ export default {
 </template> -->
 <template>
   <nav class="text-white">
-    <div class="max-w-8xl mx-auto py-2 mr-3">
+    <div class="max-w-8xl py-2 sm:mx-8 mr-2">
       <div class="flex justify-between">
         <div>
           <!-- logo -->
