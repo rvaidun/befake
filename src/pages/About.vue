@@ -38,7 +38,6 @@
     <div class="flex flex-col items-center space-y-1 text-blue-600">
       <a href="https://www.linkedin.com/in/rahulvaidun/">LinkedIn </a>
       <a href="https://www.github.com/rvaidun/">Github </a>
-      <a href="https://www.github.com/rvaidun/">Github </a>
       <a href="https://www.instagram.com/rahulvaidun/">Instagram </a>
       <!-- email -->
       <a href="mailto:rahul.vaidun@gmail.com">Email</a>
