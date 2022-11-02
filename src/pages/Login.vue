@@ -48,7 +48,7 @@ export default {
   data() {
     return {
       cc: "+1",
-      phone: "test",
+      phone: "",
       sessionInfo: "",
       code: "",
       loading: false,
