@@ -36,7 +36,11 @@ export default {
       <div class="flex justify-between">
         <div>
           <!-- logo -->
-          <a class="flex items-center cursor-pointer" v-clipboard:copy="copy">
+          <a
+            class="flex items-center cursor-pointer"
+            v-clipboard:copy="copy"
+            href="/"
+          >
             <img
               src="../../assets/favicon.ico"
               class="h-12 w-12 rounded-full object-cover mr-2"
@@ -45,10 +49,12 @@ export default {
           </a>
         </div>
         <!-- links -->
-        <div class="flex items-center">
+        <div class="flex items-center space-x-2">
+          <a href="/about" class="font-bold">About</a>
           <a
             class="cursor-pointer text-black bg-white py-2 px-3 rounded-md font-bold"
             @click="this.$store.commit('logout')"
+            v-if="this.$store.state.loggedIn"
           >
             Logout
           </a>
