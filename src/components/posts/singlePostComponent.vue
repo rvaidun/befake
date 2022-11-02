@@ -19,6 +19,11 @@ export default defineComponent({
     };
   },
   methods: {
+    reverseImages() {
+      const temp = this.post.photoURL;
+      this.post.photoURL = this.post.secondaryPhotoURL;
+      this.post.secondaryPhotoURL = temp;
+    },
     postdate() {
       return moment(this.post.creationDate._seconds * 1000).format(
         "MM-DD-YYYY h:mm:ss"
@@ -131,7 +136,7 @@ export default defineComponent({
 </script>
 <template>
   <div
-    class="block p-3 w-[100%] sm:p-6, sm:w-auto bg-black rounded-lg shadow-md"
+    class="block p-3 w-[100%] sm:p-6, sm:w-auto bg-black sm:border sm:border-white rounded-lg shadow-md"
   >
     <div class="flex flex-col">
       <div class="flex items-center sm:justify-center">
@@ -188,12 +193,13 @@ export default defineComponent({
         <img
           referrerpolicy="no-referrer"
           v-bind:src="post.photoURL"
-          class="relative top-0 left-0 rounded-md"
+          class="relative top-0 left-0 rounded-md sm:w-[400px]"
         />
         <img
           referrerpolicy="no-referrer"
           v-bind:src="post.secondaryPhotoURL"
           class="absolute top-2 left-2 w-[35%] rounded-md border-2 border-black"
+          @click="reverseImages"
         />
       </div>
       <div class="flex items-center font-bold mt-2 justify-center">
