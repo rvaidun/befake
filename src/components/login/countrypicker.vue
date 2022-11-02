@@ -24,6 +24,7 @@ export default {
       v-for="country in countries"
       :key="country.isoCode"
       :value="country.dialCode"
+      class="border border-gray-300 rounded-lg w-full p-2 text-black m-1"
     >
       {{ country.dialCode }}
     </option>
