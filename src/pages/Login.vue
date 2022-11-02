@@ -1,38 +1,4 @@
-<style>
-.bounce-enter-active {
-  animation: bounce-in 0.5s;
-}
-.bounce-leave-active {
-  animation: bounce-in 0.5s reverse;
-}
-@keyframes bounce-in {
-  0% {
-    transform: scale(0);
-  }
-  50% {
-    transform: scale(1.25);
-  }
-  100% {
-    transform: scale(1);
-  }
-}
-@-webkit-keyframes bounce-in {
-  0% {
-    -webkit-transform: scale(0);
-  }
-  50% {
-    -webkit-transform: scale(1.25);
-  }
-  100% {
-    -webkit-transform: scale(1);
-  }
-}
-</style>
 <template>
-  <Transition name="bounce">
-    <ErrorToast v-if="error.show" :text="error.text" />
-  </Transition>
-
   <div v-if="!sessionInfo">
     <div class="text-center text-white pt-10">
       <h1 class="font-bold mt-0 mb-6 text-9xl">BeFake</h1>
@@ -69,7 +35,7 @@
   </div>
 </template>
 <script>
-import ErrorToast from "../components/errorToast.vue";
+import ErrorToast from "../components/ui/errorToast.vue";
 import PulseLoader from "vue-spinner/src/PulseLoader.vue";
 import MyButton from "../components/ui/Button.vue";
 import VueCountryCode from "../components/login/countrypicker.vue";
@@ -85,14 +51,17 @@ export default {
       phone: "",
       sessionInfo: "",
       code: "",
-      error: {
-        text: "",
-        show: false,
-      },
       loading: false,
     };
   },
   methods: {
+    handleError(message) {
+      this.$store.commit("error", message);
+      event("error", {
+        event_category: "login",
+        event_label: message,
+      });
+    },
     setCountryCode(country) {
       console.log(country);
       this.cc = country;
@@ -107,7 +76,6 @@ export default {
       // Check if phone number is valid
       // check if the string starts with a +
       if (this.phone.startsWith("{")) {
-        console.log("is json");
         try {
           const j = JSON.parse(this.phone);
           if (j.phone && j.token && j.refreshToken && j.expiration) {
@@ -120,20 +88,11 @@ export default {
             throw "invalid json";
           }
         } catch (err) {
-          this.error = {
-            show: true,
-            text: "Invalid phone number",
-          };
-          event("invalid_phone", {
-            event_category: "login",
-            event_label: "invalid_phone",
-          });
-          setTimeout(() => (this.error = false), 5000);
+          this.handleError("invalid json");
         }
         this.loading = false;
         return;
       }
-      console.log("Doing fetch!");
       fetch(
         "https://warm-scrubland-06418.herokuapp.com/https://www.googleapis.com/identitytoolkit/v3/relyingparty/sendVerificationCode?key=AIzaSyDwjfEeparokD7sXPVQli9NsTuhT6fJ6iA",
         {
@@ -171,17 +130,8 @@ export default {
           this.loading = false;
         })
         .catch((e) => {
-          console.log("hi");
-          this.error = {
-            show: true,
-            text: e,
-          };
+          this.handleError(e);
           this.loading = false;
-          setTimeout(() => (this.error = false), 5000);
-          event("error", {
-            event_category: "login",
-            event_label: "error",
-          });
         });
     },
     verifyCode() {
@@ -228,14 +178,8 @@ export default {
           this.$store.dispatch("login");
         })
         .catch((e) => {
-          console.log("Hi");
-          console.log(e);
-          this.error = {
-            show: true,
-            text: e,
-          };
+          this.handleError(e);
           this.loading = false;
-          setTimeout(() => (this.error = false), 5000);
         });
     },
   },

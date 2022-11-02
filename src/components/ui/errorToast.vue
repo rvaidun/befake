@@ -1,5 +1,5 @@
 <template>
-  <div class="fixed bottom-0 left-0">
+  <div class="fixed bottom-0 left-0 z-10">
     <div
       class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative"
       role="alert"
