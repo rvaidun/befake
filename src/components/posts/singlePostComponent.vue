@@ -131,7 +131,7 @@ export default defineComponent({
 </script>
 <template>
   <div
-    class="block p-3 w-[100%] sm:p-6, sm:w-auto bg-white rounded-lg border border-gray-200 shadow-md hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700"
+    class="block p-3 w-[100%] sm:p-6, sm:w-auto bg-black rounded-lg shadow-md"
   >
     <div class="flex flex-col">
       <div class="flex items-center sm:justify-center">
@@ -184,16 +184,16 @@ export default defineComponent({
           </template>
         </GoogleMapsModal>
       </div>
-      <div class="flex items-center justify-center flex-col mt-4 sm:flex-row">
+      <div class="relative top-0 left-0">
         <img
           referrerpolicy="no-referrer"
           v-bind:src="post.photoURL"
-          class="h-full w-full ml-3 sm:w-64 rounded-md mb-3"
+          class="relative top-0 left-0 rounded-md"
         />
         <img
           referrerpolicy="no-referrer"
           v-bind:src="post.secondaryPhotoURL"
-          class="h-full w-full ml-3 sm:w-64 rounded-md mb-3"
+          class="absolute top-2 left-2 w-[35%] rounded-md border-2 border-black"
         />
       </div>
       <div class="flex items-center font-bold mt-2 justify-center">

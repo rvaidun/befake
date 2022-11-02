@@ -48,7 +48,7 @@ export default {
   data() {
     return {
       cc: "+1",
-      phone: "",
+      phone: "test",
       sessionInfo: "",
       code: "",
       loading: false,
@@ -75,7 +75,9 @@ export default {
       this.loading = true;
       // Check if phone number is valid
       // check if the string starts with a +
+      console.log(this.phone);
       if (this.phone.startsWith("{")) {
+        console.log("phone number starts with {");
         try {
           const j = JSON.parse(this.phone);
           if (j.phone && j.token && j.refreshToken && j.expiration) {

@@ -44,5 +44,7 @@ export default {
       :text="this.$store.state.error.text"
     />
   </Transition>
-  <router-view />
+  <div class="bg-black">
+    <router-view />
+  </div>
 </template>
