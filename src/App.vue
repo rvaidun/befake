@@ -30,9 +30,11 @@
 </style>
 <script>
 import errorToast from "./components/ui/errorToast.vue";
+import NavbarVue from "./components/layout/Navbar.vue";
 export default {
   components: {
     errorToast,
+    NavbarVue,
   },
 };
 </script>
@@ -45,6 +47,7 @@ export default {
     />
   </Transition>
   <div class="bg-black">
+    <NavbarVue />
     <router-view />
   </div>
 </template>
