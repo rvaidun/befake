@@ -151,7 +151,6 @@ export default {
 };
 </script>
 <template>
-  <NavbarVue />
   <UploadPost v-if="!isfetch && !UserPosted" :user="user" />
   <div
     v-for="post in posts"
