@@ -15,7 +15,7 @@ export default {
   },
 };
 </script>
-<template>
+<!-- <template>
   <div
     class="bg-blue-300 flex py-2 dark:bg-blue-900 dark:text-white items-center"
   >
@@ -26,7 +26,34 @@ export default {
     <a href="https://github.com/rvaidun/berealviewer" class="mr-3 fill-white">
       <img src="../../assets/github-svgrepo-com.svg" class="fill-white" />
     </a>
-    <MyButton v-clipboard:copy="copy">Copy Credentials</MyButton>
+    <MyButton >Copy Credentials</MyButton>
     <MyButton @clickedd="this.$store.commit('logout')"> Logout </MyButton>
   </div>
+</template> -->
+<template>
+  <nav class="text-white">
+    <div class="max-w-8xl mx-auto py-2 mr-3">
+      <div class="flex justify-between">
+        <div>
+          <!-- logo -->
+          <a class="flex items-center cursor-pointer" v-clipboard:copy="copy">
+            <img
+              src="../../assets/favicon.ico"
+              class="h-12 w-12 rounded-full object-cover mr-2"
+            />
+            <span class="text-3xl font-bold">BeFake</span>
+          </a>
+        </div>
+        <!-- links -->
+        <div class="flex items-center">
+          <a
+            class="cursor-pointer text-black bg-white py-2 px-3 rounded-md font-bold"
+            @click="this.$store.commit('logout')"
+          >
+            Logout
+          </a>
+        </div>
+      </div>
+    </div>
+  </nav>
 </template>

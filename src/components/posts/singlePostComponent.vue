@@ -136,7 +136,7 @@ export default defineComponent({
 </script>
 <template>
   <div
-    class="block p-3 w-[100%] sm:p-6, sm:w-auto bg-black sm:border sm:border-white rounded-lg shadow-md"
+    class="block p-3 w-[100%] sm:w-auto bg-black sm:border sm:border-white rounded-lg shadow-md"
   >
     <div class="flex flex-col">
       <div class="flex items-center sm:justify-center">
@@ -212,7 +212,7 @@ export default defineComponent({
           {{ post.caption }}
         </span>
       </div>
-      <div v-if="post.comment" class="flex flex-col">
+      <div v-if="post.comment" class="flex flex-col sm:w-[500px]">
         <div v-for="c in post.comment">
           <span class="font-bold"> {{ c.userName + ": " }}</span>
           <span v-html="boldusername(c.text)"></span>
