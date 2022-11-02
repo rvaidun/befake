@@ -10,12 +10,15 @@ export default {
         expiration: localStorage.getItem("expiration") ?? "",
         phone: localStorage.getItem("phone") ?? "",
       }),
+      hideNavbar: true,
     };
   },
 };
 </script>
 <template>
-  <div class="bg-blue-300 flex py-2 dark:bg-blue-900 dark:text-white">
+  <div
+    class="bg-blue-300 flex py-2 dark:bg-blue-900 dark:text-white items-center"
+  >
     <div class="mr-auto invisible"></div>
     <div class="mr-auto">
       <a class="sm:text-3xl font-bold">BeFake</a>
