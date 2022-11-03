@@ -5,6 +5,12 @@
     <link rel='icon' href="/src/assets/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>BeFake</title>
+    <script>
+      console.log(location.host);
+      if (location.host === 'berealviewer.web.app') {
+        location.href = 'https://befake.fr';
+      }
+    </script>
   </head>
   <body>
     <div id="app"></div>

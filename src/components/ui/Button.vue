@@ -19,6 +19,6 @@ export default {
     class="bg-white hover:bg-amber-100 text-black font-bold py-2 px-4 rounded flex m-1 items-center"
   >
     <slot></slot>
-    <PulseLoader v-if="loading" color="white"></PulseLoader>
+    <PulseLoader v-if="loading" color="black"></PulseLoader>
   </button>
 </template>

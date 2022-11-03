@@ -11,13 +11,6 @@
         "source": "**",
         "destination": "/index.html"
       }
-    ],
-    "redirects": [
-      {
-        "source": "https://berealviewer.web.app/",
-        "destination": "https://befake.fr",
-        "type": 301
-      }
     ]
   }
 }
