@@ -1,7 +1,7 @@
 <template>
   <div v-if="!sessionInfo">
     <div class="text-center text-white pt-10">
-      <h1 class="font-bold mt-0 mb-6 text-9xl">BeFake</h1>
+      <h1 class="font-bold mt-0 mb-6 text-7xl">BeFake</h1>
       <h3 class="text-2xl font-bold mb-8">A BeReal Viewer</h3>
     </div>
     <div
@@ -35,7 +35,6 @@
   </div>
 </template>
 <script>
-import ErrorToast from "../components/ui/errorToast.vue";
 import PulseLoader from "vue-spinner/src/PulseLoader.vue";
 import MyButton from "../components/ui/Button.vue";
 import VueCountryCode from "../components/login/countrypicker.vue";
@@ -43,7 +42,7 @@ import MyInput from "../components/ui/Input.vue";
 
 import { event } from "vue-gtag";
 export default {
-  components: { ErrorToast, PulseLoader, MyButton, VueCountryCode, MyInput },
+  components: { PulseLoader, MyButton, VueCountryCode, MyInput },
   props: ["login"],
   data() {
     return {
