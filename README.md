@@ -1,6 +1,6 @@
 # BeFake
 
-[https://befake.fr](https://befake.fr)
+[https://www.befake.fr](https://www.befake.fr)
 
 ## Features
 
