@@ -160,6 +160,6 @@ export default {
     <single-post-component-vue :post="post" class="mt-10" />
   </div>
   <div v-else class="grid h-screen place-items-center">
-    <pulse-loader></pulse-loader>
+    <pulse-loader color="white"></pulse-loader>
   </div>
 </template>

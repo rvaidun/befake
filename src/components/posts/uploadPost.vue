@@ -188,7 +188,7 @@ export default {
 <template>
   <div class="flex flex-col justify-center items-center dark:text-white">
     <div
-      class="block p-3 w-[100%] sm:p-6, sm:w-auto bg-white rounded-lg border border-gray-200 shadow-md hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700"
+      class="block p-3 w-[100%] sm:p-6, sm:w-auto rounded-lg border border-gray-200 shadow-md bg-black"
     >
       <div class="flex flex-col">
         <div class="flex items-center sm:justify-center">
