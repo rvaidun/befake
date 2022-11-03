@@ -1,14 +1,22 @@
 # BeFake
 
-- View BeReal posts from your friends without posting yours.
-- Screenshot and save BeReals from your friends without them knowing
-:)
-- Upload BeReals to your own account with photos from your camera role!
+[https://befake.fr](https://befake.fr)
 
-[https://berealviewer.web.app/](https://berealviewer.web.app/)
+## Features
 
+1. See friends' posts without posting anything yourself
 
-## Customize configuration
+   BeFake allows you to see your friends' posts without posting anything yourself. You can also screenshot their posts without them getting notified. You can also see the location (if available), date and time, retakes, comments, and realmoji reactions on all posts. You can even write your own comments straight from BeFake. Support for realmoji reactions is coming soon.
+
+   <!-- add an image -->
+
+   ![BeFake](images/post.png)
+
+2. Upload your own posts
+
+   You can also upload your own posts with photos from your camera roll, which will be visible to your friends. GIFs are also supported, meaning your BeReal can be a GIF! The BeFake client also supports custom location with longitude and latitude.
+
+## Development Setup
 
 See [Vite Configuration Reference](https://vitejs.dev/config/).
 
