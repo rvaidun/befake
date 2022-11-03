@@ -16,6 +16,8 @@
 
    You can also upload your own posts with photos from your camera roll, which will be visible to your friends. GIFs are also supported, meaning your BeReal can be a GIF! The BeFake client also supports custom location with longitude and latitude.
 
+   ![BeFake](images/upload.png)
+
 ## Development Setup
 
 See [Vite Configuration Reference](https://vitejs.dev/config/).
