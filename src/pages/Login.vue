@@ -23,13 +23,8 @@
     <div
       class="flex items-center justify-center mt-[75%] flex-col sm:flex-row sm:mt-[25%]"
     >
-      <span class="mr-2 dark:text-white">Enter your code: </span>
-      <input
-        type="text"
-        placeholder="123456"
-        v-model="code"
-        class="border-black border-2 mr-2"
-      />
+      <span class="mr-2 dark:text-white">Enter the OTP sent to your phone number: </span>
+      <MyInput v-model="code" placeholder="123456" class="max-w-sm" />
       <MyButton @clickedd="verifyCode" :loading="loading">Verify</MyButton>
     </div>
   </div>

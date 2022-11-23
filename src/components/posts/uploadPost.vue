@@ -17,6 +17,7 @@ export default {
         lng: null,
         devicelocation: false,
       },
+      public: false,
       caption: "",
     };
   },
@@ -113,7 +114,7 @@ export default {
       // moment to date string
       const taken_at = nowt.format("YYYY-MM-DDTHH:mm:ss.SSSZ");
       const payload = {
-        isPublic: false,
+        isPublic: this.public,
         isLate: false,
         retakeCounter: 0,
         takenAt: taken_at,
@@ -227,6 +228,7 @@ export default {
         v-model="caption"
       /> -->
       <MyInput v-model="caption" placeholder="Caption" />
+      <input type="checkbox" class="m-1" v-model="public" />
       <input type="checkbox" class="m-1" v-model="location.postwithlocation" />
       <span class="m-1">Post with location</span>
       <div v-if="location.postwithlocation">
