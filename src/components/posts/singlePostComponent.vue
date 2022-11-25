@@ -4,6 +4,7 @@ import moment from "moment";
 import GoogleMapsModal from "./GoogleMapsModal.vue";
 import MyButton from "../ui/Button.vue";
 import MyInput from "../ui/Input.vue";
+import UploadRealmoji from "./uploadRealmoji.vue";
 export default defineComponent({
   props: ["post"],
   data() {
@@ -131,7 +132,7 @@ export default defineComponent({
         });
     }
   },
-  components: { GoogleMapsModal, MyButton, MyInput },
+  components: { GoogleMapsModal, MyButton, MyInput, UploadRealmoji },
 });
 </script>
 <template>
@@ -234,6 +235,7 @@ export default defineComponent({
           </div>
           <span class="font-bold ml-4">{{ e.userName }}</span>
         </div>
+        <UploadRealmoji :postID="post.id" />
       </div>
     </div>
     <div class="flex">
