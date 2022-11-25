@@ -1,5 +1,7 @@
 <script>
 import MyButton from "../ui/Button.vue";
+import { v4 as uuidv4 } from "uuid";
+import moment from "moment";
 export default {
   props: ["postID"],
   data() {
@@ -19,11 +21,12 @@ export default {
       //   this.$emit("upload", this.file, this.secondary);
     },
     async uploadPhotoToBeReal(file, secondary) {
+      // https://cdn.bereal.network/Photos/WGpTqIX0diZQu3UjoZE8FnUAzNi2/realmoji/WGpTqIX0diZQu3UjoZE8FnUAzNi2-realmoji-instant-1669332458.webp
       // upload 2 files
       console.log("user is ", this.user);
-      const n = `Photos/${
+      const n = `Photos/${this.user.id}/realmoji/${
         this.user.id
-      }/realmoji/${uuidv4()}-instant-${moment().unix()}.jpg`;
+      }-realmoji-instant-${moment().unix()}.jpg`;
       console.log(n);
       const json_data = {
         cacheControl: "public,max-age=172800",
@@ -66,12 +69,16 @@ export default {
           res.headers.get("x-goog-upload-url");
         const headers2 = {
           "x-goog-upload-command": "upload, finalize",
+          "x-firebase-storage-version": "ios/9.4.0",
+          "x-firebase-gmpid": "1:405768487586:ios:28c4df089ca92b89",
+          "x-goog-upload-command": "upload, finalize",
           "x-goog-upload-protocol": "resumable",
           "x-goog-upload-offset": "0",
-          "content-type": "image/jpeg",
+          "content-type": "application/x-www-form-urlencoded",
+          authorization: `Firebase ${localStorage.getItem("token")}`,
         };
         await fetch(uploadurl, {
-          method: "PUT",
+          method: "POST",
           headers: headers2,
           body: file,
         })
@@ -89,6 +96,7 @@ export default {
     },
     async submitRealMoji() {
       this.loading = true;
+      console.log(this.postID);
       try {
         await this.uploadPhotoToBeReal(this.file);
       } catch (err) {
@@ -98,9 +106,9 @@ export default {
       const data = {
         data: {
           action: "add",
-          emoji: "⚡️",
+          emoji: "🅱️",
           ownerId: this.user.id,
-          photoId: postID,
+          photoId: this.postID,
           type: "instant",
           uri: this.image.url,
         },
@@ -125,6 +133,8 @@ export default {
           console.log(data);
           this.$store.dispatch("getPosts").then((d) => {
             this.loading = false;
+            this.file = null;
+            this.imageurl = null;
           });
         })
         .catch((err) => {
