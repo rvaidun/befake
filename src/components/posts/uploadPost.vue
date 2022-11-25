@@ -230,7 +230,7 @@ export default {
       <MyInput v-model="caption" placeholder="Caption" />
       <input type="checkbox" class="m-1" v-model="public" />
       <span class="m-1">Public</span>
-      <br/>
+      <br />
       <input type="checkbox" class="m-1" v-model="location.postwithlocation" />
       <span class="m-1">Post with location</span>
       <div v-if="location.postwithlocation">
