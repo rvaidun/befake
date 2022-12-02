@@ -60,7 +60,9 @@ export default {
         uploadType: "resumable",
         name: n,
       };
-      const uri = `https://warm-scrubland-06418.herokuapp.com/https://firebasestorage.googleapis.com/v0/b/storage.bere.al/o/${encodeURIComponent(
+      const uri = `${
+        this.$store.state.proxyUrl
+      }/https://firebasestorage.googleapis.com/v0/b/storage.bere.al/o/${encodeURIComponent(
         n
       ).replace(/%20/g, "")}?`;
       await fetch(uri + new URLSearchParams(params), {
@@ -71,8 +73,7 @@ export default {
         // console log the status code
         if (res.status !== 200) throw new Error("Failed to upload");
         const uploadurl =
-          "https://warm-scrubland-06418.herokuapp.com/" +
-          res.headers.get("x-goog-upload-url");
+          this.$store.state.proxyUrl + res.headers.get("x-goog-upload-url");
         const headers2 = {
           "x-goog-upload-command": "upload, finalize",
           "x-goog-upload-protocol": "resumable",
@@ -147,7 +148,7 @@ export default {
         authorization: `${localStorage.getItem("token")}`,
       };
       fetch(
-        "https://warm-scrubland-06418.herokuapp.com/https://mobile.bereal.com/api/content/post",
+        `${this.$store.state.proxyUrl}/https://mobile.bereal.com/api/content/post`,
         {
           method: "POST",
           headers: h1,

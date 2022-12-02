@@ -3,6 +3,7 @@ import { event } from "vue-gtag";
 const store = createStore({
   state() {
     return {
+      // proxyUrl: "https://warm-scrubland-06418.herokuapp.com",
       loggedIn: localStorage.getItem("token") ? true : false,
       posts: [],
       user: {},
@@ -43,19 +44,16 @@ const store = createStore({
     },
     getPosts({ commit, state }) {
       return new Promise((resolve, reject) => {
-        fetch(
-          "https://warm-scrubland-06418.herokuapp.com/https://mobile.bereal.com/api/feeds/friends",
-          {
-            method: "GET",
-            headers: {
-              accept: "application/json",
-              "content-type": "application/json",
-              "user-agent": "BeReal/7242 CFNetwork/1333.0.4 Darwin/21.5.0",
-              "accept-language": "en-US,en;q=0.9",
-              authorization: localStorage.getItem("token") ?? "",
-            },
-          }
-        )
+        fetch(`${state.proxyUrl}/https://mobile.bereal.com/api/feeds/friends`, {
+          method: "GET",
+          headers: {
+            accept: "application/json",
+            "content-type": "application/json",
+            "user-agent": "BeReal/7242 CFNetwork/1333.0.4 Darwin/21.5.0",
+            "accept-language": "en-US,en;q=0.9",
+            authorization: localStorage.getItem("token") ?? "",
+          },
+        })
           .then((res) => res.json())
           .then((data) => {
             // move user to the top of the list
@@ -73,20 +71,17 @@ const store = createStore({
           });
       });
     },
-    async getUser({ commit }) {
-      await fetch(
-        "https://warm-scrubland-06418.herokuapp.com/https://mobile.bereal.com/api/person/me",
-        {
-          method: "GET",
-          headers: {
-            accept: "application/json",
-            "content-type": "application/json",
-            "user-agent": "BeReal/7242 CFNetwork/1333.0.4 Darwin/21.5.0",
-            "accept-language": "en-US,en;q=0.9",
-            authorization: localStorage.getItem("token") ?? "",
-          },
-        }
-      )
+    async getUser({ commit, state }) {
+      await fetch(`${state.proxyUrl}/https://mobile.bereal.com/api/person/me`, {
+        method: "GET",
+        headers: {
+          accept: "application/json",
+          "content-type": "application/json",
+          "user-agent": "BeReal/7242 CFNetwork/1333.0.4 Darwin/21.5.0",
+          "accept-language": "en-US,en;q=0.9",
+          authorization: localStorage.getItem("token") ?? "",
+        },
+      })
         .then((res) => res.json())
         .then((data) => {
           commit("user", data);

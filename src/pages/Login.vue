@@ -3,6 +3,10 @@
     <div class="text-center text-white pt-10">
       <h1 class="font-bold mt-0 mb-6 text-7xl">BeFake</h1>
       <h3 class="text-2xl font-bold mb-8">A BeReal Viewer</h3>
+      <span class="text-xl font-bold text-red-700">
+        BeFake is down. Please be patient my host for my reverse proxy removed
+        the free tier and I am currently looking for another host. <br />
+      </span>
     </div>
     <div
       class="flex items-center justify-center mt-[75%] flex-col sm:flex-row sm:mt-[15%]"
@@ -23,7 +27,9 @@
     <div
       class="flex items-center justify-center mt-[75%] flex-col sm:flex-row sm:mt-[25%]"
     >
-      <span class="mr-2 dark:text-white">Enter the OTP sent to your phone number: </span>
+      <span class="mr-2 dark:text-white"
+        >Enter the OTP sent to your phone number:
+      </span>
       <MyInput v-model="code" placeholder="123456" class="max-w-sm" />
       <MyButton @clickedd="verifyCode" :loading="loading">Verify</MyButton>
     </div>
@@ -90,7 +96,7 @@ export default {
         return;
       }
       fetch(
-        "https://warm-scrubland-06418.herokuapp.com/https://www.googleapis.com/identitytoolkit/v3/relyingparty/sendVerificationCode?key=AIzaSyDwjfEeparokD7sXPVQli9NsTuhT6fJ6iA",
+        `${this.$store.state.proxyUrl}/https://www.googleapis.com/identitytoolkit/v3/relyingparty/sendVerificationCode?key=AIzaSyDwjfEeparokD7sXPVQli9NsTuhT6fJ6iA`,
         {
           method: "POST",
           headers: {
@@ -137,7 +143,7 @@ export default {
       });
       this.loading = true;
       fetch(
-        "https://warm-scrubland-06418.herokuapp.com/https://www.googleapis.com/identitytoolkit/v3/relyingparty/verifyPhoneNumber?key=AIzaSyDwjfEeparokD7sXPVQli9NsTuhT6fJ6iA",
+        `${this.$store.state.proxyUrl}/https://www.googleapis.com/identitytoolkit/v3/relyingparty/verifyPhoneNumber?key=AIzaSyDwjfEeparokD7sXPVQli9NsTuhT6fJ6iA`,
         {
           method: "POST",
           headers: {

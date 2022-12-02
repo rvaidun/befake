@@ -22,7 +22,7 @@ export default {
     });
     if (Date.now() > localStorage.getItem("expiration")) {
       await fetch(
-        "https://warm-scrubland-06418.herokuapp.com/https://securetoken.googleapis.com/v1/token?key=AIzaSyDwjfEeparokD7sXPVQli9NsTuhT6fJ6iA",
+        `${this.$store.state.proxyUrl}/https://securetoken.googleapis.com/v1/token?key=AIzaSyDwjfEeparokD7sXPVQli9NsTuhT6fJ6iA`,
         {
           method: "POST",
           headers: {
