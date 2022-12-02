@@ -23,6 +23,7 @@ export default {
     async uploadPhotoToBeReal(file, secondary) {
       // https://cdn.bereal.network/Photos/WGpTqIX0diZQu3UjoZE8FnUAzNi2/realmoji/WGpTqIX0diZQu3UjoZE8FnUAzNi2-realmoji-instant-1669332458.webp
       // upload 2 files
+      // get proxy url from state
       console.log("user is ", this.user);
       const n = `Photos/${this.user.id}/realmoji/${
         this.user.id
@@ -54,7 +55,9 @@ export default {
         uploadType: "resumable",
         name: n,
       };
-      const uri = `https://warm-scrubland-06418.herokuapp.com/https://firebasestorage.googleapis.com/v0/b/storage.bere.al/o/${encodeURIComponent(
+      const uri = `${
+        this.$store.state.proxyUrl
+      }/https://firebasestorage.googleapis.com/v0/b/storage.bere.al/o/${encodeURIComponent(
         n
       ).replace(/%20/g, "")}?`;
       await fetch(uri + new URLSearchParams(params), {
@@ -65,8 +68,7 @@ export default {
         // console log the status code
         if (res.status !== 200) throw new Error("Failed to upload");
         const uploadurl =
-          "https://warm-scrubland-06418.herokuapp.com/" +
-          res.headers.get("x-goog-upload-url");
+          this.$store.state.proxyUrl + res.headers.get("x-goog-upload-url");
         const headers2 = {
           "x-goog-upload-command": "upload, finalize",
           "x-firebase-storage-version": "ios/9.4.0",
@@ -114,7 +116,7 @@ export default {
         },
       };
       fetch(
-        `https://warm-scrubland-06418.herokuapp.com/https://us-central1-alexisbarreyat-bereal.cloudfunctions.net/sendRealMoji`,
+        `${this.$store.state.proxyUrl}/https://us-central1-alexisbarreyat-bereal.cloudfunctions.net/sendRealMoji`,
         {
           method: "POST",
           headers: {
