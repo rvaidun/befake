@@ -4,8 +4,9 @@
       <h1 class="font-bold mt-0 mb-6 text-7xl">BeFake</h1>
       <h3 class="text-2xl font-bold mb-8">A BeReal Viewer</h3>
       <span class="text-xl font-bold text-red-700">
-        BeFake is down. Please be patient my host for my reverse proxy removed
-        the free tier and I am currently looking for another host. <br />
+        BeFake is down. Please be patient my host for my CORS anywhere proxy
+        removed the free tier and I am currently looking for another host.
+        <br />
       </span>
     </div>
     <div
