@@ -29,13 +29,18 @@
       <p class="text-base">
         I don't have plans on monetizing this site hence there will
         <span class="font-bold">never</span> be ads on this website at least for
-        the forseeable future.
+        the forseeable future. If you are interested in viewing the source code
+        or making your own contributions to BeFake check out our
+        <a class="text-blue-600" href="https://github.com/rvaidun/befake"
+          >github repository</a
+        >
       </p>
     </div>
   </div>
   <div class="flex flex-col items-center text-white py-8">
     <h1 class="text-3xl font-bold">Contact me</h1>
     <div class="flex flex-col items-center space-y-1 text-blue-600">
+      <a href="https://www.linkedin.com/in/rahoollv/">Twitter </a>
       <a href="https://www.linkedin.com/in/rahulvaidun/">LinkedIn </a>
       <a href="https://www.github.com/rvaidun/">Github </a>
       <a href="https://www.instagram.com/rahulvaidun/">Instagram </a>
