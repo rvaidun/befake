@@ -68,7 +68,9 @@ export default {
         // console log the status code
         if (res.status !== 200) throw new Error("Failed to upload");
         const uploadurl =
-          this.$store.state.proxyUrl + res.headers.get("x-goog-upload-url");
+          this.$store.state.proxyUrl +
+          "/" +
+          res.headers.get("x-goog-upload-url");
         const headers2 = {
           "x-goog-upload-command": "upload, finalize",
           "x-firebase-storage-version": "ios/9.4.0",
