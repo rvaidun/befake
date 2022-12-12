@@ -1,7 +1,8 @@
 <script>
 import MyButton from "../ui/Button.vue";
+import DiscordLogo from "../../assets/discord-logo.svg";
 export default {
-  components: { MyButton },
+  components: { MyButton, DiscordLogo },
   data() {
     return {
       copy: JSON.stringify({
@@ -50,6 +51,17 @@ export default {
         </div>
         <!-- links -->
         <div class="flex items-center space-x-2">
+          <!-- svg with discord-logo.svg as src -->
+          <div>
+            <a href="https://discord.gg/cbNrvhw6PE">
+              <img src="../../assets/discord-logo.svg" class="h-8 w-8 mr-2" />
+            </a>
+            <!-- Have small red text that says NEW! in bold and place it over the discord logo -->
+            <span class="absolute text-xs font-bold text-red-500 rounded-full"
+              >NEW!</span
+            >
+          </div>
+
           <a href="/about" class="font-bold">About</a>
           <a
             class="cursor-pointer text-black bg-white py-2 px-3 rounded-md font-bold"
