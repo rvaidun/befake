@@ -40,7 +40,7 @@
   <div class="flex flex-col items-center text-white py-8">
     <h1 class="text-3xl font-bold">Contact me</h1>
     <div class="flex flex-col items-center space-y-1 text-blue-600">
-      <a href="https://www.linkedin.com/in/rahoollv/">Twitter </a>
+      <a href="https://www.twitter.com/rahulvaidun/">Twitter </a>
       <a href="https://www.linkedin.com/in/rahulvaidun/">LinkedIn </a>
       <a href="https://www.github.com/rvaidun/">Github </a>
       <a href="https://www.instagram.com/rahulvaidun/">Instagram </a>
