@@ -53,8 +53,8 @@ export default {
         <div class="flex items-center space-x-2">
           <!-- svg with discord-logo.svg as src -->
           <div>
-            <a href="https://discord.gg/cbNrvhw6PE">
-              <img src="../../assets/discord-logo.svg" class="h-8 w-8 mr-2" />
+            <a href="https://twitter.com/rahulvaidun">
+              <img src="../../assets/Twitter-logo.svg" class="h-8 w-8 mr-2" />
             </a>
             <!-- Have small red text that says NEW! in bold and place it over the discord logo -->
             <span class="absolute text-xs font-bold text-red-500 rounded-full"
