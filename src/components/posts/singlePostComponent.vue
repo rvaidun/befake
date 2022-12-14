@@ -17,6 +17,7 @@ export default defineComponent({
       showModal: false,
       comment: "",
       submitCommentLoading: false,
+      hideSecondaryPhoto: false,
     };
   },
   methods: {
@@ -195,12 +196,14 @@ export default defineComponent({
           referrerpolicy="no-referrer"
           v-bind:src="post.photoURL"
           class="relative top-0 left-0 rounded-md sm:w-[400px]"
+          @click="hideSecondaryPhoto = !hideSecondaryPhoto"
         />
         <img
           referrerpolicy="no-referrer"
           v-bind:src="post.secondaryPhotoURL"
           class="absolute top-2 left-2 w-[35%] rounded-md border-2 border-black"
           @click="reverseImages"
+          v-if="!hideSecondaryPhoto"
         />
       </div>
       <div class="flex items-center font-bold mt-2 justify-center">
