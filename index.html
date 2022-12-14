@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>BeFake</title>
     <script>
-      console.log(location.host);
       if (
         location.host === "berealviewer.web.app" ||
         location.host === "berealviewer.firebaseapp.com" ||
@@ -14,6 +13,11 @@
       ) {
         location.href = "https://www.befake.fr";
       }
+      navigator.serviceWorker.getRegistrations().then(function (registrations) {
+        for (let registration of registrations) {
+          registration.unregister();
+        }
+      });
     </script>
     <script
       async
