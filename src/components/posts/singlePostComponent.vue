@@ -35,7 +35,7 @@ export default defineComponent({
       return s.replace(
         /@\w+/g,
         "<span class='font-bold text-blue-200'>$&</span>"
-      );
+      ).replaceAll("<","&lt;");
     },
     submitComment() {
       this.submitCommentLoading = true;
