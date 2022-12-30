@@ -5,8 +5,7 @@
       <h3 class="text-2xl font-bold mb-8">A BeReal Viewer</h3>
     </div>
     <div
-      class="flex items-center justify-center mt-[75%] flex-col sm:flex-row sm:mt-[15%]"
-    >
+      class="flex items-center justify-center mt-[75%] flex-col sm:flex-row sm:mt-[15%]">
       <VueCountryCode @asdfasdf="setCountryCode" class="max-w-[100px]" />
       <!-- <input
         type="text"
@@ -21,8 +20,7 @@
 
   <div v-else>
     <div
-      class="flex items-center justify-center mt-[75%] flex-col sm:flex-row sm:mt-[25%]"
-    >
+      class="flex items-center justify-center mt-[75%] flex-col sm:flex-row sm:mt-[25%]">
       <span class="mr-2 dark:text-white"
         >Enter the OTP sent to your phone number:
       </span>
@@ -112,7 +110,7 @@ export default {
             phoneNumber: this.cc + this.phone,
             iosReceipt:
               "AEFDNu9QZBdycrEZ8bM_2-Ei5kn6XNrxHplCLx2HYOoJAWx-uSYzMldf66-gI1vOzqxfuT4uJeMXdreGJP5V1pNen_IKJVED3EdKl0ldUyYJflW5rDVjaQiXpN0Zu2BNc1c",
-            // iosSecret: "KKwuB8YqwuM3ku0z",
+            iosSecret: "KKwuB8YqwuM3ku0z",
           }),
         }
       )
