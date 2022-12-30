@@ -81,23 +81,23 @@ export default {
       //   .then((data) => {
       //     this.friends = data.data;
       //   }),
-      // fetch(
-      //   "https://arcane-woodland-79412.herokuapp.com/https://mobile.bereal.com/api/feeds/memories",
-      //   {
-      //     method: "GET",
-      //     headers: {
-      //       accept: "application/json",
-      //       "content-type": "application/json",
-      //       "user-agent": "BeReal/7242 CFNetwork/1333.0.4 Darwin/21.5.0",
-      //       authorization: localStorage.getItem("token") ?? "",
-      //       "accept-language": "en-US,en;q=0.9",
-      //     },
-      //   }
-      // )
-      //   .then((res) => res.json())
-      //   .then((data) => {
-      //     this.memories = data.data;
-      //   }),
+      fetch(
+        `${this.$store.state.proxyUrl}/https://mobile.bereal.com/api/feeds/memories`,
+        {
+          method: "GET",
+          headers: {
+            accept: "application/json",
+            "content-type": "application/json",
+            "user-agent": "BeReal/7242 CFNetwork/1333.0.4 Darwin/21.5.0",
+            authorization: localStorage.getItem("token") ?? "",
+            "accept-language": "en-US,en;q=0.9",
+          },
+        }
+      )
+        .then((res) => res.json())
+        .then((data) => {
+          this.memories = data.data;
+        }),
     ])
       .then(() => {
         this.isfetch = false;
