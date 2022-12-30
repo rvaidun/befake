@@ -31,11 +31,12 @@ export default defineComponent({
         "MM-DD-YYYY h:mm:ss"
       );
     },
-    boldusername(s) {
+    cleancomment(s) {
+      s = s.replaceAll("<", "&lt;");
       return s.replace(
         /@\w+/g,
         "<span class='font-bold text-blue-200'>$&</span>"
-      ).replaceAll("<","&lt;");
+      );
     },
     submitComment() {
       this.submitCommentLoading = true;
@@ -138,8 +139,7 @@ export default defineComponent({
 </script>
 <template>
   <div
-    class="block p-3 w-[100%] sm:w-auto bg-black sm:border sm:border-white rounded-lg shadow-md"
-  >
+    class="block p-3 w-[100%] sm:w-auto bg-black sm:border sm:border-white rounded-lg shadow-md">
     <div class="flex flex-col">
       <div class="flex items-center sm:justify-center">
         <img
@@ -160,8 +160,7 @@ export default defineComponent({
               post.user.username +
               '&background=' +
               color
-          "
-        />
+          " />
         <div>
           <div>
             <span class="font-bold ml-3">
@@ -185,8 +184,7 @@ export default defineComponent({
               v-if="post.location"
               allowfullscreen
               referrerpolicy="no-referrer-when-downgrade"
-              :src="iframesrc"
-            >
+              :src="iframesrc">
             </iframe>
           </template>
         </GoogleMapsModal>
@@ -196,15 +194,13 @@ export default defineComponent({
           referrerpolicy="no-referrer"
           v-bind:src="post.photoURL"
           class="relative top-0 left-0 rounded-md sm:w-[400px]"
-          @click="hideSecondaryPhoto = !hideSecondaryPhoto"
-        />
+          @click="hideSecondaryPhoto = !hideSecondaryPhoto" />
         <img
           referrerpolicy="no-referrer"
           v-bind:src="post.secondaryPhotoURL"
           class="absolute top-2 left-2 w-[35%] rounded-md border-2 border-black"
           @click="reverseImages"
-          v-if="!hideSecondaryPhoto"
-        />
+          v-if="!hideSecondaryPhoto" />
       </div>
       <div class="flex items-center font-bold mt-2 justify-center">
         <span> {{ postdate() }} </span>
@@ -219,7 +215,7 @@ export default defineComponent({
       <div v-if="post.comment" class="flex flex-col sm:w-[500px]">
         <div v-for="c in post.comment">
           <span class="font-bold"> {{ c.userName + ": " }}</span>
-          <span v-html="boldusername(c.text)"></span>
+          <span v-html="cleancomment(c.text)"></span>
         </div>
       </div>
 
@@ -229,8 +225,7 @@ export default defineComponent({
             <img
               referrerpolicy="no-referrer"
               v-bind:src="e.uri"
-              class="w-24 rounded-[50%]"
-            />
+              class="w-24 rounded-[50%]" />
 
             <span class="absolute top-[50px] left-[60px] text-5xl"
               >{{ e.emoji }}
