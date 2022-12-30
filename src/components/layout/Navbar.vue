@@ -40,12 +40,10 @@ export default {
           <a
             class="flex items-center cursor-pointer"
             v-clipboard:copy="copy"
-            href="/"
-          >
+            href="/">
             <img
               src="../../assets/favicon.ico"
-              class="h-12 w-12 rounded-full object-cover mr-2"
-            />
+              class="h-12 w-12 rounded-full object-cover mr-2" />
             <span class="text-3xl font-bold">BeFake</span>
           </a>
         </div>
@@ -53,8 +51,8 @@ export default {
         <div class="flex items-center space-x-2">
           <!-- svg with discord-logo.svg as src -->
           <div>
-            <a href="https://twitter.com/rahulvaidun">
-              <img src="../../assets/Twitter-logo.svg" class="h-8 w-8 mr-2" />
+            <a href="https://www.twitter.com/rahulvaidun/">
+              <img src="../../assets/Twitter.svg" class="h-8 w-8 mr-2" />
             </a>
             <!-- Have small red text that says NEW! in bold and place it over the discord logo -->
             <span class="absolute text-xs font-bold text-red-500 rounded-full"
@@ -66,8 +64,7 @@ export default {
           <a
             class="cursor-pointer text-black bg-white py-2 px-3 rounded-md font-bold"
             @click="this.$store.commit('logout')"
-            v-if="this.$store.state.loggedIn"
-          >
+            v-if="this.$store.state.loggedIn">
             Logout
           </a>
         </div>
