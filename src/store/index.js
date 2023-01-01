@@ -8,6 +8,7 @@ const store = createStore({
       loggedIn: localStorage.getItem("token") ? true : false,
       posts: [],
       user: {},
+      userPosted: false,
       error: {
         text: "",
         show: false,
@@ -37,6 +38,9 @@ const store = createStore({
     posts(state, posts) {
       state.posts = posts;
     },
+    setposted(state, posted) {
+      state.userPosted = posted;
+    },
   },
   actions: {
     async login({ commit, dispatch }) {
@@ -58,12 +62,16 @@ const store = createStore({
           .then((res) => res.json())
           .then((data) => {
             // move user to the top of the list
-            data.forEach(function (item, i) {
-              if (item.ownerID === state.user.id) {
-                data.splice(i, 1);
-                data.unshift(item);
+            for (let i = 0; i < data.length; i++) {
+              if (data[i].ownerID === state.user.id) {
+                // remove i and move to top
+                let user = data.splice(i, 1);
+                console.log(user);
+                data.unshift(user[0]);
+                data.posted = true;
+                break;
               }
-            });
+            }
             commit("posts", data);
             resolve(data);
           })
