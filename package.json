@@ -1,6 +1,6 @@
 {
-  "name": "berealviewer",
-  "version": "0.0.0",
+  "name": "befake",
+  "version": "1.0.0",
   "scripts": {
     "dev": "vite --host",
     "build": "run-p build-only",
