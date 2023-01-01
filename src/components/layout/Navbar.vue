@@ -49,18 +49,23 @@ export default {
         </div>
         <!-- links -->
         <div class="flex items-center space-x-2">
-          <!-- svg with discord-logo.svg as src -->
-          <div>
-            <a href="https://www.twitter.com/rahulvaidun/">
-              <img src="../../assets/Twitter.svg" class="h-8 w-8 mr-2" />
-            </a>
-            <!-- Have small red text that says NEW! in bold and place it over the discord logo -->
-            <span class="absolute text-xs font-bold text-red-500 rounded-full"
+          <!-- <div> -->
+          <a
+            class="cursor-pointer text-black bg-white py-2 px-3 rounded-md font-bold"
+            href="https://ko-fi.com/rahulvaidun">
+            Donate
+          </a>
+          <!-- <span class="absolute text-xs font-bold text-red-500 rounded-full"
               >NEW!</span
-            >
-          </div>
+            > -->
+          <!-- </div> -->
 
-          <a href="/about" class="font-bold">About</a>
+          <a
+            class="cursor-pointer text-black bg-white py-2 px-3 rounded-md font-bold"
+            href="/about">
+            About
+          </a>
+          <!-- <a href="/about" class="font-bold">About</a> -->
           <a
             class="cursor-pointer text-black bg-white py-2 px-3 rounded-md font-bold"
             @click="this.$store.commit('logout')"

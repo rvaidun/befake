@@ -43,8 +43,7 @@ export default {
   <Transition name="bounce">
     <errorToast
       v-if="this.$store.state.error.show"
-      :text="this.$store.state.error.text"
-    />
+      :text="this.$store.state.error.text" />
   </Transition>
   <div class="bg-black text-white">
     <NavbarVue />
