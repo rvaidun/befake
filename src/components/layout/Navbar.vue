@@ -49,16 +49,19 @@ export default {
         </div>
         <!-- links -->
         <div class="flex items-center space-x-2">
-          <!-- <div> -->
-          <a
+          <div>
+            <!-- <a
             class="cursor-pointer text-black bg-white py-2 px-3 rounded-md font-bold"
             href="https://ko-fi.com/rahulvaidun">
             Donate
-          </a>
-          <!-- <span class="absolute text-xs font-bold text-red-500 rounded-full"
+          </a> -->
+            <a href="https://www.twitter.com/rahulvaidun/">
+              <img src="../../assets/Twitter.svg" class="h-8 w-8 mr-2" />
+            </a>
+            <span class="absolute text-xs font-bold text-red-500 rounded-full"
               >NEW!</span
-            > -->
-          <!-- </div> -->
+            >
+          </div>
 
           <a
             class="cursor-pointer text-black bg-white py-2 px-3 rounded-md font-bold"
