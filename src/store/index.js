@@ -96,6 +96,34 @@ const store = createStore({
           commit("user", data);
         });
     },
+    async deletePost({ commit, state, dispatch }) {
+      fetch(
+        `https://us-central1-alexisbarreyat-bereal.cloudfunctions.net/deleteBeReal`,
+        {
+          method: "POST",
+          headers: {
+            accept: "application/json",
+            "content-type": "application/json",
+            "user-agent": "BeReal/7242 CFNetwork/1333.0.4 Darwin/21.5.0",
+            "accept-language": "en-US,en;q=0.9",
+            authorization: `Bearer ${localStorage.getItem("token") ?? ""}`,
+          },
+          body: JSON.stringify({
+            data: {
+              uid: state.user.id,
+            },
+          }),
+        }
+      ).then((res) => {
+        if (res.status / 100 === 2) {
+          commit("setposted", false);
+          dispatch("getPosts");
+          event("post", "delete");
+        } else {
+          commit("error", "Error deleting post");
+        }
+      });
+    },
   },
 });
 
