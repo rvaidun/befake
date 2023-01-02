@@ -18,6 +18,7 @@ export default defineComponent({
       comment: "",
       submitCommentLoading: false,
       hideSecondaryPhoto: false,
+      isOwner: false,
     };
   },
   methods: {
@@ -133,6 +134,9 @@ export default defineComponent({
           console.log("error in reverse geocoding");
         });
     }
+    if (this.$store.state.user.id === this.post.ownerID) {
+      this.isOwner = true;
+    }
   },
   components: { GoogleMapsModal, MyButton, MyInput, UploadRealmoji },
 });
@@ -172,6 +176,14 @@ export default defineComponent({
               {{ reverseGeo }}
             </span>
           </div>
+        </div>
+        <div>
+          <!-- Add trash icon -->
+          <img
+            class="fill-white cursor-pointer"
+            @click="this.$store.dispatch('deletePost')"
+            v-if="isOwner"
+            src="../../assets/icons8-trash-can.svg" />
         </div>
         <GoogleMapsModal v-if="showModal" @close="showModal = false">
           <template v-slot:body>
