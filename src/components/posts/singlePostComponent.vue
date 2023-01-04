@@ -19,6 +19,7 @@ export default defineComponent({
       submitCommentLoading: false,
       hideSecondaryPhoto: false,
       isOwner: false,
+      showEmojis: false,
     };
   },
   methods: {
