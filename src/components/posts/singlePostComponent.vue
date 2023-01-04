@@ -19,6 +19,7 @@ export default defineComponent({
       submitCommentLoading: false,
       hideSecondaryPhoto: false,
       isOwner: false,
+      showEmojis: false,
     };
   },
   methods: {
@@ -230,22 +231,24 @@ export default defineComponent({
           <span v-html="cleancomment(c.text)"></span>
         </div>
       </div>
+      <div class="text-center mt-4">
+        <button class="px-4 py-3 border rounded-md font-bold text-black bg-white" @click="showEmojis = !showEmojis">Show Emojis</button>
+        <div v-if="showEmojis" class="flex flex-col mt-4 ml-[25%]">
+          <div v-for="e in post.realMojis" class="flex items-center mb-2">
+            <div class="relative">
+              <img
+                referrerpolicy="no-referrer"
+                v-bind:src="e.uri"
+                class="w-24 rounded-[50%]" />
 
-      <div class="flex flex-col mt-4 ml-[25%]">
-        <div v-for="e in post.realMojis" class="flex items-center mb-2">
-          <div class="relative">
-            <img
-              referrerpolicy="no-referrer"
-              v-bind:src="e.uri"
-              class="w-24 rounded-[50%]" />
-
-            <span class="absolute top-[50px] left-[60px] text-5xl"
-              >{{ e.emoji }}
-            </span>
+              <span class="absolute top-[50px] left-[60px] text-5xl"
+                >{{ e.emoji }}
+              </span>
+            </div>
+            <span class="font-bold ml-4">{{ e.userName }}</span>
           </div>
-          <span class="font-bold ml-4">{{ e.userName }}</span>
+          <UploadRealmoji :postID="post.id" />
         </div>
-        <UploadRealmoji :postID="post.id" />
       </div>
     </div>
     <div class="flex">
