@@ -5,6 +5,7 @@ import GoogleMapsModal from "./GoogleMapsModal.vue";
 import MyButton from "../ui/Button.vue";
 import MyInput from "../ui/Input.vue";
 import UploadRealmoji from "./uploadRealmoji.vue";
+import Realmoji from "./Realmoji.vue";
 export default defineComponent({
   props: ["post"],
   data() {
@@ -139,7 +140,7 @@ export default defineComponent({
       this.isOwner = true;
     }
   },
-  components: { GoogleMapsModal, MyButton, MyInput, UploadRealmoji },
+  components: { GoogleMapsModal, MyButton, MyInput, UploadRealmoji, Realmoji },
 });
 </script>
 <style>
@@ -252,38 +253,16 @@ export default defineComponent({
       <div class="text-center mt-4">
         <div class="flex flex-col mt-4 ml-[25%]">
           <div v-if="this.post.realMojis.length > 2">
-            <div
+            <Realmoji
               v-for="e in post.realMojis.slice(0, 2)"
-              class="flex items-center mb-2">
-              <div class="relative">
-                <img
-                  referrerpolicy="no-referrer"
-                  v-bind:src="e.uri"
-                  class="w-24 rounded-[50%]" />
-
-                <span class="absolute top-[50px] left-[60px] text-5xl"
-                  >{{ e.emoji }}
-                </span>
-              </div>
-              <span class="font-bold ml-4">{{ e.userName }}</span>
-            </div>
+              :key="e.id"
+              :realmoji="e" />
             <Transition name="slide">
               <div v-if="showEmojis">
-                <div
+                <Realmoji
                   v-for="e in post.realMojis.slice(2)"
-                  class="flex items-center mb-2">
-                  <div class="relative">
-                    <img
-                      referrerpolicy="no-referrer"
-                      v-bind:src="e.uri"
-                      class="w-24 rounded-[50%]" />
-
-                    <span class="absolute top-[50px] left-[60px] text-5xl"
-                      >{{ e.emoji }}
-                    </span>
-                  </div>
-                  <span class="font-bold ml-4">{{ e.userName }}</span>
-                </div>
+                  :key="e.id"
+                  :realmoji="e" />
               </div>
             </Transition>
             <div class="flex items-center mb-2">
@@ -303,19 +282,7 @@ export default defineComponent({
             </div>
           </div>
           <div v-else>
-            <div v-for="e in post.realMojis" class="flex items-center mb-2">
-              <div class="relative">
-                <img
-                  referrerpolicy="no-referrer"
-                  v-bind:src="e.uri"
-                  class="w-24 rounded-[50%]" />
-
-                <span class="absolute top-[50px] left-[60px] text-5xl"
-                  >{{ e.emoji }}
-                </span>
-              </div>
-              <span class="font-bold ml-4">{{ e.userName }}</span>
-            </div>
+            <Realmoji v-for="e in post.realMojis" :key="e.id" :realmoji="e" />
           </div>
 
           <UploadRealmoji :postID="post.id" />
