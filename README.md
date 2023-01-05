@@ -39,3 +39,23 @@ npm run dev
 ```sh
 npm run lint
 ```
+
+# Contributing
+
+Thank you for considering contributing to Befake! We are grateful for your interest in helping to improve the project and make it even better.
+
+There are many ways that you can contribute to the project, including but not limited to:
+
+- Reporting bugs and submitting feature requests
+- Writing and reviewing documentation
+- Adding test cases
+- Writing code (fixing bugs, adding features, etc.)
+
+Before you start contributing, please take a moment to read through the following guidelines:
+
+- Familiarize yourself with the project and its goals.
+- Check the existing issues to see if your bug or feature request has already been reported. If it has, please add your thoughts to the existing issue.
+- Follow the project's code style and conventions.
+- Test your changes thoroughly before submitting a pull request.
+- Make sure your pull request targets the correct branch (usually master).
+- Thank you for your contributions! Every bug report, feature request, and code change helps make befake better for everyone.
