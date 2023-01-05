@@ -142,6 +142,24 @@ export default defineComponent({
   components: { GoogleMapsModal, MyButton, MyInput, UploadRealmoji },
 });
 </script>
+<style>
+.slide-enter-active,
+.slide-leave-active {
+  transition: max-height 1s;
+}
+
+.slide-enter-to,
+.slide-leave-from {
+  overflow: hidden;
+  max-height: 1000px;
+}
+
+.slide-enter-from,
+.slide-leave-to {
+  overflow: hidden;
+  max-height: 0;
+}
+</style>
 <template>
   <div
     class="block p-3 w-[100%] sm:w-auto bg-black sm:border sm:border-white rounded-lg shadow-md">
@@ -249,25 +267,28 @@ export default defineComponent({
               </div>
               <span class="font-bold ml-4">{{ e.userName }}</span>
             </div>
-            <div
-              v-if="showEmojis"
-              v-for="e in post.realMojis.slice(2)"
-              class="flex items-center mb-2">
-              <div class="relative">
-                <img
-                  referrerpolicy="no-referrer"
-                  v-bind:src="e.uri"
-                  class="w-24 rounded-[50%]" />
+            <Transition name="slide">
+              <div v-if="showEmojis">
+                <div
+                  v-for="e in post.realMojis.slice(2)"
+                  class="flex items-center mb-2">
+                  <div class="relative">
+                    <img
+                      referrerpolicy="no-referrer"
+                      v-bind:src="e.uri"
+                      class="w-24 rounded-[50%]" />
 
-                <span class="absolute top-[50px] left-[60px] text-5xl"
-                  >{{ e.emoji }}
-                </span>
+                    <span class="absolute top-[50px] left-[60px] text-5xl"
+                      >{{ e.emoji }}
+                    </span>
+                  </div>
+                  <span class="font-bold ml-4">{{ e.userName }}</span>
+                </div>
               </div>
-              <span class="font-bold ml-4">{{ e.userName }}</span>
-            </div>
+            </Transition>
             <div class="flex items-center mb-2">
               <button
-                class="px-4 py-3 border rounded-md font-bold text-black bg-white"
+                class="px-2 py-1 border rounded-md font-bold text-black bg-white"
                 @click="showEmojis = !showEmojis">
                 {{
                   (showEmojis ? "Hide" : "Show") +
