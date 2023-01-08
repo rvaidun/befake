@@ -1,6 +1,7 @@
 import { createApp } from "vue";
 import Home from "./pages/Home.vue";
 import About from "./pages/About.vue";
+import Friends from "./pages/Friends.vue";
 import "./index.css";
 import App from "./App.vue";
 import VueClipboard from "vue3-clipboard";
@@ -11,6 +12,7 @@ import store from "./store/index.js";
 const routes = [
   { path: "/", component: Home },
   { path: "/about", component: About },
+  { path: "/search", component: Friends },
 ];
 const router = createRouter({
   // 4. Provide the history implementation to use. We are using the hash history for simplicity here.
