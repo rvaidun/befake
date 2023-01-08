@@ -1,7 +1,6 @@
 <template>
-  <div class="flex justify-between mx-5">
-    <div class="flex-col items-center justify-center">
-      <div></div>
+  <div class="flex m-10 justify-around">
+    <div class="flex-col items-center">
       <div class="flex flex-col max-w-2xl space-y-3 items-center">
         <img
           src="https://raw.githubusercontent.com/rvaidun/rvaidun.github.io/main/images/myphoto.jpeg"
@@ -26,10 +25,12 @@
         <p class="text-base">
           I don't have plans on monetizing this site hence there will
           <span class="font-bold">never</span> be ads on this website at least
-          for the forseeable future. However I will happily accept donations.
-          Donation link can be seen in the navbar. If you are interested in
-          viewing the source code or making your own contributions to BeFake
-          check out our
+          for the forseeable future. However I will happily accept
+          <span class="font-bold text-red-600"
+            ><a href="https://ko-fi.com/rahulvaidun">donations</a></span
+          >
+          🤑🥰❤️. If you are interested in viewing the source code or making
+          your own contributions to BeFake check out our
           <a class="text-blue-600" href="https://github.com/rvaidun/befake"
             >github repository</a
           >
@@ -43,34 +44,12 @@
             <a href="https://www.instagram.com/rahulvaidun/">Instagram </a>
             <!-- email -->
             <a href="mailto:rahul.vaidun@gmail.com">Email</a>
+            <a href="https://ko-fi.com/rahulvaidun" class="font-bold"
+              >Donation</a
+            >
           </div>
         </div>
       </div>
-    </div>
-    <div>
-      <blockquote class="twitter-tweet" data-theme="dark">
-        <p lang="en" dir="ltr">
-          <a
-            href="https://twitter.com/hashtag/HappyNewYear2023?src=hash&amp;ref_src=twsrc%5Etfw"
-            >#HappyNewYear2023</a
-          >
-          to all 12.7k active users on
-          <a href="https://t.co/cAj1Svil6t">https://t.co/cAj1Svil6t</a> this
-          year! 🥂🎉<br /><br />never imagined this site getting so much
-          traction and am very grateful for those who spread the word 🫶🏽<br /><br />looking
-          forward to 100k active users in 2023 provided
-          <a href="https://twitter.com/BeReal_App?ref_src=twsrc%5Etfw"
-            >@BeReal_App</a
-          >
-          does not patch it.
-          <a href="https://t.co/Q9cBD96FgH">pic.twitter.com/Q9cBD96FgH</a>
-        </p>
-        &mdash; rahul (@rahulvaidun)
-        <a
-          href="https://twitter.com/rahulvaidun/status/1609527994711965702?ref_src=twsrc%5Etfw"
-          >January 1, 2023</a
-        >
-      </blockquote>
     </div>
   </div>
   <!-- <div
