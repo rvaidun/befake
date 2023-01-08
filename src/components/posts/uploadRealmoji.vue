@@ -95,6 +95,10 @@ export default {
             this.image.url = `https://${data.bucket}/${data.name}`;
             this.image.width = 500;
             this.image.height = 500;
+            this.image.path = `${data.bucket}/${data.name}`.replace(
+              "storage.bere.al/",
+              ""
+            );
           });
       });
     },
@@ -107,25 +111,22 @@ export default {
         console.log(err);
         return;
       }
-      const data = {
-        data: {
-          action: "add",
-          emoji: "🅱️",
-          ownerId: this.user.id,
-          photoId: this.postID,
-          type: "instant",
-          uri: this.image.url,
-        },
-      };
       fetch(
-        `${this.$store.state.proxyUrl}/https://us-central1-alexisbarreyat-bereal.cloudfunctions.net/sendRealMoji`,
+        `${this.$store.state.proxyUrl}/https://mobile.bereal.com/api/content/realmojis/instant?postId=${this.postID}&postUserId=${this.user.id}`,
         {
-          method: "POST",
+          method: "PUT",
           headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            "content-type": "application/json",
+            authorization: `Bearer ${localStorage.getItem("token")}`,
           },
-          body: JSON.stringify(data),
+          body: JSON.stringify({
+            media: {
+              path: this.image.path,
+              bucket: "storage.bere.al",
+              width: 500,
+              height: 500,
+            },
+          }),
         }
       )
         .then((res) => {
@@ -143,6 +144,8 @@ export default {
         })
         .catch((err) => {
           console.log(err);
+          this.loading = false;
+          this.$store.commit("error", "Failed to upload");
         });
     },
   },
@@ -155,15 +158,13 @@ export default {
     <div>
       <label :for="postID">
         <div
-          class="border-white w-24 h-24 rounded-[50%] border-2 cursor-pointer"
-        >
+          class="border-white w-24 h-24 rounded-[50%] border-2 cursor-pointer">
           <input
             type="file"
             :id="postID"
             style="display: none"
             name="image"
-            @change="onFileChange"
-          />
+            @change="onFileChange" />
 
           <div v-if="!file">
             <svg
@@ -172,23 +173,20 @@ export default {
               height="107"
               viewBox="0 0 107 107"
               fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
+              xmlns="http://www.w3.org/2000/svg">
               <rect
                 x="18.3429"
                 y="45.8571"
                 width="69.8048"
                 height="15.2857"
-                fill="white"
-              />
+                fill="white" />
               <rect
                 x="45.8571"
                 y="88.1476"
                 width="69.8048"
                 height="15.2857"
                 transform="rotate(-90 45.8571 88.1476)"
-                fill="white"
-              />
+                fill="white" />
             </svg>
           </div>
           <div v-else class="cursor-pointer">
