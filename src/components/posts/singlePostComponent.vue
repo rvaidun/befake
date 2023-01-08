@@ -44,72 +44,94 @@ export default defineComponent({
     submitComment() {
       this.submitCommentLoading = true;
       Promise.all([
-        fetch(
-          "https://us-central1-alexisbarreyat-bereal.cloudfunctions.net/setCommentPost",
-          {
-            method: "POST",
-            headers: {
-              accept: "*/*",
-              "content-type": "application/json",
-              "firebase-instance-id-token":
-                "dNImAUSRYk4dkZ_hv9N1lG:APA91bH3DP5Be4lqcvI_43kdpxl1vCxn5r2-AL9wJFN9T3lPB7mMM3P4rY5v6N2-B-yDvA41e3aDG1gEuMxNgF5qsC2IaXhHKgXK0z1RzYfT5SSMVzEljnzhRAzHiR8Z8hPVKBUOTZDi",
-              "accept-language": "en-US,en;q=0.9",
-              "user-agent":
-                "AlexisBarreyat.BeReal/0.24.0 iPhone/16.0.2 hw/iPhone14_5",
-              authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-            body: JSON.stringify({
-              data: {
-                userId: this.post.ownerID,
-                text: this.comment,
-              },
-            }),
-          }
-        )
-          .then((res) => res.json())
-          .then((data) => {
-            console.log(data);
+        // fetch(
+        //   `${this.$store.state.proxyUrl}/https://us-central1-alexisbarreyat-bereal.cloudfunctions.net/setCommentPost`,
+        //   {
+        //     method: "POST",
+        //     headers: {
+        //       accept: "*/*",
+        //       "content-type": "application/json",
+        //       "firebase-instance-id-token":
+        //         "dNImAUSRYk4dkZ_hv9N1lG:APA91bH3DP5Be4lqcvI_43kdpxl1vCxn5r2-AL9wJFN9T3lPB7mMM3P4rY5v6N2-B-yDvA41e3aDG1gEuMxNgF5qsC2IaXhHKgXK0z1RzYfT5SSMVzEljnzhRAzHiR8Z8hPVKBUOTZDi",
+        //       "accept-language": "en-US,en;q=0.9",
+        //       "user-agent":
+        //         "AlexisBarreyat.BeReal/0.24.0 iPhone/16.0.2 hw/iPhone14_5",
+        //       authorization: `Bearer ${localStorage.getItem("token")}`,
+        //     },
+        //     body: JSON.stringify({
+        //       data: {
+        //         userId: this.post.ownerID,
+        //         text: this.comment,
+        //       },
+        //     }),
+        //   }
+        // )
+        //   .then((res) => res.json())
+        //   .then((data) => {
+        //     console.log(data);
+        //   }),
+        // fetch(
+        //   `${this.$store.state.proxyUrl}/https://us-central1-alexisbarreyat-bereal.cloudfunctions.net/sendNewCommentPush`,
+        //   {
+        //     method: "POST",
+        //     headers: {
+        //       accept: "*/*",
+        //       "content-type": "application/json",
+        //       "firebase-instance-id-token":
+        //         "dNImAUSRYk4dkZ_hv9N1lG:APA91bH3DP5Be4lqcvI_43kdpxl1vCxn5r2-AL9wJFN9T3lPB7mMM3P4rY5v6N2-B-yDvA41e3aDG1gEuMxNgF5qsC2IaXhHKgXK0z1RzYfT5SSMVzEljnzhRAzHiR8Z8hPVKBUOTZDi",
+        //       "accept-language": "en-US,en;q=0.9",
+        //       "user-agent":
+        //         "AlexisBarreyat.BeReal/0.24.0 iPhone/16.0.2 hw/iPhone14_5",
+        //       authorization: `Bearer ${localStorage.getItem("token")}`,
+        //     },
+        //     body: JSON.stringify({
+        //       data: {
+        //         fromUserID: this.$store.state.user.id,
+        //         photoURL: this.$store.state.user.profilePicture
+        //           ? this.$store.state.user.profilePicture.url.replace(
+        //               "https://cdn.bereal.network/",
+        //               ""
+        //             )
+        //           : "",
+        //         fromUserName: this.$store.state.user.username,
+        //         photoID: this.post.id,
+        //         ownerID: this.post.ownerID,
+        //         text: this.caption,
+        //       },
+        //     }),
+        //   }
+        // )
+        //   .then((res) => res.json())
+        //   .then((data) => {
+        //     console.log(data);
+        //   }),
+      ]);
+      fetch(
+        `${this.$store.state.proxyUrl}/https://mobile.bereal.com/api/content/comments?postId=${this.post.id}&postUserId=${this.post.ownerID}`,
+        {
+          method: "POST",
+          headers: {
+            "content-type": "application/json",
+            authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+          body: JSON.stringify({
+            content: this.comment,
           }),
-        fetch(
-          "https://us-central1-alexisbarreyat-bereal.cloudfunctions.net/sendNewCommentPush",
-          {
-            method: "POST",
-            headers: {
-              accept: "*/*",
-              "content-type": "application/json",
-              "firebase-instance-id-token":
-                "dNImAUSRYk4dkZ_hv9N1lG:APA91bH3DP5Be4lqcvI_43kdpxl1vCxn5r2-AL9wJFN9T3lPB7mMM3P4rY5v6N2-B-yDvA41e3aDG1gEuMxNgF5qsC2IaXhHKgXK0z1RzYfT5SSMVzEljnzhRAzHiR8Z8hPVKBUOTZDi",
-              "accept-language": "en-US,en;q=0.9",
-              "user-agent":
-                "AlexisBarreyat.BeReal/0.24.0 iPhone/16.0.2 hw/iPhone14_5",
-              authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-            body: JSON.stringify({
-              data: {
-                fromUserID: this.$store.state.user.id,
-                photoURL: this.$store.state.user.profilePicture
-                  ? this.$store.state.user.profilePicture.url.replace(
-                      "https://cdn.bereal.network/",
-                      ""
-                    )
-                  : "",
-                fromUserName: this.$store.state.user.username,
-                photoID: this.post.id,
-                ownerID: this.post.ownerID,
-                text: this.caption,
-              },
-            }),
-          }
-        )
-          .then((res) => res.json())
-          .then((data) => {
-            console.log(data);
-          }),
-      ]).then(() => {
-        this.comment = "";
-        this.$store.dispatch("getPosts");
-        this.submitCommentLoading = false;
-      });
+        }
+      )
+        .then(() => {
+          this.comment = "";
+          this.$store.dispatch("getPosts");
+          this.submitCommentLoading = false;
+        })
+        .catch(() => {
+          this.submitCommentLoading = false;
+          this.comment = "";
+          this.$store.commit(
+            "error",
+            "An error occured while submitting your comment. Please try again later."
+          );
+        });
     },
   },
   computed: {
