@@ -10,6 +10,7 @@
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore"
   },
   "dependencies": {
+    "@fawmi/vue-google-maps": "0.9.67",
     "d3": "^7.6.1",
     "moment": "^2.29.4",
     "uuid": "^9.0.0",

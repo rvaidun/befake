@@ -47,7 +47,54 @@ const store = createStore({
       dispatch("getUser");
       commit("login");
     },
-    getPosts({ commit, state }) {
+    refresh({ commit, dispatch }) {
+      if (Date.now() > localStorage.getItem("expiration")) {
+        return fetch(
+          `${this.$store.state.proxyUrl}/https://securetoken.googleapis.com/v1/token?key=AIzaSyDwjfEeparokD7sXPVQli9NsTuhT6fJ6iA`,
+          {
+            method: "POST",
+            headers: {
+              "content-type": "application/json",
+              "x-firebase-client":
+                "apple-platform/ios apple-sdk/19F64 appstore/true deploy/cocoapods device/iPhone13,2 fire-abt/8.15.0 fire-analytics/8.15.0 fire-auth/8.15.0 fire-db/8.15.0 fire-dl/8.15.0 fire-fcm/8.15.0 fire-fiam/8.15.0 fire-fst/8.15.0 fire-fun/8.15.0 fire-install/8.15.0 fire-ios/8.15.0 fire-perf/8.15.0 fire-rc/8.15.0 fire-str/8.15.0 firebase-crashlytics/8.15.0 os-version/15.5 xcode/13F100",
+              accept: "*/*",
+              "x-client-version": "iOS/FirebaseSDK/8.15.0/FirebaseCore-iOS",
+              "x-firebase-client-log-type": "0",
+              "x-ios-bundle-identifier": "AlexisBarreyat.BeReal",
+              "accept-language": "en",
+              "user-agent":
+                "FirebaseAuth.iOS/8.15.0 AlexisBarreyat.BeReal/0.22.4 iPhone/15.5 hw/iPhone13_2",
+              "x-firebase-locale": "en",
+            },
+            body: JSON.stringify({
+              grant_type: "refresh_token",
+              refresh_token: localStorage.getItem("refreshToken"),
+            }),
+          }
+        )
+          .then((res) => {
+            return res.json();
+          })
+          .then((data) => {
+            localStorage.setItem("token", data.access_token);
+            localStorage.setItem(
+              "expiration",
+              Date.now() + data.expires_in * 1000
+            );
+            localStorage.setItem("refreshToken", data.refresh_token);
+            return Promise.resolve(true);
+          })
+          .catch((err) => {
+            console.log(err);
+            localStorage.clear();
+            commit("logout");
+            return Promise.reject(false);
+          });
+      } else {
+        return Promise.resolve(true);
+      }
+    },
+    async getPosts({ commit, state, dispatch }) {
       return new Promise((resolve, reject) => {
         fetch(`${state.proxyUrl}/https://mobile.bereal.com/api/feeds/friends`, {
           method: "GET",
@@ -80,21 +127,25 @@ const store = createStore({
           });
       });
     },
-    async getUser({ commit, state }) {
-      await fetch(`${state.proxyUrl}/https://mobile.bereal.com/api/person/me`, {
-        method: "GET",
-        headers: {
-          accept: "application/json",
-          "content-type": "application/json",
-          "user-agent": "BeReal/7242 CFNetwork/1333.0.4 Darwin/21.5.0",
-          "accept-language": "en-US,en;q=0.9",
-          authorization: localStorage.getItem("token") ?? "",
-        },
-      })
-        .then((res) => res.json())
-        .then((data) => {
-          commit("user", data);
-        });
+    async getUser({ commit, state, dispatch }) {
+      const x = await dispatch("refresh");
+      if (!x) return Promise.reject("error refreshing the token");
+      return dispatch("refresh").then((res) => {
+        fetch(`${state.proxyUrl}/https://mobile.bereal.com/api/person/me`, {
+          method: "GET",
+          headers: {
+            accept: "application/json",
+            "content-type": "application/json",
+            "user-agent": "BeReal/7242 CFNetwork/1333.0.4 Darwin/21.5.0",
+            "accept-language": "en-US,en;q=0.9",
+            authorization: localStorage.getItem("token") ?? "",
+          },
+        })
+          .then((res) => res.json())
+          .then((data) => {
+            commit("user", data);
+          });
+      });
     },
     async deletePost({ commit, state, dispatch }) {
       fetch(
