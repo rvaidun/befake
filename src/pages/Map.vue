@@ -35,6 +35,7 @@ img[src*="https://cdn.bereal.network/cdn-cgi"]
 </template>
 <script>
 import singlePostComponent from "../components/posts/singlePostComponent.vue";
+import sha256 from "js-sha256";
 export default {
   name: "App",
   data() {
@@ -49,13 +50,21 @@ export default {
     this.markers = this.$store.state.posts
       .filter((p) => p.location)
       .map((post) => {
-        console.log(post.user.profilePicture.url);
+        console.log(post);
+        console.log(
+          `https://www.gravatar.com/avatar/${sha256(post.user.id)}?d=retro`
+        );
         return {
           position: {
             lat: post.location._latitude,
             lng: post.location._longitude,
+            // gravatar identicon
           },
-          pic: post.user.profilePicture.url,
+          pic: post.user.profilePicture
+            ? post.user.profilePicture.url
+            : `https://www.gravatar.com/avatar/${sha256(
+                post.user.id
+              )}?d=wavatar`,
           post: post,
         };
       });
