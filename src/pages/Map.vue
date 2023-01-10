@@ -3,6 +3,10 @@ img[src*="https://cdn.bereal.network/cdn-cgi"]
 {
   border-radius: 50%;
 }
+img[src*="ui-avatars.com"] {
+  border-radius: 50%;
+}
+/* the image source has 'google' or 'facebook' in it */
 </style>
 <template>
   <GMapMap
@@ -51,9 +55,6 @@ export default {
       .filter((p) => p.location)
       .map((post) => {
         console.log(post);
-        console.log(
-          `https://www.gravatar.com/avatar/${sha256(post.user.id)}?d=retro`
-        );
         return {
           position: {
             lat: post.location._latitude,
@@ -62,9 +63,9 @@ export default {
           },
           pic: post.user.profilePicture
             ? post.user.profilePicture.url
-            : `https://www.gravatar.com/avatar/${sha256(
-                post.user.id
-              )}?d=wavatar`,
+            : `https://ui-avatars.com/api/?length=1&name=${
+                post.user.username
+              }&background=${sha256(post.user.username).substring(0, 3)}`,
           post: post,
         };
       });
