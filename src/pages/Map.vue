@@ -15,7 +15,7 @@ img[src*="https://cdn.bereal.network/cdn-cgi"]
       v-for="(m, index) in markers"
       :position="m.position"
       :clickable="true"
-      :draggable="true"
+      :draggable="false"
       :icon="{
         url: m.pic,
         scaledSize: { width: 50, height: 50 },
