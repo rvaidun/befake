@@ -47,10 +47,10 @@ const store = createStore({
       dispatch("getUser");
       commit("login");
     },
-    refresh({ commit, dispatch }) {
+    refresh({ commit, state }) {
       if (Date.now() > localStorage.getItem("expiration")) {
         return fetch(
-          `${this.$store.state.proxyUrl}/https://securetoken.googleapis.com/v1/token?key=AIzaSyDwjfEeparokD7sXPVQli9NsTuhT6fJ6iA`,
+          `${state.proxyUrl}/https://securetoken.googleapis.com/v1/token?key=AIzaSyDwjfEeparokD7sXPVQli9NsTuhT6fJ6iA`,
           {
             method: "POST",
             headers: {
