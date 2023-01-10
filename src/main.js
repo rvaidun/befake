@@ -2,17 +2,20 @@ import { createApp } from "vue";
 import Home from "./pages/Home.vue";
 import About from "./pages/About.vue";
 import Friends from "./pages/Friends.vue";
+import Map from "./pages/Map.vue";
 import "./index.css";
 import App from "./App.vue";
 import VueClipboard from "vue3-clipboard";
 import { createRouter, createWebHistory } from "vue-router";
 import VueGtag from "vue-gtag";
 import store from "./store/index.js";
+import VueGoogleMaps from "@fawmi/vue-google-maps";
 
 const routes = [
   { path: "/", component: Home },
   { path: "/about", component: About },
   { path: "/search", component: Friends },
+  { path: "/map", component: Map },
 ];
 const router = createRouter({
   // 4. Provide the history implementation to use. We are using the hash history for simplicity here.
@@ -33,5 +36,10 @@ app.use(
 app.use(VueClipboard, {
   autoSetContainer: true,
   appendToBody: true,
+});
+app.use(VueGoogleMaps, {
+  load: {
+    key: "AIzaSyCEYjMqd66uqA-4AXsI0V-1ZyLz23dFEyY",
+  },
 });
 app.mount("#app");
