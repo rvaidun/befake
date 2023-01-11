@@ -6,7 +6,6 @@ img[src*="https://cdn.bereal.network/cdn-cgi"]
 img[src*="ui-avatars.com"] {
   border-radius: 50%;
 }
-/* the image source has 'google' or 'facebook' in it */
 </style>
 <template>
   <GMapMap

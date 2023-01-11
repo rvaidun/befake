@@ -12,4 +12,15 @@ export default defineConfig({
       "@": fileURLToPath(new URL("./src", import.meta.url)),
     },
   },
+  // remove console logs
+  esbuild: {
+    drop: ["debugger"],
+    pure: [
+      "console.log",
+      "console.warn",
+      "console.error",
+      "console.debug",
+      "console.trace",
+    ],
+  },
 });
