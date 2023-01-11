@@ -22,7 +22,7 @@ export default {
     });
     Promise.all([
       this.$store.dispatch("getPosts"),
-      this.$store.dispatch("getUser"),
+      // this.$store.dispatch("getUser"),
       // fetch(
       //   "https://arcane-woodland-79412.herokuapp.com/https://mobile.bereal.com/api/relationships/friends",
       //   {
@@ -59,12 +59,14 @@ export default {
       //   }),
     ])
       .then(() => {
+        console.log("in then 62");
         this.isfetch = false;
       })
       .catch((err) => {
         console.log(err);
         localStorage.clear();
         this.$store.commit("logout");
+        this.$store.commit("error", "Something went wrong while getting posts");
       });
   },
   data() {

@@ -185,7 +185,7 @@ export default defineComponent({
         <img
           referrerpolicy="no-referrer"
           v-bind:src="post.photoURL"
-          class="relative top-0 left-0 rounded-md sm:w-[400px]"
+          class="relative top-0 left-0 rounded-md sm:w-[400px] w-[100%]"
           @click="hideSecondaryPhoto = !hideSecondaryPhoto" />
         <img
           referrerpolicy="no-referrer"
@@ -211,7 +211,7 @@ export default defineComponent({
         </div>
       </div>
       <div class="text-center mt-4">
-        <div class="flex flex-col mt-4 ml-[25%]">
+        <div class="flex flex-col mt-4 ml-[25%] w-[100%]">
           <div v-if="this.post.realMojis.length > 2">
             <Realmoji
               v-for="e in post.realMojis.slice(0, 2)"
