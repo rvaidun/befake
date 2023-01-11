@@ -32,9 +32,9 @@ export default {
   </div>
 </template> -->
 <template>
-  <nav class="text-white">
+  <nav class="text-white mb-3">
     <div class="max-w-8xl py-2 sm:mx-8 mr-2">
-      <div class="flex justify-between">
+      <div class="flex justify-between flex-col sm:flex-row">
         <div>
           <!-- logo -->
           <a
@@ -47,30 +47,43 @@ export default {
             <span class="text-3xl font-bold">BeFake</span>
           </a>
         </div>
+        <a
+          href="#"
+          @click="hideNavbar = !hideNavbar"
+          class="absolute top-[0.75rem] right-[1rem] sm:hidden flex flex-col justify-between w-[30px] h-[21px]">
+          <span class="h-[3px] w-[100%] bg-white rounded-lg"></span>
+          <span class="h-[3px] w-[100%] bg-white rounded-lg"></span>
+          <span class="h-[3px] w-[100%] bg-white rounded-lg"></span>
+        </a>
         <!-- links -->
-        <div class="flex items-center space-x-2">
-          <div>
-            <!-- <a
-            class="cursor-pointer text-black bg-white py-2 px-3 rounded-md font-bold"
-            href="https://ko-fi.com/rahulvaidun">
-            Donate
-          </a> -->
-            <a href="https://www.twitter.com/rahulvaidun/">
-              <img src="../../assets/Twitter.svg" class="h-8 w-8 mr-2" />
-            </a>
-            <span class="absolute text-xs font-bold text-red-500 rounded-full"
-              >NEW!</span
-            >
-          </div>
+        <div
+          class="items-end space-x-2 flex flex-col sm:flex sm:flex-row p-[.5rem]"
+          :class="{
+            hidden: hideNavbar,
+          }">
+          <a
+            href="https://www.twitter.com/rahulvaidun/"
+            class="cursor-pointer text-blue-400 sm:py-2 py-[0.6px] sm:px-3 rounded-md font-bold">
+            Twitter
+          </a>
 
           <a
-            class="cursor-pointer text-black bg-white py-2 px-3 rounded-md font-bold"
+            class="cursor-pointer text-red-500 sm:py-2 py-[0.6px] sm:px-3 rounded-md font-bold"
+            href="https://ko-fi.com/rahulvaidun">
+            Donate
+          </a>
+          <a
+            class="cursor-pointer text-white sm:py-2 py-[0.6px] sm:px-3 rounded-md font-bold"
+            href="/map">
+            Map
+          </a>
+          <a
+            class="cursor-pointer text-white sm:py-2 py-[0.6px] sm:px-3 rounded-md font-bold"
             href="/about">
             About
           </a>
-          <!-- <a href="/about" class="font-bold">About</a> -->
           <a
-            class="cursor-pointer text-black bg-white py-2 px-3 rounded-md font-bold"
+            class="cursor-pointer text-white sm:py-2 py-[0.6px] sm:px-3 rounded-md font-bold"
             @click="this.$store.commit('logout')"
             v-if="this.$store.state.loggedIn">
             Logout
