@@ -94,11 +94,6 @@ export default {
 };
 </script>
 <template>
-  <span class="flex justify-center m-4 text-2xl font-bold">
-    Check out the new page:
-    <a href="https://www.befake.fr/map" class="text-blue-500">befake.fr/map </a>
-    !
-  </span>
   <UploadPost v-if="!isfetch && !posts.posted" :user="user" />
   <div
     v-for="post in posts"
