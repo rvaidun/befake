@@ -8,13 +8,15 @@ import { event } from "vue-gtag";
 import NavbarVue from "../components/layout/Navbar.vue";
 import UploadPost from "../components/posts/uploadPost.vue";
 import { mapState } from "vuex";
+import UploadProfilePicture from "../components/posts/uploadProfilePicture.vue";
 export default {
   components: {
     singlePostComponentVue,
     PulseLoader,
     NavbarVue,
     UploadPost,
-  },
+    UploadProfilePicture
+},
   async beforeMount() {
     event("view_posts", {
       event_category: "posts",
@@ -94,6 +96,7 @@ export default {
 };
 </script>
 <template>
+  <UploadProfilePicture :user="user" />
   <UploadPost v-if="!isfetch && !posts.posted" :user="user" />
   <div
     v-for="post in posts"
