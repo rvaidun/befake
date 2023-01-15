@@ -18,6 +18,7 @@ export default {
         devicelocation: false,
       },
       public: false,
+      retakes: 0,
       caption: "",
     };
   },
@@ -119,7 +120,7 @@ export default {
       const payload = {
         isPublic: this.public,
         isLate: false,
-        retakeCounter: 0,
+        retakeCounter: this.retakes,
         takenAt: taken_at,
         // location: { latitude: "37.2297175", longitude: "-115.7911082" },
         // caption: "Testing 123123",
@@ -231,6 +232,13 @@ export default {
         v-model="caption"
       /> -->
       <MyInput v-model="caption" placeholder="Caption" />
+      <div class="d-flex align-items-center">
+        <input type="number"
+          class="border border-gray-300 rounded-lg p-2 text-black m-1"
+          v-model.number="retakes" 
+        />
+        <span class="m-1">Retakes</span>
+      </div>
       <input type="checkbox" class="m-1" v-model="public" />
       <span class="m-1">Public</span>
       <br />
