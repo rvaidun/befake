@@ -4,6 +4,7 @@ const store = createStore({
   state() {
     return {
       proxyUrl: "https://warm-scrubland-06418.herokuapp.com",
+      loginUrl: "https://us-central1-befake-623af.cloudfunctions.net/login",
       // proxyUrl: "http://localhost:8080",
       loggedIn: localStorage.getItem("token") ? true : false,
       posts: [],
