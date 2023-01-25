@@ -10,6 +10,11 @@ import UploadPost from "../components/posts/uploadPost.vue";
 import { mapState } from "vuex";
 import UploadProfilePicture from "../components/posts/uploadProfilePicture.vue";
 export default {
+  data() {
+    return {
+      realmojis: {}
+    }
+  },
   components: {
     singlePostComponentVue,
     PulseLoader,
@@ -63,6 +68,7 @@ export default {
       .then(() => {
         console.log("in then 62");
         this.isfetch = false;
+        this.realmojis = this.$store.state.user.realmojis
       })
       .catch((err) => {
         console.log(err);
@@ -79,12 +85,23 @@ export default {
       friends: [],
       memories: [],
       isfetch: true,
+      realmojis: []
     };
   },
   methods: {
     timenow() {
       return moment().format("MMMM Do YYYY, h:mm:ss a");
     },
+    async getRealmojis() {
+      fetch(`${this.$store.state.proxyURL}/https://mobile.bereal.com/api/person/me`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`
+        }
+      })
+      .then(res => res.json())
+      .then(data => this.realmojis = data.realmojis)
+    }
   },
   computed: {
     ...mapState({
@@ -92,7 +109,7 @@ export default {
       posts: (state) => state.posts,
       // userPosted: (state) => state.userPosted,
     }),
-  },
+  }
 };
 </script>
 <template>
@@ -102,7 +119,7 @@ export default {
     v-for="post in posts"
     v-if="!isfetch"
     class="flex flex-col justify-center items-center dark:text-white">
-    <single-post-component-vue :post="post" class="mt-10" />
+    <single-post-component-vue :post="post" :realmojis="realmojis" class="mt-10" />
   </div>
   <div v-else class="grid h-screen place-items-center">
     <pulse-loader color="white"></pulse-loader>

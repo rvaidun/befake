@@ -32,87 +32,25 @@ export default {
         this.primary.file = file;
       }
     },
-    async uploadPhotoToBeReal(file, secondary) {
-      // upload 2 files
-      console.log("user is ", this.user);
-      const n = `Photos/${this.user.id}/bereal/${uuidv4()}-${moment().unix()}${
-        secondary ? "-secondary" : ""
-      }.jpg`;
-      console.log(n);
-      const json_data = {
-        cacheControl: "public,max-age=172800",
-        contentType: "image/jpeg",
-        metadata: { type: "bereal" },
-        name: n,
-      };
-      const headers = {
-        "x-goog-upload-protocol": "resumable",
-        "x-goog-upload-command": "start",
-        "x-firebase-storage-version": "ios/9.4.0",
-        "x-goog-upload-content-type": "image/jpeg",
-        Authorization: `Firebase ${localStorage.getItem("token")}`,
-        "x-goog-upload-content-length": file.size.toString(),
-        "content-type": "application/json",
-        "x-firebase-gmpid": "1:405768487586:ios:28c4df089ca92b89",
-        "user-agent":
-          "AlexisBarreyat.BeReal/0.24.0 iPhone/16.0 hw/iPhone13_2 (GTMSUF/1)",
-      };
-      const params = {
-        uploadType: "resumable",
-        name: n,
-      };
-      const uri = `${
-        this.$store.state.proxyUrl
-      }/https://firebasestorage.googleapis.com/v0/b/storage.bere.al/o/${encodeURIComponent(
-        n
-      ).replace(/%20/g, "")}?`;
-      await fetch(uri + new URLSearchParams(params), {
-        method: "POST",
-        headers: headers,
-        body: JSON.stringify(json_data),
-      }).then(async (res) => {
-        // console log the status code
-        if (res.status !== 200) throw new Error("Failed to upload");
-        const uploadurl =
-          this.$store.state.proxyUrl +
-          "/" +
-          res.headers.get("x-goog-upload-url");
-        const headers2 = {
-          "x-goog-upload-command": "upload, finalize",
-          "x-goog-upload-protocol": "resumable",
-          "x-goog-upload-offset": "0",
-          "content-type": "image/jpeg",
-        };
-        await fetch(uploadurl, {
-          method: "PUT",
-          headers: headers2,
-          body: file,
-        })
-          .then((res) => {
-            if (res.status !== 200) throw new Error("Failed to upload");
-            return res.json();
-          })
-          .then((data) => {
-            console.log(data);
-            if (secondary) {
-              this.secondary.url = `https://${data.bucket}/${data.name}`;
-              this.secondary.width = 1500;
-              this.secondary.height = 2000;
-            } else {
-              this.primary.url = `https://${data.bucket}/${data.name}`;
-              this.primary.width = 1500;
-              this.primary.height = 2000;
-            }
-          });
-      });
-    },
     async submitPost() {
       this.loading = true;
+      let imagePath1 = ""
+      let imagePath2 = ""
       try {
-        await this.uploadPhotoToBeReal(this.primary.file, false);
-        await this.uploadPhotoToBeReal(this.secondary.file, true);
+        let response = await this.getSignedUploadURL(this.$type.post)
+        response = response.data
+        await this.putFileIntoGoogleStorage(this.primary.file, response["0"])
+        await this.putFileIntoGoogleStorage(this.secondary.file, response["1"])
+
+        imagePath1 = response["0"].path
+        imagePath2 = response["1"].path
+        this.primary.width = 1500
+        this.primary.height = 2000
+        this.secondary.width = 1500
+        this.secondary.height = 2000
       } catch (e) {
         this.loading = false;
+        console.log(e)
       }
       const nowt = moment();
       // moment to date string
@@ -128,13 +66,13 @@ export default {
           bucket: "storage.bere.al",
           height: this.primary.height,
           width: this.primary.width,
-          path: this.primary.url.replace("https://storage.bere.al/", ""),
+          path: imagePath1,
         },
         frontCamera: {
           bucket: "storage.bere.al",
           height: this.secondary.height,
           width: this.secondary.width,
-          path: this.secondary.url.replace("https://storage.bere.al/", ""),
+          path: imagePath2,
         },
       };
       if (this.location.postwithlocation) {
