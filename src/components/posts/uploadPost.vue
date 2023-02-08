@@ -61,18 +61,11 @@ export default {
           });
       };
 
-      const putPhoto = (url, file) => {
+      const putPhoto = (url, file, h) => {
         console.log(file);
         return fetch(`${this.$store.state.proxyUrl}/${url}`, {
           method: "PUT",
-          headers: {
-            accept: "*/*",
-            "content-type": "image/webp",
-            "cache-control": "public,max-age=172800",
-            "x-goog-content-length-range": "1,1048576",
-            "user-agent": "BeReal/8425 CFNetwork/1240.0.4 Darwin/20.6.0",
-            "accept-language": "en-us",
-          },
+          headers: h,
           body: file,
         })
           .then((res) => {
@@ -91,7 +84,7 @@ export default {
         const nowt = moment();
         const taken_at = nowt.format("YYYY-MM-DDTHH:mm:ss.SSSZ");
         var payload = {
-          visibilty: ["friends"],
+          visibility: ["friends"],
           isLate: false,
           retakeCounter: 0,
           takenAt: taken_at,
@@ -150,8 +143,16 @@ export default {
         getUploadUrl()
           .then((uploadUrlData) => {
             Promise.all([
-              putPhoto(uploadUrlData.data[0].url, primaryPhoto),
-              putPhoto(uploadUrlData.data[1].url, secondaryPhoto),
+              putPhoto(
+                uploadUrlData.data[0].url,
+                primaryPhoto,
+                uploadUrlData.data[0].headers
+              ),
+              putPhoto(
+                uploadUrlData.data[1].url,
+                secondaryPhoto,
+                uploadUrlData.data[1].headers
+              ),
             ]).then(() => postBeReal(uploadUrlData));
           })
           .then(() => {
@@ -169,6 +170,7 @@ export default {
       this.uploadPhotosToBeReal(this.primary.file, this.secondary.file)
         .then(() => {
           this.loading = false;
+          this.$store.dispatch("getPosts");
         })
         .catch((e) => {
           this.loading = false;
