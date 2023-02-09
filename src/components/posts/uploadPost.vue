@@ -57,6 +57,7 @@ export default {
             return res.json();
           })
           .then((data) => {
+            console.log(data);
             return data;
           });
       };
@@ -70,12 +71,13 @@ export default {
         })
           .then((res) => {
             if (!res.ok) {
-              console.error("Failed to upload photo");
+              throw new Error("Failed to upload photo");
             }
-            return res.text();
+            return res.json();
           })
           .then((data) => {
             console.log(data);
+            return data;
           });
       };
 
@@ -136,25 +138,22 @@ export default {
 
       return new Promise((resolve, reject) => {
         // if no photos to upload
+        let uud;
         if (!primaryPhoto && !secondaryPhoto) {
           reject("No photos to upload");
         }
 
         getUploadUrl()
           .then((uploadUrlData) => {
-            Promise.all([
-              putPhoto(
-                uploadUrlData.data[0].url,
-                primaryPhoto,
-                uploadUrlData.data[0].headers
-              ),
-              putPhoto(
-                uploadUrlData.data[1].url,
-                secondaryPhoto,
-                uploadUrlData.data[1].headers
-              ),
-            ]).then(() => postBeReal(uploadUrlData));
+            uud = uploadUrlData;
           })
+          .then(() => {
+            Promise.all([
+              putPhoto(uud.data[0].url, primaryPhoto, uud.data[0].headers),
+              putPhoto(uud.data[1].url, secondaryPhoto, uud.data[1].headers),
+            ]);
+          })
+          .then(() => postBeReal(uud))
           .then(() => {
             resolve("Successfully uploaded post to BeReal");
           })
