@@ -245,7 +245,7 @@ export default defineComponent({
             <Realmoji v-for="e in post.realMojis" :key="e.id" :realmoji="e" />
           </div>
 
-          <UploadRealmoji :postID="post.id" />
+          <UploadRealmoji :postID="post.id" :postOwnerID="post.ownerID" />
         </div>
       </div>
     </div>
