@@ -32,5 +32,14 @@
   <body>
     <div id="app"></div>
     <script type="module" src="/src/main.js"></script>
+    <script src="https://storage.ko-fi.com/cdn/scripts/overlay-widget.js"></script>
+    <script>
+      kofiWidgetOverlay.draw("rahulvaidun", {
+        type: "floating-chat",
+        "floating-chat.donateButton.text": "Support me",
+        "floating-chat.donateButton.background-color": "#d9534f",
+        "floating-chat.donateButton.text-color": "#fff",
+      });
+    </script>
   </body>
 </html>
