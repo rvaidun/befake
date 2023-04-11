@@ -25,152 +25,156 @@ export default {
   components: { UploadPostImage, MyButton, MyInput },
   methods: {
     async upload(file, secondary) {
-      console.log(file.size);
       if (secondary) {
         this.secondary.file = file;
       } else {
         this.primary.file = file;
       }
     },
-    async uploadPhotoToBeReal(file, secondary) {
-      // upload 2 files
-      console.log("user is ", this.user);
-      const n = `Photos/${this.user.id}/bereal/${uuidv4()}-${moment().unix()}${
-        secondary ? "-secondary" : ""
-      }.jpg`;
-      console.log(n);
-      const json_data = {
-        cacheControl: "public,max-age=172800",
-        contentType: "image/jpeg",
-        metadata: { type: "bereal" },
-        name: n,
-      };
-      const headers = {
-        "x-goog-upload-protocol": "resumable",
-        "x-goog-upload-command": "start",
-        "x-firebase-storage-version": "ios/9.4.0",
-        "x-goog-upload-content-type": "image/jpeg",
-        Authorization: `Firebase ${localStorage.getItem("token")}`,
-        "x-goog-upload-content-length": file.size.toString(),
-        "content-type": "application/json",
-        "x-firebase-gmpid": "1:405768487586:ios:28c4df089ca92b89",
-        "user-agent":
-          "AlexisBarreyat.BeReal/0.24.0 iPhone/16.0 hw/iPhone13_2 (GTMSUF/1)",
-      };
-      const params = {
-        uploadType: "resumable",
-        name: n,
-      };
-      const uri = `${
-        this.$store.state.proxyUrl
-      }/https://firebasestorage.googleapis.com/v0/b/storage.bere.al/o/${encodeURIComponent(
-        n
-      ).replace(/%20/g, "")}?`;
-      await fetch(uri + new URLSearchParams(params), {
-        method: "POST",
-        headers: headers,
-        body: JSON.stringify(json_data),
-      }).then(async (res) => {
-        // console log the status code
-        if (res.status !== 200) throw new Error("Failed to upload");
-        const uploadurl =
-          this.$store.state.proxyUrl +
-          "/" +
-          res.headers.get("x-goog-upload-url");
-        const headers2 = {
-          "x-goog-upload-command": "upload, finalize",
-          "x-goog-upload-protocol": "resumable",
-          "x-goog-upload-offset": "0",
-          "content-type": "image/jpeg",
-        };
-        await fetch(uploadurl, {
-          method: "PUT",
-          headers: headers2,
-          body: file,
-        })
+    uploadPhotosToBeReal(primaryPhoto, secondaryPhoto) {
+      // get upload url from BeReal
+      const getUploadUrl = () => {
+        return fetch(
+          `${this.$store.state.proxyUrl}/https://mobile.bereal.com/api/content/posts/upload-url?mimeType=image/webp`,
+          {
+            headers: {
+              authorization: `Bearer ${localStorage.getItem("token")}`,
+              accept: "*/*",
+              "bereal-platform": "iOS",
+              "bereal-os-version": "14.7.1",
+              "accept-language": "en-US;q=1.0",
+              "user-agent":
+                "BeReal/0.28.2 (AlexisBarreyat.BeReal; build:8425; iOS 14.7.1) 1.0.0/BRApiKit",
+              "bereal-app-language": "en-US",
+              "bereal-timezone": "America/Los_Angeles",
+              "bereal-device-language": "en",
+            },
+          }
+        )
           .then((res) => {
-            if (res.status !== 200) throw new Error("Failed to upload");
+            if (!res.ok) {
+              throw new Error("Failed to get upload url");
+            }
             return res.json();
           })
           .then((data) => {
             console.log(data);
-            if (secondary) {
-              this.secondary.url = `https://${data.bucket}/${data.name}`;
-              this.secondary.width = 1500;
-              this.secondary.height = 2000;
-            } else {
-              this.primary.url = `https://${data.bucket}/${data.name}`;
-              this.primary.width = 1500;
-              this.primary.height = 2000;
+            return data;
+          });
+      };
+
+      const putPhoto = (url, file, h) => {
+        console.log(file);
+        return fetch(`${this.$store.state.proxyUrl}/${url}`, {
+          method: "PUT",
+          headers: h,
+          body: file,
+        })
+          .then((res) => {
+            if (!res.ok) {
+              throw new Error("Failed to upload photo");
             }
+            return res.json();
+          })
+          .then((data) => {
+            console.log(data);
+            return data;
+          });
+      };
+
+      // post new request to bereals post endpoint
+      const postBeReal = (uploadUrlData) => {
+        const nowt = moment();
+        const taken_at = nowt.format("YYYY-MM-DDTHH:mm:ss.SSSZ");
+        var payload = {
+          visibility: ["friends"],
+          isLate: false,
+          retakeCounter: 0,
+          takenAt: taken_at,
+          backCamera: {
+            bucket: uploadUrlData.data[0].bucket,
+            height: 1500,
+            width: 2000,
+            path: uploadUrlData.data[0].path,
+          },
+          frontCamera: {
+            bucket: uploadUrlData.data[1].bucket,
+            height: 1500,
+            width: 2000,
+            path: uploadUrlData.data[1].path,
+          },
+        };
+        if (this.location.postwithlocation) {
+          payload.location = {
+            latitude: this.location.lat,
+            longitude: this.location.lng,
+          };
+        }
+        if (this.caption && this.caption !== "") {
+          payload.caption = this.caption;
+        }
+        return fetch(
+          `${this.$store.state.proxyUrl}/https://mobile.bereal.com/api/content/posts`,
+          {
+            method: "POST",
+            headers: {
+              "content-type": "application/json",
+              authorization: `Bearer ${localStorage.getItem("token")}`,
+              accept: "*/*",
+              "bereal-platform": "iOS",
+              "bereal-os-version": "14.7.1",
+              "accept-language": "en-US;q=1.0",
+              "bereal-app-language": "en-US",
+              "user-agent":
+                "BeReal/0.28.2 (AlexisBarreyat.BeReal; build:8425; iOS 14.7.1) 1.0.0/BRApiKit",
+              "bereal-timezone": "America/Los_Angeles",
+              "bereal-device-language": "en",
+            },
+            body: JSON.stringify(payload),
+          }
+        ).then((res) => {
+          if (!res.ok) throw new Error("Failed to post BeReal");
+        });
+      };
+
+      return new Promise((resolve, reject) => {
+        // if no photos to upload
+        let uud;
+        if (!primaryPhoto && !secondaryPhoto) {
+          reject("No photos to upload");
+        }
+
+        getUploadUrl()
+          .then((uploadUrlData) => {
+            uud = uploadUrlData;
+          })
+          .then(() => {
+            Promise.all([
+              putPhoto(uud.data[0].url, primaryPhoto, uud.data[0].headers),
+              putPhoto(uud.data[1].url, secondaryPhoto, uud.data[1].headers),
+            ]);
+          })
+          .then(() => postBeReal(uud))
+          .then(() => {
+            resolve("Successfully uploaded post to BeReal");
+          })
+          .catch((e) => {
+            reject(e);
           });
       });
     },
-    async submitPost() {
+
+    submitPost() {
       this.loading = true;
-      try {
-        await this.uploadPhotoToBeReal(this.primary.file, false);
-        await this.uploadPhotoToBeReal(this.secondary.file, true);
-      } catch (e) {
-        this.loading = false;
-      }
-      const nowt = moment();
-      // moment to date string
-      const taken_at = nowt.format("YYYY-MM-DDTHH:mm:ss.SSSZ");
-      const payload = {
-        isPublic: this.public,
-        isLate: false,
-        retakeCounter: this.retakes,
-        takenAt: taken_at,
-        // location: { latitude: "37.2297175", longitude: "-115.7911082" },
-        // caption: "Testing 123123",
-        backCamera: {
-          bucket: "storage.bere.al",
-          height: this.primary.height,
-          width: this.primary.width,
-          path: this.primary.url.replace("https://storage.bere.al/", ""),
-        },
-        frontCamera: {
-          bucket: "storage.bere.al",
-          height: this.secondary.height,
-          width: this.secondary.width,
-          path: this.secondary.url.replace("https://storage.bere.al/", ""),
-        },
-      };
-      if (this.location.postwithlocation) {
-        payload.location = {
-          latitude: this.location.lat,
-          longitude: this.location.lng,
-        };
-      }
-      if (this.caption && this.caption !== "") {
-        payload.caption = this.caption;
-      }
-      const h1 = {
-        "content-type": "application/json",
-        authorization: `${localStorage.getItem("token")}`,
-      };
-      fetch(
-        `${this.$store.state.proxyUrl}/https://mobile.bereal.com/api/content/post`,
-        {
-          method: "POST",
-          headers: h1,
-          body: JSON.stringify(payload),
-        }
-      )
-        .then((res) => {
-          if (res.status !== 201) throw new Error("Failed to upload");
-          return res.json();
-        })
-        .then((data) => {
-          console.log(data);
-          this.$store.dispatch("getPosts").then((d) => {
-            this.loading = false;
-          });
+      // call uploadPhotosToBeReal with primary and secondary images and on any response make loading false
+      this.uploadPhotosToBeReal(this.primary.file, this.secondary.file)
+        .then(() => {
+          this.loading = false;
+          this.$store.dispatch("getPosts");
         })
         .catch((e) => {
           this.loading = false;
-          console.log(e);
+          this.$store.commit("error", e);
         });
     },
     isNumber: function (evt) {
@@ -193,8 +197,7 @@ export default {
 <template>
   <div class="flex flex-col justify-center items-center dark:text-white">
     <div
-      class="block p-3 w-[100%] sm:p-6, sm:w-auto rounded-lg border border-gray-200 shadow-md bg-black"
-    >
+      class="block p-3 w-[100%] sm:p-6, sm:w-auto rounded-lg border border-gray-200 shadow-md bg-black">
       <div class="flex flex-col">
         <div class="flex items-center sm:justify-center">
           <img
@@ -209,8 +212,7 @@ export default {
             class="w-10 rounded-[50%] sm:w-28"
             @error="
               'https://ui-avatars.com/api/?length=1' + '&name=' + user.username
-            "
-          />
+            " />
           <div>
             <div>
               <span class="font-bold ml-3">
@@ -248,13 +250,11 @@ export default {
         <MyInput
           v-model="location.lat"
           placeholder="Latitude"
-          @keypress="isNumber($event)"
-        />
+          @keypress="isNumber($event)" />
         <MyInput
           v-model="location.lng"
           placeholder="Longitude"
-          @keypress="isNumber($event)"
-        />
+          @keypress="isNumber($event)" />
       </div>
       <!-- Submit -->
       <div class="flex justify-center">

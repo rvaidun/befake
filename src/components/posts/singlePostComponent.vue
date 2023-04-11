@@ -137,7 +137,7 @@ export default defineComponent({
                 '&background=' +
                 color
           "
-          class="w-10 rounded-[50%] sm:w-28"
+          class="w-10 rounded-[50%] sm:w-28 m-3"
           @error="
             'https://ui-avatars.com/api/?length=1' +
               '&name=' +
@@ -181,19 +181,22 @@ export default defineComponent({
           </template>
         </GoogleMapsModal>
       </div>
-      <div class="relative top-0 left-0">
-        <img
-          referrerpolicy="no-referrer"
-          v-bind:src="post.photoURL"
-          class="relative top-0 left-0 rounded-md sm:w-[400px] w-[100%]"
-          @click="hideSecondaryPhoto = !hideSecondaryPhoto" />
-        <img
-          referrerpolicy="no-referrer"
-          v-bind:src="post.secondaryPhotoURL"
-          class="absolute top-2 left-2 w-[35%] rounded-md border-2 border-black"
-          @click="reverseImages"
-          v-if="!hideSecondaryPhoto" />
+      <div class="flex items-center justify-center">
+        <div class="relative top-0 left-0 justify-center">
+          <img
+            referrerpolicy="no-referrer"
+            v-bind:src="post.photoURL"
+            class="relative top-0 left-0 rounded-md sm:w-[400px] w-[100%]"
+            @click="hideSecondaryPhoto = !hideSecondaryPhoto" />
+          <img
+            referrerpolicy="no-referrer"
+            v-bind:src="post.secondaryPhotoURL"
+            class="absolute top-2 left-2 w-[35%] rounded-md border-2 border-black"
+            @click="reverseImages"
+            v-if="!hideSecondaryPhoto" />
+        </div>
       </div>
+
       <div class="flex items-center font-bold mt-2 justify-center">
         <span> {{ postdate() }} </span>
         <span class="ml-3">Retakes - {{ post.retakeCounter }}</span>
@@ -245,7 +248,7 @@ export default defineComponent({
             <Realmoji v-for="e in post.realMojis" :key="e.id" :realmoji="e" />
           </div>
 
-          <UploadRealmoji :postID="post.id" />
+          <UploadRealmoji :postID="post.id" :postOwnerID="post.ownerID" />
         </div>
       </div>
     </div>
