@@ -74,9 +74,9 @@ export default defineComponent({
   },
   computed: {
     color() {
-      var letters = "0123456789ABCDEF";
-      var color = "";
-      for (var i = 0; i < 6; i++) {
+      let letters = "0123456789ABCDEF";
+      let color = "";
+      for (let i = 0; i < 6; i++) {
         color += letters[this.post.user.username.charCodeAt(i) % 16];
       }
       return color;
@@ -122,29 +122,24 @@ export default defineComponent({
 }
 </style>
 <template>
-  <div
-    class="block p-3 w-[100%] sm:w-auto bg-black sm:border sm:border-white rounded-lg shadow-md">
+  <div class="block p-3 w-[100%] sm:w-auto bg-black sm:border sm:border-white rounded-lg shadow-md">
     <div class="flex flex-col">
       <div class="flex items-center sm:justify-center">
-        <img
-          referrerpolicy="no-referrer"
-          v-bind:src="
-            post.user.profilePicture
-              ? post.user.profilePicture.url
-              : 'https://ui-avatars.com/api/?length=1' +
-                '&name=' +
-                post.user.username +
-                '&background=' +
-                color
-          "
-          class="w-10 rounded-[50%] sm:w-28 m-3"
-          @error="
-            'https://ui-avatars.com/api/?length=1' +
-              '&name=' +
-              post.user.username +
-              '&background=' +
-              color
-          " />
+        <img referrerpolicy="no-referrer" v-bind:src="
+          post.user.profilePicture
+            ? post.user.profilePicture.url
+            : 'https://ui-avatars.com/api/?length=1' +
+            '&name=' +
+            post.user.username +
+            '&background=' +
+            color
+        " class="w-10 rounded-[50%] sm:w-28 m-3" @error="
+  'https://ui-avatars.com/api/?length=1' +
+  '&name=' +
+  post.user.username +
+  '&background=' +
+  color
+" alt="pofilepic" />
         <div>
           <div>
             <span class="font-bold ml-3">
@@ -159,40 +154,24 @@ export default defineComponent({
         </div>
         <div>
           <!-- Add trash icon -->
-          <img
-            class="fill-white cursor-pointer"
-            @click="this.$store.dispatch('deletePost')"
-            v-if="isOwner"
-            src="../../assets/icons8-trash-can.svg" />
+          <img class="cursor-pointer h-6 ml-20" @click="this.$store.dispatch('deletePost')" v-if="isOwner"
+            src="../../assets/icons8-trash-can.svg" alt="trash" />
         </div>
         <GoogleMapsModal v-if="showModal" @close="showModal = false">
           <template v-slot:body>
-            <iframe
-              class="ml-3"
-              width="300"
-              height="300"
-              style="border: 0"
-              loading="lazy"
-              v-if="post.location"
-              allowfullscreen
-              referrerpolicy="no-referrer-when-downgrade"
-              :src="iframesrc">
+            <iframe class="ml-3" width="300" height="300" style="border: 0" loading="lazy" v-if="post.location"
+              allowfullscreen referrerpolicy="no-referrer-when-downgrade" :src="iframesrc">
             </iframe>
           </template>
         </GoogleMapsModal>
       </div>
       <div class="flex items-center justify-center">
         <div class="relative top-0 left-0 justify-center">
-          <img
-            referrerpolicy="no-referrer"
-            v-bind:src="post.photoURL"
+          <img referrerpolicy="no-referrer" v-bind:src="post.photoURL"
             class="relative top-0 left-0 rounded-md sm:w-[400px] w-[100%]"
             @click="hideSecondaryPhoto = !hideSecondaryPhoto" />
-          <img
-            referrerpolicy="no-referrer"
-            v-bind:src="post.secondaryPhotoURL"
-            class="absolute top-2 left-2 w-[35%] rounded-md border-2 border-black"
-            @click="reverseImages"
+          <img referrerpolicy="no-referrer" v-bind:src="post.secondaryPhotoURL"
+            class="absolute top-2 left-2 w-[35%] rounded-md border-2 border-black" @click="reverseImages"
             v-if="!hideSecondaryPhoto" />
         </div>
       </div>
@@ -216,22 +195,14 @@ export default defineComponent({
       <div class="text-center mt-4">
         <div class="flex flex-col mt-4 ml-[25%] w-[100%]">
           <div v-if="this.post.realMojis.length > 2">
-            <Realmoji
-              v-for="e in post.realMojis.slice(0, 2)"
-              :key="e.id"
-              :realmoji="e" />
+            <Realmoji v-for="e in post.realMojis.slice(0, 2)" :key="e.id" :realmoji="e" />
             <Transition name="slide">
               <div v-if="showEmojis">
-                <Realmoji
-                  v-for="e in post.realMojis.slice(2)"
-                  :key="e.id"
-                  :realmoji="e" />
+                <Realmoji v-for="e in post.realMojis.slice(2)" :key="e.id" :realmoji="e" />
               </div>
             </Transition>
             <div class="flex items-center mb-2">
-              <button
-                class="px-2 py-1 border rounded-md font-bold text-black bg-white"
-                @click="showEmojis = !showEmojis">
+              <button class="px-2 py-1 border rounded-md font-bold text-black bg-white" @click="showEmojis = !showEmojis">
                 {{
                   (showEmojis ? "Hide" : "Show") +
                   " " +
@@ -253,16 +224,14 @@ export default defineComponent({
       </div>
     </div>
     <div class="flex">
-      <MyInput v-model="comment" placeholder="Comment" />
+      <MyInput @enterPressed="submitComment" v-model="comment" placeholder="Comment" />
       <!-- <input
-        type="text"
-        class="border border-gray-300 rounded-lg w-full p-2 text-black m-1"
-        placeholder="Comment"
-        v-model="comment"
-      /> -->
-      <MyButton @clickedd="submitComment" :loading="submitCommentLoading"
-        >Submit</MyButton
-      >
+          type="text"
+          class="border border-gray-300 rounded-lg w-full p-2 text-black m-1"
+          placeholder="Comment"
+          v-model="comment"
+        /> -->
+      <MyButton @clickedd="submitComment" :loading="submitCommentLoading">Submit</MyButton>
     </div>
   </div>
 </template>
