@@ -224,7 +224,7 @@ export default defineComponent({
       </div>
     </div>
     <div class="flex">
-      <MyInput v-model="comment" placeholder="Comment" />
+      <MyInput @enterPressed="submitComment" v-model="comment" placeholder="Comment" />
       <!-- <input
           type="text"
           class="border border-gray-300 rounded-lg w-full p-2 text-black m-1"
