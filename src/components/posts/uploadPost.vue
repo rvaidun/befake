@@ -18,7 +18,7 @@ export default {
         devicelocation: false,
       },
       public: false,
-      retakes: 0,
+      retakes: null,
       caption: "",
     };
   },
@@ -84,12 +84,12 @@ export default {
 
       // post new request to bereals post endpoint
       const postBeReal = (uploadUrlData) => {
-        const nowt = moment();
-        const taken_at = nowt.format("YYYY-MM-DDTHH:mm:ss.SSSZ");
-        var payload = {
+
+        const taken_at = moment().format("YYYY-MM-DDTHH:mm:ss.SSSZ");
+        let payload = {
           visibility: ["friends"],
           isLate: false,
-          retakeCounter: 0,
+          retakeCounter: this.retakes,
           takenAt: taken_at,
           backCamera: {
             bucket: uploadUrlData.data[0].bucket,
@@ -177,42 +177,24 @@ export default {
           this.$store.commit("error", e);
         });
     },
-    isNumber: function (evt) {
-      evt = evt ? evt : window.event;
-      var charCode = evt.which ? evt.which : evt.keyCode;
-      if (
-        charCode > 31 &&
-        (charCode < 48 || charCode > 57) &&
-        charCode !== 46
-      ) {
-        evt.preventDefault();
-      } else {
-        return true;
-      }
-    },
   },
   computed: mapState(["user"]),
 };
 </script>
 <template>
   <div class="flex flex-col justify-center items-center dark:text-white">
-    <div
-      class="block p-3 w-[100%] sm:p-6, sm:w-auto rounded-lg border border-gray-200 shadow-md bg-black">
+    <div class="block p-3 w-[100%] sm:p-6, sm:w-auto rounded-lg border border-gray-200 shadow-md bg-black">
       <div class="flex flex-col">
         <div class="flex items-center sm:justify-center">
-          <img
-            referrerpolicy="no-referrer"
-            v-bind:src="
-              user.profilePicture
-                ? user.profilePicture.url
-                : 'https://ui-avatars.com/api/?length=1' +
-                  '&name=' +
-                  user.username
-            "
-            class="w-10 rounded-[50%] sm:w-28"
-            @error="
-              'https://ui-avatars.com/api/?length=1' + '&name=' + user.username
-            " />
+          <img referrerpolicy="no-referrer" v-bind:src="
+            user.profilePicture
+              ? user.profilePicture.url
+              : 'https://ui-avatars.com/api/?length=1' +
+              '&name=' +
+              user.username
+          " class="w-10 rounded-[50%] sm:w-28" @error="
+  'https://ui-avatars.com/api/?length=1' + '&name=' + user.username
+"  alt="avatar" />
           <div>
             <div>
               <span class="font-bold ml-3">
@@ -227,18 +209,9 @@ export default {
         <UploadPostImage :secondary="false" @upload="upload" class="m-1" />
         <UploadPostImage :secondary="true" @upload="upload" class="m-1" />
       </div>
-      <!-- <input
-        type="text"
-        class="border border-gray-300 rounded-lg w-full p-2 text-black m-1"
-        placeholder="Caption"
-        v-model="caption"
-      /> -->
-      <MyInput v-model="caption" placeholder="Caption" />
+      <MyInput v-model="caption" placeholder="Caption" typeOfInput="text" />
       <div class="d-flex align-items-center">
-        <input type="number"
-          class="border border-gray-300 rounded-lg p-2 text-black m-1"
-          v-model.number="retakes" 
-        />
+        <MyInput v-model="retakes" placeholder="Retakes" typeOfInput="number" />
         <span class="m-1">Retakes</span>
       </div>
       <input type="checkbox" class="m-1" v-model="public" />
@@ -247,14 +220,8 @@ export default {
       <input type="checkbox" class="m-1" v-model="location.postwithlocation" />
       <span class="m-1">Post with location</span>
       <div v-if="location.postwithlocation">
-        <MyInput
-          v-model="location.lat"
-          placeholder="Latitude"
-          @keypress="isNumber($event)" />
-        <MyInput
-          v-model="location.lng"
-          placeholder="Longitude"
-          @keypress="isNumber($event)" />
+        <MyInput v-model="location.lat" placeholder="Latitude" />
+        <MyInput v-model="location.lng" placeholder="Longitude" />
       </div>
       <!-- Submit -->
       <div class="flex justify-center">
