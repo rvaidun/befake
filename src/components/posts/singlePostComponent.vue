@@ -224,13 +224,7 @@ export default defineComponent({
       </div>
     </div>
     <div class="flex">
-      <MyInput @enterPressed="submitComment" v-model="comment" placeholder="Comment" />
-      <!-- <input
-          type="text"
-          class="border border-gray-300 rounded-lg w-full p-2 text-black m-1"
-          placeholder="Comment"
-          v-model="comment"
-        /> -->
+      <MyInput @enterPressed="submitComment" v-model="comment" placeholder="Comment" typeOfInput="text" />
       <MyButton @clickedd="submitComment" :loading="submitCommentLoading">Submit</MyButton>
     </div>
   </div>

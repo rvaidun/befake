@@ -43,7 +43,7 @@ export default {
 <template>
   <div class="flex flex-col items-center m-10">
     <div class="flex items-center">
-      <MyInput v-model="username" placeholder="Username" class="w-96" @enter="search" />
+      <MyInput v-model="username" placeholder="Username" typeOfInput="text" class="w-96" @enter="search" />
       <MyButton @click="search">Search</MyButton>
     </div>
     <div class="flex flex-col items-center">
