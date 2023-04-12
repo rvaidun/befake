@@ -42,8 +42,9 @@ export default {
             v-clipboard:copy="copy"
             href="/">
             <img
-              src="../../assets/favicon.ico"
-              class="h-12 w-12 rounded-full object-cover mr-2" />
+              src="../../assets/favicon.svg"
+              class="w-12 rounded-full object-cover mr-2" 
+              alt="logo"/>
             <span class="text-3xl font-bold">BeFake</span>
           </a>
         </div>
