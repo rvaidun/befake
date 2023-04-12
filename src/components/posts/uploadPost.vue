@@ -89,7 +89,7 @@ export default {
         let payload = {
           visibility: ["friends"],
           isLate: false,
-          retakeCounter: this.retakes,
+          retakeCounter: Number(this.retakes),
           takenAt: taken_at,
           backCamera: {
             bucket: uploadUrlData.data[0].bucket,
