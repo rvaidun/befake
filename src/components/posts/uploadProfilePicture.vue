@@ -92,7 +92,7 @@ export default {
           user.username +
           '&background=' +
           color
-      " />
+      "  alt = 'ppic'/>
 
 
     <div>
@@ -106,30 +106,10 @@ export default {
             @change="onFileChange" />
 
           <div v-if="!file">
-            <svg
-              class="w-24 h-24 rp"
-              width="107"
-              height="107"
-              viewBox="0 0 107 107"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg">
-              <rect
-                x="18.3429"
-                y="45.8571"
-                width="69.8048"
-                height="15.2857"
-                fill="white" />
-              <rect
-                x="45.8571"
-                y="88.1476"
-                width="69.8048"
-                height="15.2857"
-                transform="rotate(-90 45.8571 88.1476)"
-                fill="white" />
-            </svg>
+            <img src="../../assets/add.svg" alt = "plus" />
           </div>
           <div v-else class="cursor-pointer">
-            <img :src="imageurl" class="w-24 rounded-[50%]" />
+            <img :src="imageurl" class="w-24 rounded-[50%]" alt="zamkor" />
           </div>
         </div>
       </label>
