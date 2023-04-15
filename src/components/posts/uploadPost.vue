@@ -209,10 +209,9 @@ export default {
         <UploadPostImage :secondary="false" @upload="upload" class="m-1" />
         <UploadPostImage :secondary="true" @upload="upload" class="m-1" />
       </div>
-      <MyInput v-model="caption" placeholder="Caption" typeOfInput="text" />
       <div class="d-flex align-items-center">
+        <MyInput v-model="caption" placeholder="Caption" typeOfInput="text" />
         <MyInput v-model="retakes" placeholder="Retakes" typeOfInput="number" />
-        <span class="m-1">Retakes</span>
       </div>
       <input type="checkbox" class="m-1" v-model="public" />
       <span class="m-1">Public</span>

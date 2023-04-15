@@ -21,7 +21,7 @@ export default {
   <div class="border-2 border-white w-[350px] h-[485px]">
     <input type="file" accept="image/*" @change="onFileChange" />
     <div>
-      <img :src="imageurl" v-if="imageurl" />
+      <img :src="imageurl" v-if="imageurl"  alt = "realmoji"/>
     </div>
   </div>
 </template>
