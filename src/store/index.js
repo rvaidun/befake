@@ -187,7 +187,7 @@ const store = createStore({
     },
     async deletePost({ commit, state, dispatch }) {
       fetch(
-        `https://us-central1-alexisbarreyat-bereal.cloudfunctions.net/deleteBeReal`,
+        `${state.proxyUrl}/https://us-central1-alexisbarreyat-bereal.cloudfunctions.net/deleteBeReal`,
         {
           method: "POST",
           headers: {

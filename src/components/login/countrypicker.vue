@@ -1,5 +1,6 @@
 <script>
 import countries from "../../data/countries.js";
+// import modellist from "vue-search-select";
 export default {
   data() {
     return {
@@ -26,7 +27,7 @@ export default {
       :value="country.dialCode"
       class="border border-gray-300 rounded-lg w-full p-2 text-black m-1"
     >
-      {{ country.dialCode }}
+      {{ country.name}}
     </option>
   </select>
 </template>
