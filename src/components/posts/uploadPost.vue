@@ -35,7 +35,7 @@ export default {
       // get upload url from BeReal
       const getUploadUrl = () => {
         return fetch(
-          `${this.$store.state.proxyUrl}/https://mobile.bereal.com/api/content/posts/upload-url?mimeType=image/jpeg`,
+          `${this.$store.state.proxyUrl}/https://mobile.bereal.com/api/content/posts/upload-url?mimeType=image/webp`,
           {
             headers: {
               authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -140,9 +140,6 @@ export default {
       return new Promise((resolve, reject) => {
         // if no photos to upload
         let uud;
-        if (!primaryPhoto && !secondaryPhoto) {
-          reject("No photos to upload");
-        }
 
         getUploadUrl()
           .then((uploadUrlData) => {
@@ -167,6 +164,11 @@ export default {
     submitPost() {
       this.loading = true;
       // call uploadPhotosToBeReal with primary and secondary images and on any response make loading false
+      if (!this.primary.file && !this.secondary.file) {
+        this.loading = false;
+        this.$store.commit("error", "No photos to upload");
+        return;
+      }
       this.uploadPhotosToBeReal(this.primary.file, this.secondary.file)
         .then(() => {
           this.loading = false;
