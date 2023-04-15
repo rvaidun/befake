@@ -43,7 +43,13 @@ export default {
 <template>
   <div class="flex flex-col items-center m-10">
     <div class="flex items-center">
-      <MyInput v-model="username" placeholder="Username" typeOfInput="text" class="w-96" @enter="search" />
+      <MyInput
+        v-model="username"
+        placeholder="Username"
+        typeOfInput="text"
+        class="w-96"
+        @enter="search"
+      />
       <MyButton @click="search">Search</MyButton>
     </div>
     <div class="flex flex-col items-center">
@@ -52,11 +58,15 @@ export default {
       </div>
       <div v-for="i in profiles" :key="i.id">
         <div class="flex items-center gap-3">
-          <img :src="
-            i.profilePicture
-              ? i.profilePicture.url
-              : 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQotrbW-vxBRCZIOODdVJZ5NTaTjOnFveV500Dve9g&s'
-          " class="w-24 h-24 rounded-[50%]" alt="prof_pic"/>
+          <img
+            :src="
+              i.profilePicture
+                ? i.profilePicture.url
+                : 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQotrbW-vxBRCZIOODdVJZ5NTaTjOnFveV500Dve9g&s'
+            "
+            class="w-24 h-24 rounded-[50%]"
+            alt="prof_pic"
+          />
           <div class="flex flex-col">
             <div class="text-2xl">{{ i.username }}</div>
             <div class="text-xl">{{ i.mutualFriends }} mutual friends</div>

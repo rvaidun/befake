@@ -101,7 +101,8 @@ export default {
   <div
     v-for="post in posts"
     v-if="!isfetch"
-    class="flex flex-col justify-center items-center dark:text-white">
+    class="flex flex-col justify-center items-center dark:text-white"
+  >
     <single-post-component-vue :post="post" class="mt-10" />
   </div>
   <div v-else class="grid h-screen place-items-center">

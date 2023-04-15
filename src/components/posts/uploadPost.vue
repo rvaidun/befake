@@ -84,7 +84,6 @@ export default {
 
       // post new request to bereals post endpoint
       const postBeReal = (uploadUrlData) => {
-
         const taken_at = moment().format("YYYY-MM-DDTHH:mm:ss.SSSZ");
         let payload = {
           visibility: ["friends"],
@@ -183,18 +182,26 @@ export default {
 </script>
 <template>
   <div class="flex flex-col justify-center items-center dark:text-white">
-    <div class="block p-3 w-[100%] sm:p-6, sm:w-auto rounded-lg border border-gray-200 shadow-md bg-black">
+    <div
+      class="block p-3 w-[100%] sm:p-6, sm:w-auto rounded-lg border border-gray-200 shadow-md bg-black"
+    >
       <div class="flex flex-col">
         <div class="flex items-center sm:justify-center">
-          <img referrerpolicy="no-referrer" v-bind:src="
-          user.profilePicture
-            ? user.profilePicture.url
-            : 'https://ui-avatars.com/api/?length=1' +
-            '&name=' +
-            user.username
-            " class="w-10 rounded-[50%] sm:w-28" @error="
-  'https://ui-avatars.com/api/?length=1' + '&name=' + user.username
-    " alt="avatar" />
+          <img
+            referrerpolicy="no-referrer"
+            v-bind:src="
+              user.profilePicture
+                ? user.profilePicture.url
+                : 'https://ui-avatars.com/api/?length=1' +
+                  '&name=' +
+                  user.username
+            "
+            class="w-10 rounded-[50%] sm:w-28"
+            @error="
+              'https://ui-avatars.com/api/?length=1' + '&name=' + user.username
+            "
+            alt="avatar"
+          />
           <div>
             <div>
               <span class="font-bold ml-3">

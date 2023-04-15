@@ -149,7 +149,6 @@ export default {
 </script>
 <template>
   <div class="flex sm:flex-row flex-col justify-center items-center gap-3 p-3">
-
     <img
       referrerpolicy="no-referrer"
       v-bind:src="
@@ -168,21 +167,24 @@ export default {
           user.username +
           '&background=' +
           color
-      "  alt = 'ppic'/>
-
+      "
+      alt="ppic"
+    />
 
     <div>
       <label>
         <div
-          class="border-white w-24 h-24 rounded-[50%] border-2 cursor-pointer">
+          class="border-white w-24 h-24 rounded-[50%] border-2 cursor-pointer"
+        >
           <input
             type="file"
             style="display: none"
             name="image"
-            @change="onFileChange" />
+            @change="onFileChange"
+          />
 
           <div v-if="!file">
-            <img src="../../assets/add.svg" alt = "plus" />
+            <img src="../../assets/add.svg" alt="plus" />
           </div>
           <div v-else class="cursor-pointer">
             <img :src="imageurl" class="w-24 rounded-[50%]" alt="zamkor" />
@@ -191,9 +193,10 @@ export default {
       </label>
     </div>
 
-
     <div>
-      <MyButton @clickedd="submitProfilePicture" :loading="false">Update Profile Picture</MyButton>
+      <MyButton @clickedd="submitProfilePicture" :loading="false"
+        >Update Profile Picture</MyButton
+      >
     </div>
   </div>
 </template>
