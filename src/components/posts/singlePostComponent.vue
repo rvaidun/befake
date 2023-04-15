@@ -126,20 +126,20 @@ export default defineComponent({
     <div class="flex flex-col">
       <div class="flex items-center sm:justify-center">
         <img referrerpolicy="no-referrer" v-bind:src="
-          post.user.profilePicture
-            ? post.user.profilePicture.url
-            : 'https://ui-avatars.com/api/?length=1' +
-            '&name=' +
-            post.user.username +
-            '&background=' +
-            color
-        " class="w-10 rounded-[50%] sm:w-28 m-3" @error="
+        post.user.profilePicture
+          ? post.user.profilePicture.url
+          : 'https://ui-avatars.com/api/?length=1' +
+          '&name=' +
+          post.user.username +
+          '&background=' +
+          color
+          " class="w-10 rounded-[50%] sm:w-28 m-3" @error="
   'https://ui-avatars.com/api/?length=1' +
-  '&name=' +
-  post.user.username +
-  '&background=' +
-  color
-" alt="pofilepic" />
+    '&name=' +
+    post.user.username +
+    '&background=' +
+    color
+    " alt="pofilepic" />
         <div>
           <div>
             <span class="font-bold ml-3">
@@ -159,8 +159,8 @@ export default defineComponent({
         </div>
         <GoogleMapsModal v-if="showModal" @close="showModal = false">
           <template v-slot:body>
-            <iframe title="map" class="ml-3" width="300" height="300" style="border: 0" loading="lazy" v-if="post.location"
-              allowfullscreen referrerpolicy="no-referrer-when-downgrade" :src="iframesrc">
+            <iframe title="map" class="ml-3" width="300" height="300" style="border: 0" loading="lazy"
+              v-if="post.location" allowfullscreen referrerpolicy="no-referrer-when-downgrade" :src="iframesrc">
             </iframe>
           </template>
         </GoogleMapsModal>
@@ -169,10 +169,10 @@ export default defineComponent({
         <div class="relative top-0 left-0 justify-center">
           <img referrerpolicy="no-referrer" v-bind:src="post.photoURL"
             class="relative top-0 left-0 rounded-md sm:w-[400px] w-[100%]"
-            @click="hideSecondaryPhoto = !hideSecondaryPhoto" />
+            @click="hideSecondaryPhoto = !hideSecondaryPhoto" alt="postImage" />
           <img referrerpolicy="no-referrer" v-bind:src="post.secondaryPhotoURL"
             class="absolute top-2 left-2 w-[35%] rounded-md border-2 border-black" @click="reverseImages"
-            v-if="!hideSecondaryPhoto" />
+            v-if="!hideSecondaryPhoto" alt="postImage" />
         </div>
       </div>
 
