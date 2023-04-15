@@ -159,7 +159,7 @@ export default defineComponent({
         </div>
         <GoogleMapsModal v-if="showModal" @close="showModal = false">
           <template v-slot:body>
-            <iframe class="ml-3" width="300" height="300" style="border: 0" loading="lazy" v-if="post.location"
+            <iframe title="map" class="ml-3" width="300" height="300" style="border: 0" loading="lazy" v-if="post.location"
               allowfullscreen referrerpolicy="no-referrer-when-downgrade" :src="iframesrc">
             </iframe>
           </template>
