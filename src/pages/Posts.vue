@@ -15,8 +15,8 @@ export default {
     PulseLoader,
     NavbarVue,
     UploadPost,
-    UploadProfilePicture
-},
+    UploadProfilePicture,
+  },
   async beforeMount() {
     event("view_posts", {
       event_category: "posts",
@@ -96,7 +96,7 @@ export default {
 };
 </script>
 <template>
-  <UploadProfilePicture :user="user" />
+  <!-- <UploadProfilePicture :user="user" /> -->
   <UploadPost v-if="!isfetch && !posts.posted" :user="user" />
   <div
     v-for="post in posts"
