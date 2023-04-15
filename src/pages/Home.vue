@@ -11,6 +11,7 @@ export default {
 </script>
 
 <template>
+  <p>TEST</p>
   <loginComponent v-if="!this.$store.state.loggedIn" />
   <postsComponent v-else />
 </template>
