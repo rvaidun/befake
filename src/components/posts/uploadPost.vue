@@ -35,7 +35,7 @@ export default {
       // get upload url from BeReal
       const getUploadUrl = () => {
         return fetch(
-          `${this.$store.state.proxyUrl}/https://mobile.bereal.com/api/content/posts/upload-url?mimeType=image/webp`,
+          `${this.$store.state.proxyUrl}/https://mobile.bereal.com/api/content/posts/upload-url?mimeType=image/jpeg`,
           {
             headers: {
               authorization: `Bearer ${localStorage.getItem("token")}`,
