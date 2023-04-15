@@ -1477,4 +1477,4 @@ const countries = [
   },
 ];
 
-export default countries;
+export default countries.sort((a, b) => parseInt(a.dialCode.substring(1)) - parseInt(b.dialCode.substring(1)));;
