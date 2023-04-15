@@ -27,7 +27,7 @@ export default {
       :value="country.dialCode"
       class="border border-gray-300 rounded-lg w-full p-2 text-black m-1"
     >
-      {{ country.name}}
+      {{ country.name }}
     </option>
   </select>
 </template>

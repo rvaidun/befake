@@ -8,7 +8,6 @@
     @keyup.enter="this.$emit('enterPressed')"
     :placeholder="placeholder"
     class="border border-gray-300 rounded-lg w-full p-2 text-black m-1"
-
   />
 </template>
 
