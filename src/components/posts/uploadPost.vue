@@ -187,14 +187,14 @@ export default {
       <div class="flex flex-col">
         <div class="flex items-center sm:justify-center">
           <img referrerpolicy="no-referrer" v-bind:src="
-            user.profilePicture
-              ? user.profilePicture.url
-              : 'https://ui-avatars.com/api/?length=1' +
-              '&name=' +
-              user.username
-          " class="w-10 rounded-[50%] sm:w-28" @error="
+          user.profilePicture
+            ? user.profilePicture.url
+            : 'https://ui-avatars.com/api/?length=1' +
+            '&name=' +
+            user.username
+            " class="w-10 rounded-[50%] sm:w-28" @error="
   'https://ui-avatars.com/api/?length=1' + '&name=' + user.username
-"  alt="avatar" />
+    " alt="avatar" />
           <div>
             <div>
               <span class="font-bold ml-3">
