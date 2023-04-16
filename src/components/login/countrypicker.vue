@@ -12,7 +12,7 @@ export default {
       console.log(value);
       this.$emit("asdfasdf", value.dialCode);
       const papa = document.querySelector("div.vs__selected-options");
-      const flag = document.createElement("img")
+      const flag = document.createElement("img");
       flag.src = value.flag;
       flag.classList.add("w-auto");
       flag.classList.add("h-7");
@@ -23,23 +23,27 @@ export default {
       flag.classList.add("border-gray-300");
       papa.insertBefore(flag, papa.firstChild);
     },
-    rmFlag(){
-      document.querySelectorAll('.flag_icon').forEach(e => e.remove());
-    }
+    rmFlag() {
+      document.querySelectorAll(".flag_icon").forEach((e) => e.remove());
+    },
   },
   emits: ["asdfasdf"],
-
 };
 </script>
 
-
 <style>
 @import "vue-select/dist/vue-select.css";
-.vs__dropdown-toggle{
-  border:none;
+.vs__dropdown-toggle {
+  border: none;
 }
 </style>
 
 <template>
-  <v-select  placeholder="Choose your country" :options="countries" class="bg-white border border-gray-300 rounded-lg w-full p-1 text-black max-w-sm" @option:selected="selectCountry" @open = "rmFlag"/>
+  <v-select
+    placeholder="Choose your country"
+    :options="countries"
+    class="bg-white border border-gray-300 rounded-lg w-full p-1 text-black max-w-sm"
+    @option:selected="selectCountry"
+    @open="rmFlag"
+  />
 </template>
