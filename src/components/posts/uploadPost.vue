@@ -184,8 +184,7 @@ export default {
 <template>
   <div class="flex flex-col justify-center items-center dark:text-white">
     <div
-      class="block p-3 w-[100%] sm:p-6, sm:w-auto rounded-lg border border-gray-200 shadow-md bg-black"
-    >
+      class="block p-3 w-[100%] sm:p-6, sm:w-auto rounded-lg border border-gray-200 shadow-md bg-black">
       <div class="flex flex-col">
         <div class="flex items-center sm:justify-center">
           <img
@@ -201,8 +200,7 @@ export default {
             @error="
               'https://ui-avatars.com/api/?length=1' + '&name=' + user.username
             "
-            alt="avatar"
-          />
+            alt="avatar" />
           <div>
             <div>
               <span class="font-bold ml-3">
@@ -230,13 +228,11 @@ export default {
         <MyInput
           v-model="location.lat"
           placeholder="Latitude"
-          typeOfInput="number"
-        />
+          typeOfInput="number" />
         <MyInput
           v-model="location.lng"
           placeholder="Longitude"
-          typeOfInput="number"
-        />
+          typeOfInput="number" />
       </div>
       <!-- Submit -->
       <div class="flex justify-center">

@@ -5,24 +5,21 @@
       <h3 class="text-2xl font-bold mb-8">A BeReal Viewer</h3>
     </div>
     <div
-      class="flex items-center justify-center mt-[75%] flex-col sm:flex-row sm:mt-[15%]"
-    >
+      class="flex items-center justify-center mt-[75%] flex-col sm:flex-row sm:mt-[15%]">
       <VueCountryCode @asdfasdf="setCountryCode" />
       <MyInput
         @enterPressed="sendCode"
-        typeOfInput="number"
+        typeOfInput="text"
         v-model="phone"
         placeholder="Phone Number"
-        class="max-w-sm"
-      />
+        class="max-w-sm" />
       <MyButton @clickedd="sendCode" :loading="loading">Send</MyButton>
     </div>
   </div>
 
   <div v-else>
     <div
-      class="flex items-center justify-center mt-[75%] flex-col sm:flex-row sm:mt-[25%]"
-    >
+      class="flex items-center justify-center mt-[75%] flex-col sm:flex-row sm:mt-[25%]">
       <span class="mr-2 dark:text-white"
         >Enter the OTP sent to your phone number:
       </span>
@@ -31,8 +28,7 @@
         v-model="code"
         placeholder="123456"
         class="max-w-sm"
-        typeOfInput="number"
-      />
+        typeOfInput="number" />
       <MyButton @clickedd="verifyCode" :loading="loading">Verify</MyButton>
     </div>
   </div>

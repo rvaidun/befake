@@ -123,8 +123,7 @@ export default defineComponent({
 </style>
 <template>
   <div
-    class="block p-3 w-[100%] sm:w-auto bg-black sm:border sm:border-white rounded-lg shadow-md"
-  >
+    class="block p-3 w-[100%] sm:w-auto bg-black sm:border sm:border-white rounded-lg shadow-md">
     <div class="flex flex-col">
       <div class="flex items-center sm:justify-center">
         <img
@@ -146,8 +145,7 @@ export default defineComponent({
               '&background=' +
               color
           "
-          alt="pofilepic"
-        />
+          alt="pofilepic" />
         <div>
           <div>
             <span class="font-bold ml-3">
@@ -167,8 +165,7 @@ export default defineComponent({
             @click="this.$store.dispatch('deletePost')"
             v-if="isOwner"
             src="../../assets/icons8-trash-can.svg"
-            alt="trash"
-          />
+            alt="trash" />
         </div>
         <GoogleMapsModal v-if="showModal" @close="showModal = false">
           <template v-slot:body>
@@ -182,8 +179,7 @@ export default defineComponent({
               v-if="post.location"
               allowfullscreen
               referrerpolicy="no-referrer-when-downgrade"
-              :src="iframesrc"
-            >
+              :src="iframesrc">
             </iframe>
           </template>
         </GoogleMapsModal>
@@ -195,16 +191,14 @@ export default defineComponent({
             v-bind:src="post.photoURL"
             class="relative top-0 left-0 rounded-md sm:w-[400px] w-[100%]"
             @click="hideSecondaryPhoto = !hideSecondaryPhoto"
-            alt="postImage"
-          />
+            alt="postImage" />
           <img
             referrerpolicy="no-referrer"
             v-bind:src="post.secondaryPhotoURL"
             class="absolute top-2 left-2 w-[35%] rounded-md border-2 border-black"
             @click="reverseImages"
             v-if="!hideSecondaryPhoto"
-            alt="postImage"
-          />
+            alt="postImage" />
         </div>
       </div>
 
@@ -230,22 +224,19 @@ export default defineComponent({
             <Realmoji
               v-for="e in post.realMojis.slice(0, 2)"
               :key="e.id"
-              :realmoji="e"
-            />
+              :realmoji="e" />
             <Transition name="slide">
               <div v-if="showEmojis">
                 <Realmoji
                   v-for="e in post.realMojis.slice(2)"
                   :key="e.id"
-                  :realmoji="e"
-                />
+                  :realmoji="e" />
               </div>
             </Transition>
             <div class="flex items-center mb-2">
               <button
                 class="px-2 py-1 border rounded-md font-bold text-black bg-white"
-                @click="showEmojis = !showEmojis"
-              >
+                @click="showEmojis = !showEmojis">
                 {{
                   (showEmojis ? "Hide" : "Show") +
                   " " +
@@ -271,8 +262,7 @@ export default defineComponent({
         @enterPressed="submitComment"
         v-model="comment"
         placeholder="Comment"
-        typeOfInput="text"
-      />
+        typeOfInput="text" />
       <MyButton @clickedd="submitComment" :loading="submitCommentLoading"
         >Submit</MyButton
       >
