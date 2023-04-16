@@ -1,5 +1,6 @@
 <script>
 import countries from "../../data/countries.js";
+import defcountry from "../../data/usercountry.js";
 export default {
   data() {
     return {
@@ -9,7 +10,8 @@ export default {
   },
   methods: {
     selectCountry(value) {
-      console.log(value);
+      // console.log(value);
+      // console.log(this.selectedCountry);
       this.$emit("asdfasdf", value.dialCode);
       const papa = document.querySelector("div.vs__selected-options");
       const flag = document.createElement("img");
@@ -27,6 +29,10 @@ export default {
       document.querySelectorAll(".flag_icon").forEach((e) => e.remove());
     },
   },
+  async mounted() {
+    this.selectedCountry = await defcountry();
+    this.selectCountry(this.selectedCountry);
+  },
   emits: ["asdfasdf"],
 };
 </script>
@@ -41,6 +47,7 @@ export default {
 <template>
   <v-select
     placeholder="Choose your country"
+    v-model="selectedCountry"
     :options="countries"
     class="bg-white border border-gray-300 rounded-lg w-full p-1 text-black max-w-sm"
     @option:selected="selectCountry"
