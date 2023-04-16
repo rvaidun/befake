@@ -18,9 +18,9 @@ export default {
 </script>
 <style scoped>
 .githublogo::before {
-    content: url('../../assets/github-logo.svg');
-    display: inline-block;
-    width: 25px;
+  content: url("../../assets/github-logo.svg");
+  display: inline-block;
+  width: 25px;
 }
 </style>
 
