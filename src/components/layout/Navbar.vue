@@ -61,11 +61,11 @@ export default {
           :class="{
             hidden: hideNavbar,
           }">
-          <!-- <a
-            href="https://www.twitter.com/rahulvaidun/"
-            class="cursor-pointer text-blue-400 sm:py-2 py-[0.6px] sm:px-3 rounded-md font-bold">
-            Twitter
-          </a> -->
+          <a
+            href="https://github.com/rvaidun/berealviewer"
+            class="cursor-pointer text-blue-500 sm:py-2 py-[0.6px] sm:px-3 rounded-md font-bold">
+            Github
+          </a>
 
           <a
             class="cursor-pointer text-red-500 sm:py-2 py-[0.6px] sm:px-3 rounded-md font-bold"
