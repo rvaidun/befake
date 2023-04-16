@@ -1,9 +1,9 @@
 <style>
-img[src*="https://cdn.bereal.network/cdn-cgi"]
+.vue-map-container img[src*="https://cdn.bereal.network/Photos"]
 {
   border-radius: 50%;
 }
-img[src*="ui-avatars.com"] {
+.vue-map-containe img[src*="ui-avatars.com"] {
   border-radius: 50%;
 }
 </style>
@@ -13,7 +13,8 @@ img[src*="ui-avatars.com"] {
     :zoom="4"
     map-type-id="terrain"
     style="height: 100vh"
-    :options="mapStyles">
+    :options="mapStyles"
+  >
     <GMapMarker
       :key="index"
       v-for="(m, index) in markers"
@@ -27,11 +28,13 @@ img[src*="ui-avatars.com"] {
       @click="
         center = m.position;
         openMarker(index);
-      ">
+      "
+    >
       <GMapInfoWindow
         :closeclick="true"
         @closeclick="openMarker(null)"
-        :opened="openedMarkerID === index">
+        :opened="openedMarkerID === index"
+      >
         <singlePostComponent :post="m.post" class="" />
       </GMapInfoWindow>
     </GMapMarker>
