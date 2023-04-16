@@ -16,21 +16,14 @@ export default {
   },
 };
 </script>
-<!-- <template>
-  <div
-    class="bg-blue-300 flex py-2 dark:bg-blue-900 dark:text-white items-center"
-  >
-    <div class="mr-auto invisible"></div>
-    <div class="mr-auto">
-      <a class="sm:text-3xl font-bold">BeFake</a>
-    </div>
-    <a href="https://github.com/rvaidun/berealviewer" class="mr-3 fill-white">
-      <img src="../../assets/github-svgrepo-com.svg" class="fill-white" />
-    </a>
-    <MyButton >Copy Credentials</MyButton>
-    <MyButton @clickedd="this.$store.commit('logout')"> Logout </MyButton>
-  </div>
-</template> -->
+<style scoped>
+.githublogo::before {
+    content: url('../../assets/github-logo.svg');
+    display: inline-block;
+    width: 25px;
+}
+</style>
+
 <template>
   <nav class="text-white mb-3">
     <div class="max-w-8xl py-2 sm:mx-8 mr-2">
@@ -68,7 +61,7 @@ export default {
         >
           <a
             href="https://github.com/rvaidun/befake"
-            class="cursor-pointer text-blue-500 sm:py-2 py-[0.6px] sm:px-3 rounded-md font-bold"
+            class="cursor-pointer text-blue-500 sm:py-2 py-[0.6px] sm:px-3 rounded-md font-bold githublogo"
           >
             Github
           </a>
