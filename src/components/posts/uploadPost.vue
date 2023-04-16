@@ -69,17 +69,12 @@ export default {
           method: "PUT",
           headers: h,
           body: file,
-        })
-          .then((res) => {
-            if (!res.ok) {
-              throw new Error("Failed to upload photo");
-            }
-            return res.json();
-          })
-          .then((data) => {
-            console.log(data);
-            return data;
-          });
+        }).then((res) => {
+          if (!res.ok) {
+            throw new Error("Failed to upload photo");
+          }
+          return "success";
+        });
       };
 
       // post new request to bereals post endpoint
@@ -113,6 +108,7 @@ export default {
         if (this.caption && this.caption !== "") {
           payload.caption = this.caption;
         }
+        console.log(JSON.stringify(payload));
         return fetch(
           `${this.$store.state.proxyUrl}/https://mobile.bereal.com/api/content/posts`,
           {
@@ -140,31 +136,36 @@ export default {
       return new Promise((resolve, reject) => {
         // if no photos to upload
         let uud;
-        if (!primaryPhoto && !secondaryPhoto) {
-          reject("No photos to upload");
-        }
 
         getUploadUrl()
           .then((uploadUrlData) => {
             uud = uploadUrlData;
+            console.log(uud);
           })
-          .then(() => {
+          .then(() =>
             Promise.all([
               putPhoto(uud.data[0].url, primaryPhoto, uud.data[0].headers),
               putPhoto(uud.data[1].url, secondaryPhoto, uud.data[1].headers),
-            ]);
-          })
+            ])
+          )
           .then(() => postBeReal(uud))
-          .then(() => {
-            resolve("Successfully uploaded post to BeReal");
-          })
-          .catch((e) => {
-            reject(e);
-          });
+          .then(() => resolve("Successfully uploaded post to BeReal"))
+          .catch((e) => reject(e));
       });
     },
 
     submitPost() {
+      console.log(this.primary.file, this.secondary.file);
+      if (
+        this.primary.file === undefined ||
+        this.secondary.file === undefined
+      ) {
+        this.$store.commit(
+          "error",
+          "Primary and secondary images are required"
+        );
+        return;
+      }
       this.loading = true;
       // call uploadPhotosToBeReal with primary and secondary images and on any response make loading false
       this.uploadPhotosToBeReal(this.primary.file, this.secondary.file)
