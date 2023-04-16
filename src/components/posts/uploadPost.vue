@@ -227,8 +227,8 @@ export default {
       <input type="checkbox" class="m-1" v-model="location.postwithlocation" />
       <span class="m-1">Post with location</span>
       <div v-if="location.postwithlocation">
-        <MyInput v-model="location.lat" placeholder="Latitude" />
-        <MyInput v-model="location.lng" placeholder="Longitude" />
+        <MyInput v-model="location.lat" placeholder="Latitude" typeOfInput="number" />
+        <MyInput v-model="location.lng" placeholder="Longitude" typeOfInput="number" />
       </div>
       <!-- Submit -->
       <div class="flex justify-center">
