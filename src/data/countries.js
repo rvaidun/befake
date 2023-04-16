@@ -1477,12 +1477,11 @@ const countries = [
   },
 ];
 
-// there are some countries with the same dial code, i suggest to swich displaying from dial code to iso code in order to avoid confusion
 const sorter = (a, b) => {
-  let dialCodeA = a.dialCode.slice(1);
-  let dialCodeB = b.dialCode.slice(1);
-  return dialCodeA.localeCompare(dialCodeB);
+  return a.name.localeCompare(b.name);
 };
-
 countries.sort(sorter);
+countries.forEach((country) => {
+  country.label = `${country.name} (${country.dialCode})`;
+});
 export default countries;

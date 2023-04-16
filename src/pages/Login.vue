@@ -7,13 +7,7 @@
     <div
       class="flex items-center justify-center mt-[75%] flex-col sm:flex-row sm:mt-[15%]"
     >
-      <VueCountryCode @asdfasdf="setCountryCode" class="max-w-[100px]" />
-      <!-- <input
-        type="text"
-        placeholder="Phone Number"
-        v-model="phone"
-        class="border-black border-2 mr-2"
-      /> -->
+      <VueCountryCode @asdfasdf="setCountryCode" />
       <MyInput
         @enterPressed="sendCode"
         typeOfInput="number"
