@@ -15,6 +15,12 @@ export default {
         e.target.value = "";
         return;
       }
+      if (e.target.files[0].size < 1024) {
+        this.$store.commit("error", "File size too small. Min 1KB");
+        // clear file input
+        e.target.value = "";
+        return;
+      }
       this.file = e.target.files[0];
       this.imageurl = URL.createObjectURL(this.file);
       this.$emit("upload", this.file, this.secondary);
