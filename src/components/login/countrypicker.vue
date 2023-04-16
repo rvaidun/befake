@@ -44,6 +44,5 @@ export default {
     :options="countries"
     class="bg-white border border-gray-300 rounded-lg w-full p-1 text-black max-w-sm"
     @option:selected="selectCountry"
-    @open="rmFlag"
-  />
+    @open="rmFlag" />
 </template>

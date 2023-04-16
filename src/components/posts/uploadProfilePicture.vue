@@ -168,20 +168,17 @@ export default {
           '&background=' +
           color
       "
-      alt="ppic"
-    />
+      alt="ppic" />
 
     <div>
       <label>
         <div
-          class="border-white w-24 h-24 rounded-[50%] border-2 cursor-pointer"
-        >
+          class="border-white w-24 h-24 rounded-[50%] border-2 cursor-pointer">
           <input
             type="file"
             style="display: none"
             name="image"
-            @change="onFileChange"
-          />
+            @change="onFileChange" />
 
           <div v-if="!file">
             <img src="../../assets/add.svg" alt="plus" />

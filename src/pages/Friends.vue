@@ -48,8 +48,7 @@ export default {
         placeholder="Username"
         typeOfInput="text"
         class="w-96"
-        @enter="search"
-      />
+        @enter="search" />
       <MyButton @click="search">Search</MyButton>
     </div>
     <div class="flex flex-col items-center">
@@ -65,8 +64,7 @@ export default {
                 : 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQotrbW-vxBRCZIOODdVJZ5NTaTjOnFveV500Dve9g&s'
             "
             class="w-24 h-24 rounded-[50%]"
-            alt="prof_pic"
-          />
+            alt="prof_pic" />
           <div class="flex flex-col">
             <div class="text-2xl">{{ i.username }}</div>
             <div class="text-xl">{{ i.mutualFriends }} mutual friends</div>
