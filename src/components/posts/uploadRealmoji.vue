@@ -56,16 +56,12 @@ export default {
           method: "PUT",
           headers: h,
           body: file,
-        })
-          .then((res) => {
-            if (!res.ok) {
-              throw new Error("Failed to upload photo");
-            }
-            return res.json();
-          })
-          .then((data) => {
-            console.log(data);
-          });
+        }).then((res) => {
+          if (!res.ok) {
+            throw new Error("Failed to upload photo");
+          }
+          return "success";
+        });
       };
       const postRealmoji = (d) => {
         return fetch(
@@ -109,18 +105,13 @@ export default {
       };
 
       return new Promise((resolve, reject) => {
-        if (!file) {
-          reject("No file");
-        }
         let uud;
         getUploadUrl()
           .then((uploadUrlData) => {
             console.log(uploadUrlData);
             uud = uploadUrlData;
           })
-          .then(() => {
-            putPhoto(uud.data.url, file, uud.data.headers);
-          })
+          .then(() => putPhoto(uud.data.url, file, uud.data.headers))
           .then(() => postRealmoji(uud))
           .then(() => {
             resolve("Realmoji uploaded successfully!");
@@ -131,6 +122,10 @@ export default {
       });
     },
     async submitRealMoji() {
+      if (this.file === undefined || this.file === null) {
+        this.$store.commit("error", "No image selected");
+        return;
+      }
       this.loading = true;
       // call uploadPhotosToBeReal with primary and secondary images and on any response make loading false
       this.uploadPhotoToBeReal(this.file)
