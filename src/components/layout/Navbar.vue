@@ -64,10 +64,12 @@ export default {
           class="items-end space-x-2 flex flex-col sm:flex sm:flex-row p-[.5rem]"
           :class="{
             hidden: hideNavbar,
-          }">
+          }"
+        >
           <a
             href="https://github.com/rvaidun/befake"
-            class="cursor-pointer text-blue-500 sm:py-2 py-[0.6px] sm:px-3 rounded-md font-bold">
+            class="cursor-pointer text-blue-500 sm:py-2 py-[0.6px] sm:px-3 rounded-md font-bold"
+          >
             Github
           </a>
 
