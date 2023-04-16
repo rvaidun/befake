@@ -9,9 +9,14 @@ export default {
   },
   methods: {
     onFileChange(e) {
+      if (e.target.files[0].size > 1048576) {
+        this.$store.commit("error", "File size too large. Max 1MB");
+        // clear file input
+        e.target.value = "";
+        return;
+      }
       this.file = e.target.files[0];
       this.imageurl = URL.createObjectURL(this.file);
-      console.log("secondary is ", this.secondary);
       this.$emit("upload", this.file, this.secondary);
     },
   },
