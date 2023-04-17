@@ -61,12 +61,10 @@ export default {
       //   }),
     ])
       .then(() => {
-        console.log("in then 62");
         this.isfetch = false;
       })
       .catch((err) => {
         console.log(err);
-        localStorage.clear();
         this.$store.commit("logout");
         this.$store.commit("error", "Something went wrong while getting posts");
       });
@@ -96,7 +94,7 @@ export default {
 };
 </script>
 <template>
-  <!-- <UploadProfilePicture :user="user" /> -->
+  <UploadProfilePicture :user="user" />
   <UploadPost v-if="!isfetch && !posts.posted" :user="user" />
   <div
     v-for="post in posts"

@@ -6,14 +6,13 @@
     </div>
     <div
       class="flex items-center justify-center mt-[75%] flex-col sm:flex-row sm:mt-[15%]">
-      <VueCountryCode @asdfasdf="setCountryCode" class="max-w-[100px]" />
-      <!-- <input
-        type="text"
-        placeholder="Phone Number"
+      <VueCountryCode @asdfasdf="setCountryCode" />
+      <MyInput
+        @enterPressed="sendCode"
+        typeOfInput="text"
         v-model="phone"
-        class="border-black border-2 mr-2"
-      /> -->
-      <MyInput v-model="phone" placeholder="Phone Number" class="max-w-sm" />
+        placeholder="Phone Number"
+        class="max-w-sm" />
       <MyButton @clickedd="sendCode" :loading="loading">Send</MyButton>
     </div>
   </div>
@@ -24,7 +23,12 @@
       <span class="mr-2 dark:text-white"
         >Enter the OTP sent to your phone number:
       </span>
-      <MyInput v-model="code" placeholder="123456" class="max-w-sm" />
+      <MyInput
+        @enterPressed="verifyCode"
+        v-model="code"
+        placeholder="123456"
+        class="max-w-sm"
+        typeOfInput="number" />
       <MyButton @clickedd="verifyCode" :loading="loading">Verify</MyButton>
     </div>
   </div>
