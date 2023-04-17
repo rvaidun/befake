@@ -94,7 +94,7 @@ export default {
 };
 </script>
 <template>
-  <UploadProfilePicture :user="user" />
+  <!-- <UploadProfilePicture :user="user" /> -->
   <UploadPost v-if="!isfetch && !posts.posted" :user="user" />
   <div
     v-for="post in posts"
