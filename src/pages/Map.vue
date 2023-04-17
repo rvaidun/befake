@@ -1,9 +1,9 @@
 <style>
-img[src*="https://cdn.bereal.network/cdn-cgi"]
+.vue-map-container img[src*="https://cdn.bereal.network/Photos"]
 {
   border-radius: 50%;
 }
-img[src*="ui-avatars.com"] {
+.vue-map-containe img[src*="ui-avatars.com"] {
   border-radius: 50%;
 }
 </style>
