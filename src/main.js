@@ -1,4 +1,5 @@
 import { createApp } from "vue";
+import VueSelect from "vue-select";
 import Home from "./pages/Home.vue";
 import About from "./pages/About.vue";
 import Friends from "./pages/Friends.vue";
@@ -42,4 +43,5 @@ app.use(VueGoogleMaps, {
     key: "AIzaSyCEYjMqd66uqA-4AXsI0V-1ZyLz23dFEyY",
   },
 });
+app.component("v-select", VueSelect);
 app.mount("#app");
