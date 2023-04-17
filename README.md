@@ -10,13 +10,17 @@
 
    <!-- add an image -->
 
-   ![BeFake](images/post.png)
+   ![BeFake Posts](images/post.png)
 
-2. Upload your own posts
+2. Upload your own posts and realmoji reactions!
 
    You can also upload your own posts with photos from your camera roll, which will be visible to your friends. GIFs are also supported, meaning your BeReal can be a GIF! The BeFake client also supports custom location with longitude and latitude.
 
-   ![BeFake](images/upload.png)
+   ![BeFake Upload](images/upload.png)
+
+3. Interactive Map
+   See where your friends are posting from on an interactive map.The map is interactive, so you can zoom in and out, and move around. You can also click on a marker to see the details of the post in a popup on the map! Once logged in see [https://befake.fr/map](https://befake.fr/map) to see the map. Note: The map is does not work well on mobile devices.
+   ![BeFake Map](images/map.png)
 
 ## Development Setup
 
@@ -47,9 +51,7 @@ Thank you for considering contributing to Befake! We are grateful for your inter
 There are many ways that you can contribute to the project, including but not limited to:
 
 - Reporting bugs and submitting feature requests
-- Writing and reviewing documentation
-- Adding test cases
-- Writing code (fixing bugs, adding features, etc.)
+- Submitting pull requests for bug fixes and new features
 
 Before you start contributing, please take a moment to read through the following guidelines:
 
@@ -59,3 +61,7 @@ Before you start contributing, please take a moment to read through the followin
 - Test your changes thoroughly before submitting a pull request.
 - Make sure your pull request targets the correct branch (usually master).
 - Thank you for your contributions! Every bug report, feature request, and code change helps make befake better for everyone.
+
+# Donations
+
+This project is free and open source. If you would like to support the development of this project, you can donate to the project using the following link [https://ko-fi.com/rahulvaidun](https://ko-fi.com/rahulvaidun)
