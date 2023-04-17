@@ -5,7 +5,7 @@ export default {
     return {
       countries: countries,
       selectedCountry: this.$store.state.selectedCountry,
-      oldCountry:null,
+      oldCountry: null,
     };
   },
   methods: {
@@ -30,8 +30,8 @@ export default {
       document.querySelectorAll(".flag_icon").forEach((e) => e.remove());
       localStorage.setItem("previousCountry", null);
     },
-    retriveCC(){
-      if(this.oldCountry !== null){
+    retriveCC() {
+      if (this.oldCountry !== null) {
         this.selectCountry(this.oldCountry);
         this.selectedCountry = this.oldCountry;
       }
@@ -64,6 +64,7 @@ export default {
     v-model="selectedCountry"
     :options="countries"
     class="bg-white border border-gray-300 rounded-lg w-full p-1 text-black max-w-sm"
-    @open="rmFlag" @update:modelValue="rmFlag"
-    @close="retriveCC"/>
+    @open="rmFlag"
+    @update:modelValue="rmFlag"
+    @close="retriveCC" />
 </template>
