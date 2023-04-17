@@ -5,6 +5,7 @@ export default {
     return {
       countries: countries,
       selectedCountry: this.$store.state.selectedCountry,
+      oldCountry:null,
     };
   },
   methods: {
@@ -25,18 +26,25 @@ export default {
       papa.insertBefore(flag, papa.firstChild);
     },
     rmFlag() {
+      this.oldCountry = this.selectedCountry;
       document.querySelectorAll(".flag_icon").forEach((e) => e.remove());
+      localStorage.setItem("previousCountry", null);
+    },
+    retriveCC(){
+      if(this.oldCountry !== null){
+        this.selectCountry(this.oldCountry);
+        this.selectedCountry = this.oldCountry;
+      }
     },
   },
-  async mounted() {
-    // localStorage.setItem("previousCountry", "null");
-
+  mounted() {
     if (localStorage.getItem("previousCountry") !== "null") {
-      console.log("running this");
+      console.log(this.selectedCountry);
       const index = this.countries.findIndex(
         (e) => e.dialCode === localStorage.getItem("previousCountry")
       );
       this.selectCountry(this.countries[index]);
+      this.selectedCountry = this.countries[index];
     }
   },
   emits: ["asdfasdf"],
@@ -56,6 +64,6 @@ export default {
     v-model="selectedCountry"
     :options="countries"
     class="bg-white border border-gray-300 rounded-lg w-full p-1 text-black max-w-sm"
-    @option:selected="selectCountry"
-    @open="rmFlag" />
+    @open="rmFlag" @update:modelValue="rmFlag"
+    @close="retriveCC"/>
 </template>
