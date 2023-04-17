@@ -10,7 +10,8 @@ export default {
   },
   methods: {
     selectCountry(value) {
-      localStorage.setItem("previousCountry", value.dialCode);
+      console.log(value);
+      localStorage.setItem("previousCountry", value.isoCode);
       if (value === null) return;
       this.$emit("asdfasdf", value.dialCode);
       const papa = document.querySelector("div.vs__selected-options");
@@ -41,7 +42,7 @@ export default {
     if (localStorage.getItem("previousCountry") !== "null") {
       console.log(this.selectedCountry);
       const index = this.countries.findIndex(
-        (e) => e.dialCode === localStorage.getItem("previousCountry")
+        (e) => e.isoCode === localStorage.getItem("previousCountry")
       );
       this.selectCountry(this.countries[index]);
       this.selectedCountry = this.countries[index];
