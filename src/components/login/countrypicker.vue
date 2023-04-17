@@ -4,29 +4,68 @@ export default {
   data() {
     return {
       countries: countries,
-      selectedCountry: "+1",
+      selectedCountry: this.$store.state.selectedCountry,
+      oldCountry: null,
     };
   },
   methods: {
-    selectCountry(country) {
-      this.selectedCountry = country;
+    selectCountry(value) {
+      console.log(value);
+      localStorage.setItem("previousCountry", value.isoCode);
+      if (value === null) return;
+      this.$emit("asdfasdf", value.dialCode);
+      const papa = document.querySelector("div.vs__selected-options");
+      const flag = document.createElement("img");
+      flag.src = value.flag;
+      flag.classList.add("w-auto");
+      flag.classList.add("h-7");
+      flag.classList.add("flag_icon");
+      flag.classList.add("rounded");
+      flag.classList.add("mr-2");
+      flag.classList.add("border");
+      flag.classList.add("border-gray-300");
+      papa.insertBefore(flag, papa.firstChild);
+    },
+    rmFlag() {
+      this.oldCountry = this.selectedCountry;
+      document.querySelectorAll(".flag_icon").forEach((e) => e.remove());
+      localStorage.setItem("previousCountry", null);
+    },
+    retriveCC() {
+      if (this.oldCountry !== null) {
+        this.selectCountry(this.oldCountry);
+        this.selectedCountry = this.oldCountry;
+      }
     },
   },
+  mounted() {
+    if (localStorage.getItem("previousCountry") !== "null") {
+      console.log(this.selectedCountry);
+      const index = this.countries.findIndex(
+        (e) => e.isoCode === localStorage.getItem("previousCountry")
+      );
+      this.selectCountry(this.countries[index]);
+      this.selectedCountry = this.countries[index];
+    }
+  },
+  emits: ["asdfasdf"],
 };
 </script>
+
+<style>
+@import "vue-select/dist/vue-select.css";
+.vs__dropdown-toggle {
+  border: none;
+}
+</style>
+
 <template>
-  <select
+  <v-select
+    placeholder="Choose your country"
     v-model="selectedCountry"
-    @change="$emit('asdfasdf', selectedCountry)"
-    class="border border-gray-300 rounded-lg w-full p-2 text-black m-1"
-  >
-    <option
-      v-for="country in countries"
-      :key="country.isoCode"
-      :value="country.dialCode"
-      class="border border-gray-300 rounded-lg w-full p-2 text-black m-1"
-    >
-      {{ country.dialCode }}
-    </option>
-  </select>
+    :options="countries"
+    class="bg-white border border-gray-300 rounded-lg w-full p-1 text-black max-w-sm"
+    @open="rmFlag"
+    @update:modelValue="rmFlag"
+    @close="retriveCC" />
 </template>
