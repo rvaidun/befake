@@ -1,17 +1,16 @@
 <script>
 import countries from "../../data/countries.js";
-import defcountry from "../../data/usercountry.js";
 export default {
   data() {
     return {
       countries: countries,
-      selectedCountry: null,
+      selectedCountry: this.$store.state.selectedCountry,
     };
   },
   methods: {
     selectCountry(value) {
-      // console.log(value);
-      // console.log(this.selectedCountry);
+      localStorage.setItem("previousCountry", value.dialCode);
+      if (value === null) return;
       this.$emit("asdfasdf", value.dialCode);
       const papa = document.querySelector("div.vs__selected-options");
       const flag = document.createElement("img");
@@ -30,8 +29,15 @@ export default {
     },
   },
   async mounted() {
-    this.selectedCountry = await defcountry();
-    this.selectCountry(this.selectedCountry);
+    // localStorage.setItem("previousCountry", "null");
+
+    if (localStorage.getItem("previousCountry") !== "null") {
+      console.log("running this");
+      const index = this.countries.findIndex(
+        (e) => e.dialCode === localStorage.getItem("previousCountry")
+      );
+      this.selectCountry(this.countries[index]);
+    }
   },
   emits: ["asdfasdf"],
 };
