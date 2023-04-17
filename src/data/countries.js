@@ -1477,4 +1477,11 @@ const countries = [
   },
 ];
 
-export default countries.sort((a, b) => parseInt(a.dialCode.substring(1)) - parseInt(b.dialCode.substring(1)));;
+const sorter = (a, b) => {
+  return a.name.localeCompare(b.name);
+};
+countries.sort(sorter);
+countries.forEach((country) => {
+  country.label = `${country.name} (${country.dialCode})`;
+});
+export default countries;

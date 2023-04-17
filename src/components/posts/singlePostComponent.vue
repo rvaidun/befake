@@ -74,9 +74,9 @@ export default defineComponent({
   },
   computed: {
     color() {
-      var letters = "0123456789ABCDEF";
-      var color = "";
-      for (var i = 0; i < 6; i++) {
+      let letters = "0123456789ABCDEF";
+      let color = "";
+      for (let i = 0; i < 6; i++) {
         color += letters[this.post.user.username.charCodeAt(i) % 16];
       }
       return color;
@@ -144,7 +144,8 @@ export default defineComponent({
               post.user.username +
               '&background=' +
               color
-          " />
+          "
+          alt="pofilepic" />
         <div>
           <div>
             <span class="font-bold ml-3">
@@ -160,14 +161,16 @@ export default defineComponent({
         <div>
           <!-- Add trash icon -->
           <img
-            class="fill-white cursor-pointer"
+            class="cursor-pointer h-6 ml-20"
             @click="this.$store.dispatch('deletePost')"
             v-if="isOwner"
-            src="../../assets/icons8-trash-can.svg" />
+            src="../../assets/icons8-trash-can.svg"
+            alt="trash" />
         </div>
         <GoogleMapsModal v-if="showModal" @close="showModal = false">
           <template v-slot:body>
             <iframe
+              title="map"
               class="ml-3"
               width="300"
               height="300"
@@ -187,13 +190,15 @@ export default defineComponent({
             referrerpolicy="no-referrer"
             v-bind:src="post.photoURL"
             class="relative top-0 left-0 rounded-md sm:w-[400px] w-[100%]"
-            @click="hideSecondaryPhoto = !hideSecondaryPhoto" />
+            @click="hideSecondaryPhoto = !hideSecondaryPhoto"
+            alt="postImage" />
           <img
             referrerpolicy="no-referrer"
             v-bind:src="post.secondaryPhotoURL"
             class="absolute top-2 left-2 w-[35%] rounded-md border-2 border-black"
             @click="reverseImages"
-            v-if="!hideSecondaryPhoto" />
+            v-if="!hideSecondaryPhoto"
+            alt="postImage" />
         </div>
       </div>
 
@@ -253,13 +258,11 @@ export default defineComponent({
       </div>
     </div>
     <div class="flex">
-      <MyInput v-model="comment" placeholder="Comment" />
-      <!-- <input
-        type="text"
-        class="border border-gray-300 rounded-lg w-full p-2 text-black m-1"
-        placeholder="Comment"
+      <MyInput
+        @enterPressed="submitComment"
         v-model="comment"
-      /> -->
+        placeholder="Comment"
+        typeOfInput="text" />
       <MyButton @clickedd="submitComment" :loading="submitCommentLoading"
         >Submit</MyButton
       >

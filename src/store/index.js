@@ -28,7 +28,10 @@ const store = createStore({
       }, 5000);
     },
     logout(state) {
-      localStorage.clear();
+      localStorage.removeItem("token");
+      localStorage.removeItem("expiration");
+      localStorage.removeItem("refreshToken");
+      localStorage.removeItem("phone");
       state.loggedIn = false;
     },
     login(state) {

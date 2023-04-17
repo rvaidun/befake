@@ -18,7 +18,7 @@ export default {
         devicelocation: false,
       },
       public: false,
-      retakes: 0,
+      retakes: null,
       caption: "",
     };
   },
@@ -79,12 +79,11 @@ export default {
 
       // post new request to bereals post endpoint
       const postBeReal = (uploadUrlData) => {
-        const nowt = moment();
-        const taken_at = nowt.format("YYYY-MM-DDTHH:mm:ss.SSSZ");
-        var payload = {
+        const taken_at = moment().format("YYYY-MM-DDTHH:mm:ss.SSSZ");
+        let payload = {
           visibility: ["friends"],
           isLate: false,
-          retakeCounter: 0,
+          retakeCounter: Number(this.retakes),
           takenAt: taken_at,
           backCamera: {
             bucket: uploadUrlData.data[0].bucket,
@@ -178,19 +177,6 @@ export default {
           this.$store.commit("error", e);
         });
     },
-    isNumber: function (evt) {
-      evt = evt ? evt : window.event;
-      var charCode = evt.which ? evt.which : evt.keyCode;
-      if (
-        charCode > 31 &&
-        (charCode < 48 || charCode > 57) &&
-        charCode !== 46
-      ) {
-        evt.preventDefault();
-      } else {
-        return true;
-      }
-    },
   },
   computed: mapState(["user"]),
 };
@@ -213,7 +199,8 @@ export default {
             class="w-10 rounded-[50%] sm:w-28"
             @error="
               'https://ui-avatars.com/api/?length=1' + '&name=' + user.username
-            " />
+            "
+            alt="avatar" />
           <div>
             <div>
               <span class="font-bold ml-3">
@@ -228,19 +215,9 @@ export default {
         <UploadPostImage :secondary="false" @upload="upload" class="m-1" />
         <UploadPostImage :secondary="true" @upload="upload" class="m-1" />
       </div>
-      <!-- <input
-        type="text"
-        class="border border-gray-300 rounded-lg w-full p-2 text-black m-1"
-        placeholder="Caption"
-        v-model="caption"
-      /> -->
-      <MyInput v-model="caption" placeholder="Caption" />
       <div class="d-flex align-items-center">
-        <input
-          type="number"
-          class="border border-gray-300 rounded-lg p-2 text-black m-1"
-          v-model.number="retakes" />
-        <span class="m-1">Retakes</span>
+        <MyInput v-model="caption" placeholder="Caption" typeOfInput="text" />
+        <MyInput v-model="retakes" placeholder="Retakes" typeOfInput="number" />
       </div>
       <input type="checkbox" class="m-1" v-model="public" />
       <span class="m-1">Public</span>
@@ -251,11 +228,11 @@ export default {
         <MyInput
           v-model="location.lat"
           placeholder="Latitude"
-          @keypress="isNumber($event)" />
+          typeOfInput="number" />
         <MyInput
           v-model="location.lng"
           placeholder="Longitude"
-          @keypress="isNumber($event)" />
+          typeOfInput="number" />
       </div>
       <!-- Submit -->
       <div class="flex justify-center">
