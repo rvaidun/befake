@@ -3,7 +3,7 @@ import MyButton from "../ui/Button.vue";
 // importing reacttoall.vue
 import ReactToAll from "../ui/reactToAll.vue";
 export default {
-  components: { MyButton, ReactToAll},
+  components: { MyButton, ReactToAll },
   data() {
     return {
       copy: JSON.stringify({
