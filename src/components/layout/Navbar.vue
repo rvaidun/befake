@@ -65,8 +65,8 @@ export default {
             href="https://ko-fi.com/rahulvaidun">
             Donate
           </a>
-          
-          <react-to-all v-if="this.$store.state.loggedIn"/>
+
+          <react-to-all v-if="this.$store.state.loggedIn" />
 
           <a
             class="cursor-pointer text-white sm:py-2 py-[0.6px] sm:px-3 rounded-md font-bold"
