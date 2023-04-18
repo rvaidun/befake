@@ -252,7 +252,10 @@ export default defineComponent({
           <div v-else>
             <Realmoji v-for="e in post.realMojis" :key="e.id" :realmoji="e" />
           </div>
-          <UploadRealmoji v-if="!isOwner" :postID="post.id" :postOwnerID="post.ownerID" />
+          <UploadRealmoji
+            v-if="!isOwner"
+            :postID="post.id"
+            :postOwnerID="post.ownerID" />
         </div>
       </div>
     </div>
