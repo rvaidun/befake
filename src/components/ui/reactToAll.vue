@@ -29,7 +29,7 @@ export default {
                     console.log('hi');
                 }
                 else{
-                    setTimeout(() => {this.submitRealMoji(this.postsLoaded[post].ownerID, this.postsLoaded[post].id)}, 2500*post);
+                    setTimeout(() => {this.submitRealMoji(this.postsLoaded[post].ownerID, this.postsLoaded[post].id)}, 2560*post);
                 }
             };
         },
