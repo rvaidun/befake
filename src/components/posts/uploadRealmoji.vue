@@ -162,7 +162,10 @@ export default {
             <img src="../../assets/add.svg" alt="plus" />
           </div>
           <div v-else class="cursor-pointer">
-            <img :src="imageurl" class="w-24 rounded-[50%]" alt="realmoji to upload"/>
+            <img
+              :src="imageurl"
+              class="w-24 rounded-[50%]"
+              alt="realmoji to upload" />
           </div>
         </div>
       </label>
