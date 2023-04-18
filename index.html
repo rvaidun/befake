@@ -10,20 +10,6 @@
     <meta http-equiv="Pragma" content="no-cache" />
     <meta http-equiv="Expires" content="0" />
     <title>BeFake</title>
-    <script>
-      if (
-        location.host === "berealviewer.web.app" ||
-        location.host === "berealviewer.firebaseapp.com" ||
-        location.host === "befake.fr"
-      ) {
-        location.href = "https://www.befake.fr";
-      }
-      navigator.serviceWorker.getRegistrations().then(function (registrations) {
-        for (let registration of registrations) {
-          registration.unregister();
-        }
-      });
-    </script>
     <script
       async
       src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5228052771918993"
