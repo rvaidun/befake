@@ -66,7 +66,7 @@ export default {
             Donate
           </a>
           
-          <react-to-all />
+          <react-to-all v-if="this.$store.state.loggedIn"/>
 
           <a
             class="cursor-pointer text-white sm:py-2 py-[0.6px] sm:px-3 rounded-md font-bold"
