@@ -162,14 +162,13 @@ export default {
             <img src="../../assets/add.svg" alt="plus" />
           </div>
           <div v-else class="cursor-pointer">
-            <img :src="imageurl" class="w-24 rounded-[50%]" />
+            <img :src="imageurl" class="w-24 rounded-[50%]" alt="realmoji to upload"/>
           </div>
         </div>
       </label>
     </div>
-    <!-- <div>Hi</div> -->
     <div>
-      <MyButton @clickedd="submitRealMoji" :loading="loading">Upload </MyButton>
+      <MyButton @clickedd="submitRealMoji" :loading="loading">Upload</MyButton>
     </div>
   </div>
 </template>
