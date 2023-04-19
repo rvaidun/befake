@@ -1,8 +1,9 @@
 <script>
 import MyButton from "../ui/Button.vue";
-import DiscordLogo from "../../assets/discord-logo.svg";
+// importing reacttoall.vue
+import ReactToAll from "../ui/reactToAll.vue";
 export default {
-  components: { MyButton, DiscordLogo },
+  components: { MyButton, ReactToAll },
   data() {
     return {
       copy: JSON.stringify({
@@ -59,12 +60,14 @@ export default {
             href="https://github.com/rvaidun/befake"
             class="cursor-pointer text-blue-500 sm:py-2 py-[0.6px] sm:px-3 rounded-md font-bold githublogo">
           </a>
-
           <a
             class="cursor-pointer text-red-500 sm:py-2 py-[0.6px] sm:px-3 rounded-md font-bold"
             href="https://ko-fi.com/rahulvaidun">
             Donate
           </a>
+
+          <react-to-all v-if="this.$store.state.loggedIn" />
+
           <a
             class="cursor-pointer text-white sm:py-2 py-[0.6px] sm:px-3 rounded-md font-bold"
             href="/map">
