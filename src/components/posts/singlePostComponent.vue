@@ -1,7 +1,7 @@
 <script>
 import { defineComponent } from "vue";
 import moment from "moment";
-import GoogleMapsModal from "./GoogleMapsModal.vue";
+import PopupModal from "./PopupModal.vue";
 import MyButton from "../ui/Button.vue";
 import MyInput from "../ui/Input.vue";
 import UploadRealmoji from "./uploadRealmoji.vue";
@@ -100,7 +100,7 @@ export default defineComponent({
       this.isOwner = true;
     }
   },
-  components: { GoogleMapsModal, MyButton, MyInput, UploadRealmoji, Realmoji },
+  components: { PopupModal, MyButton, MyInput, UploadRealmoji, Realmoji },
 });
 </script>
 <style>
@@ -167,7 +167,7 @@ export default defineComponent({
             src="../../assets/icons8-trash-can.svg"
             alt="trash" />
         </div>
-        <GoogleMapsModal v-if="showModal" @close="showModal = false">
+        <PopupModal v-if="showModal" @close="showModal = false">
           <template v-slot:body>
             <iframe
               title="map"
@@ -182,7 +182,7 @@ export default defineComponent({
               :src="iframesrc">
             </iframe>
           </template>
-        </GoogleMapsModal>
+        </PopupModal>
       </div>
       <div class="flex items-center justify-center">
         <div class="relative top-0 left-0 justify-center">
@@ -252,8 +252,10 @@ export default defineComponent({
           <div v-else>
             <Realmoji v-for="e in post.realMojis" :key="e.id" :realmoji="e" />
           </div>
-
-          <UploadRealmoji :postID="post.id" :postOwnerID="post.ownerID" />
+          <UploadRealmoji
+            v-if="!isOwner"
+            :postID="post.id"
+            :postOwnerID="post.ownerID" />
         </div>
       </div>
     </div>

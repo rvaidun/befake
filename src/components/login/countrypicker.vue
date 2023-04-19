@@ -4,7 +4,7 @@ export default {
   data() {
     return {
       countries: countries,
-      selectedCountry: this.$store.state.selectedCountry,
+      selectedCountry: undefined,
       oldCountry: null,
     };
   },
