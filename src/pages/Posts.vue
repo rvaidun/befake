@@ -9,6 +9,7 @@ import NavbarVue from "../components/layout/Navbar.vue";
 import UploadPost from "../components/posts/uploadPost.vue";
 import { mapState } from "vuex";
 import UploadProfilePicture from "../components/posts/uploadProfilePicture.vue";
+import ReactToAll from "../components/ui/reactToAll.vue";
 export default {
   components: {
     singlePostComponentVue,
@@ -16,6 +17,7 @@ export default {
     NavbarVue,
     UploadPost,
     UploadProfilePicture,
+    ReactToAll,
   },
   async beforeMount() {
     event("view_posts", {
@@ -95,6 +97,7 @@ export default {
 </script>
 <template>
   <!-- <UploadProfilePicture :user="user" /> -->
+  <p><span class="text-red-600">NEW!</span> <ReactToAll /></p>
   <UploadPost v-if="!isfetch && !posts.posted" :user="user" />
   <div
     v-for="post in posts"

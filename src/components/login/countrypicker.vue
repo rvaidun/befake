@@ -4,7 +4,7 @@ export default {
   data() {
     return {
       countries: countries,
-      selectedCountry: this.$store.state.selectedCountry,
+      selectedCountry: undefined,
       oldCountry: null,
     };
   },
@@ -40,7 +40,6 @@ export default {
   },
   mounted() {
     if (localStorage.getItem("previousCountry") !== "null") {
-      console.log(this.selectedCountry);
       const index = this.countries.findIndex(
         (e) => e.isoCode === localStorage.getItem("previousCountry")
       );

@@ -1,28 +1,62 @@
+<!-- create simple vue.js component -->
 <script>
+import PopupModal from "../posts/PopupModal.vue";
 import MyButton from "../ui/Button.vue";
-import { v4 as uuidv4 } from "uuid";
-import moment from "moment";
 export default {
-  props: ["postID", "postOwnerID"],
+  name: "ReactToAll",
+  components: {
+    PopupModal,
+    MyButton,
+  },
   data() {
     return {
+      showPopup: false,
+      popupTitle: "React to all posts",
+      popupContent: "Are you sure you want to react to all posts?",
       file: null,
       imageurl: null,
       loading: false,
       image: {},
       user: this.$store.state.user,
+      postsLoaded: this.$store.state.posts,
     };
   },
   methods: {
+    reactToAll() {
+      if (this.file === undefined || this.file === null) {
+        this.$store.commit("error", "No image selected");
+        return;
+      }
+      this.loading = true;
+      for (const post in this.postsLoaded) {
+        if (this.user.id != this.postsLoaded[post].ownerID) {
+          setTimeout(() => {
+            this.submitRealMoji(
+              this.postsLoaded[post].ownerID,
+              this.postsLoaded[post].id
+            );
+            // if last post
+            if (post == this.postsLoaded.length - 1) {
+              this.loading = false;
+              this.file = null;
+              this.imageurl = null;
+              // close popup and dispatch get posts
+              this.$store.dispatch("getPosts");
+              this.closePopup();
+            }
+          }, 2500 * post);
+        }
+      }
+    },
+    closePopup() {
+      this.showPopup = false;
+    },
     onFileChange(e) {
       console.log(e);
       this.file = e.target.files[0];
       this.imageurl = URL.createObjectURL(this.file);
     },
-    async uploadPhotoToBeReal(file) {
-      // https://cdn.bereal.network/Photos/WGpTqIX0diZQu3UjoZE8FnUAzNi2/realmoji/WGpTqIX0diZQu3UjoZE8FnUAzNi2-realmoji-instant-1669332458.webp
-      // upload 2 files
-      // get proxy url from state
+    async uploadPhotoToBeReal(file, postOwnerID, postID) {
       const getUploadUrl = () => {
         return fetch(
           `${this.$store.state.proxyUrl}/https://mobile.bereal.com/api/content/realmojis/upload-url?mimeType=image/webp`,
@@ -65,7 +99,7 @@ export default {
       };
       const postRealmoji = (d) => {
         return fetch(
-          `${this.$store.state.proxyUrl}/https://mobile.bereal.com/api/content/realmojis/instant?postId=${this.postID}&postUserId=${this.postOwnerID}`,
+          `${this.$store.state.proxyUrl}/https://mobile.bereal.com/api/content/realmojis/instant?postId=${postID}&postUserId=${postOwnerID}`,
           {
             method: "PUT",
             headers: {
@@ -121,57 +155,72 @@ export default {
           });
       });
     },
-    async submitRealMoji() {
-      if (this.file === undefined || this.file === null) {
-        this.$store.commit("error", "No image selected");
-        return;
-      }
-      this.loading = true;
-      // call uploadPhotosToBeReal with primary and secondary images and on any response make loading false
-      this.uploadPhotoToBeReal(this.file)
-        .then(() => {
-          this.loading = false;
-          this.file = null;
-          this.imageurl = null;
-          this.$store.dispatch("getPosts");
-        })
-        .catch((e) => {
-          this.loading = false;
-          this.$store.commit("error", e);
-        });
+    submitRealMoji(OwnerID, postID) {
+      this.uploadPhotoToBeReal(this.file, OwnerID, postID).catch((e) => {
+        this.$store.commit("error", e);
+      });
     },
   },
-
-  components: { MyButton },
 };
 </script>
-<template>
-  <div class="flex items-center gap-3">
-    <div>
-      <label :for="postID">
-        <div
-          class="border-white w-24 h-24 rounded-[50%] border-2 cursor-pointer">
-          <input
-            type="file"
-            :id="postID"
-            style="display: none"
-            name="image"
-            @change="onFileChange" />
 
-          <div v-if="!file">
-            <img src="../../assets/add.svg" alt="plus" />
+<style scoped>
+.text-rainbow {
+  background-image: linear-gradient(
+    to left,
+    rgb(240, 130, 240),
+    rgb(190, 112, 245),
+    rgb(0, 195, 255),
+    rgb(0, 255, 0),
+    rgb(255, 255, 0),
+    rgb(255, 165, 0),
+    rgb(255, 79, 79)
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+</style>
+
+<template>
+  <span
+    class="cursor-pointer text-rainbow sm:py-2 py-[0.6px] sm:px-3 rounded-md font-bold"
+    @click="showPopup = true"
+    >{{ popupTitle }}</span
+  >
+  <PopupModal v-if="showPopup" @close="closePopup">
+    <template v-slot:body>
+      <div class="flex items-center flex-col gap-2 text-black">
+        <h3 class="font-bold">{{ popupTitle }}</h3>
+        <p class="pb-10">{{ popupContent }}</p>
+      </div>
+      <div class="flex items-center gap-3">
+        <label>
+          <div
+            class="border-white w-24 h-24 rounded-[50%] border-2 cursor-pointer">
+            <input
+              type="file"
+              style="display: none"
+              name="image"
+              @change="onFileChange" />
+            <div v-if="!file">
+              <img src="../../assets/add.svg" alt="plus" />
+            </div>
+            <div v-else class="cursor-pointer">
+              <img
+                :src="imageurl"
+                class="w-24 rounded-[50%]"
+                alt="realmoji to upload" />
+            </div>
           </div>
-          <div v-else class="cursor-pointer">
-            <img
-              :src="imageurl"
-              class="w-24 rounded-[50%]"
-              alt="realmoji to upload" />
-          </div>
+        </label>
+
+        <div>
+          <MyButton @clickedd="reactToAll" :loading="loading"
+            >Upload Realmojis</MyButton
+          >
         </div>
-      </label>
-    </div>
-    <div>
-      <MyButton @clickedd="submitRealMoji" :loading="loading">Upload</MyButton>
-    </div>
-  </div>
+      </div>
+    </template>
+  </PopupModal>
 </template>
