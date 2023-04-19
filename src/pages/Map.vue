@@ -13,8 +13,7 @@
     :zoom="4"
     map-type-id="terrain"
     style="height: 100vh"
-    :options="mapStyles"
-  >
+    :options="mapStyles">
     <GMapMarker
       :key="index"
       v-for="(m, index) in markers"
@@ -28,13 +27,11 @@
       @click="
         center = m.position;
         openMarker(index);
-      "
-    >
+      ">
       <GMapInfoWindow
         :closeclick="true"
         @closeclick="openMarker(null)"
-        :opened="openedMarkerID === index"
-      >
+        :opened="openedMarkerID === index">
         <singlePostComponent :post="m.post" class="" />
       </GMapInfoWindow>
     </GMapMarker>

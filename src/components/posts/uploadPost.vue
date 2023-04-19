@@ -5,6 +5,7 @@ import moment from "moment";
 import { mapState } from "vuex";
 import MyButton from "../ui/Button.vue";
 import MyInput from "../ui/Input.vue";
+import MyCheckbox from "../ui/myCheckbox.vue";
 export default {
   data() {
     return {
@@ -22,7 +23,7 @@ export default {
       caption: "",
     };
   },
-  components: { UploadPostImage, MyButton, MyInput },
+  components: { UploadPostImage, MyButton, MyInput, MyCheckbox },
   methods: {
     async upload(file, secondary) {
       if (secondary) {
@@ -219,10 +220,10 @@ export default {
         <MyInput v-model="caption" placeholder="Caption" typeOfInput="text" />
         <MyInput v-model="retakes" placeholder="Retakes" typeOfInput="number" />
       </div>
-      <input type="checkbox" class="m-1" v-model="public" />
+      <MyCheckbox class="m-1" v-model="public" />
       <span class="m-1">Public</span>
       <br />
-      <input type="checkbox" class="m-1" v-model="location.postwithlocation" />
+      <MyCheckbox class="m-1" v-model="location.postwithlocation" />
       <span class="m-1">Post with location</span>
       <div v-if="location.postwithlocation">
         <MyInput
