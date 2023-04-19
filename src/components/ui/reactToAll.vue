@@ -16,7 +16,6 @@ export default {
       file: null,
       imageurl: null,
       loading: false,
-      error1: undefined,
       image: {},
       user: this.$store.state.user,
       postsLoaded: this.$store.state.posts,
@@ -24,15 +23,27 @@ export default {
   },
   methods: {
     reactToAll() {
+      if (this.file === undefined || this.file === null) {
+        this.$store.commit("error", "No image selected");
+        return;
+      }
+      this.loading = true;
       for (const post in this.postsLoaded) {
-        if (this.user.id == this.postsLoaded[post].ownerID) {
-          console.log("hi");
-        } else {
+        if (this.user.id != this.postsLoaded[post].ownerID) {
           setTimeout(() => {
             this.submitRealMoji(
               this.postsLoaded[post].ownerID,
               this.postsLoaded[post].id
             );
+            // if last post
+            if (post == this.postsLoaded.length - 1) {
+              this.loading = false;
+              this.file = null;
+              this.imageurl = null;
+              // close popup and dispatch get posts
+              this.$store.dispatch("getPosts");
+              this.closePopup();
+            }
           }, 2500 * post);
         }
       }
@@ -145,24 +156,9 @@ export default {
       });
     },
     submitRealMoji(OwnerID, postID) {
-      if (this.error1) {
-        return;
-      }
-      if (this.file === undefined || this.file === null) {
-        this.$store.commit("error", "No image selected");
-        this.error1 = true;
-        return;
-      }
-      this.loading = true;
-      this.uploadPhotoToBeReal(this.file, OwnerID, postID)
-        .then(() => {
-          this.file = null;
-          this.imageurl = null;
-          this.$store.dispatch("getPosts");
-        })
-        .catch((e) => {
-          this.$store.commit("error", e);
-        });
+      this.uploadPhotoToBeReal(this.file, OwnerID, postID).catch((e) => {
+        this.$store.commit("error", e);
+      });
     },
   },
 };
@@ -194,7 +190,7 @@ export default {
   >
   <PopupModal v-if="showPopup" @close="closePopup">
     <template v-slot:body>
-      <div class="flex items-center flex-col gap-2">
+      <div class="flex items-center flex-col gap-2 text-black">
         <h3 class="font-bold">{{ popupTitle }}</h3>
         <p class="pb-10">{{ popupContent }}</p>
       </div>

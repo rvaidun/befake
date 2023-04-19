@@ -40,7 +40,6 @@ export default {
   },
   mounted() {
     if (localStorage.getItem("previousCountry") !== "null") {
-      console.log(this.selectedCountry);
       const index = this.countries.findIndex(
         (e) => e.isoCode === localStorage.getItem("previousCountry")
       );
