@@ -90,14 +90,13 @@ export default {
     ...mapState({
       user: (state) => state.user,
       posts: (state) => state.posts,
-      // userPosted: (state) => state.userPosted,
     }),
   },
 };
 </script>
 <template>
   <!-- <UploadProfilePicture :user="user" /> -->
-  <p><span class="text-red-600">NEW!</span> <ReactToAll /></p>
+  <p class="underline"><span class="text-red-600">NEW!</span> <ReactToAll /></p>
   <UploadPost v-if="!isfetch && !posts.posted" :user="user" />
   <div
     v-for="post in posts"
