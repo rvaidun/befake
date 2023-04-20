@@ -1,11 +1,11 @@
 <script>
 export default {
   props: {
-  typeOfInput: String,
-  modelValue: String,
-  placeholder: String,
-},
-  emits: ["update:modelValue",'enterPressed'],
+    typeOfInput: String,
+    modelValue: String,
+    placeholder: String,
+  },
+  emits: ["update:modelValue", "enterPressed"],
   computed: {
     value: {
       get() {
@@ -20,7 +20,6 @@ export default {
 </script>
 
 <style scoped>
-
 /* chrommium based browsers */
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
@@ -32,10 +31,7 @@ input::-webkit-inner-spin-button {
 input[type="number"] {
   -moz-appearance: textfield;
 }
-
 </style>
-
-
 
 <template>
   <input
