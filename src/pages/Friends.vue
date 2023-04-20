@@ -48,7 +48,7 @@ export default {
         placeholder="Username"
         typeOfInput="text"
         class="w-96"
-        @enter="search" />
+        @enterPressed="search" />
       <MyButton @click="search">Search</MyButton>
     </div>
     <div class="flex flex-col items-center">

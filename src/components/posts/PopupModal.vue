@@ -28,7 +28,6 @@ export default {
   margin: 0px auto;
   padding: 20px 30px;
   background-color: #000000;
-  border-radius: 2px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);
   transition: all 0.3s ease;
   font-family: Helvetica, Arial, sans-serif;
@@ -66,7 +65,7 @@ export default {
   <transition name="modal">
     <div class="modal-mask">
       <div class="modal-wrapper">
-        <div class="modal-container">
+        <div class="modal-container rounded-2xl">
           <div class="modal-body">
             <slot name="body"> </slot>
           </div>
