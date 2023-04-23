@@ -22,32 +22,6 @@ export default {
     };
   },
   methods: {
-    reactToAll() {
-      if (this.file === undefined || this.file === null) {
-        this.$store.commit("error", "No image selected");
-        return;
-      }
-      this.loading = true;
-      for (const post in this.postsLoaded) {
-        if (this.user.id != this.postsLoaded[post].ownerID) {
-          setTimeout(() => {
-            this.submitRealMoji(
-              this.postsLoaded[post].ownerID,
-              this.postsLoaded[post].id
-            );
-            // if last post
-            if (post == this.postsLoaded.length - 1) {
-              this.loading = false;
-              this.file = null;
-              this.imageurl = null;
-              // close popup and dispatch get posts
-              this.$store.dispatch("getPosts");
-              this.closePopup();
-            }
-          }, 2500 * post);
-        }
-      }
-    },
     closePopup() {
       this.showPopup = false;
     },
@@ -56,7 +30,7 @@ export default {
       this.file = e.target.files[0];
       this.imageurl = URL.createObjectURL(this.file);
     },
-    async uploadPhotoToBeReal(file, postOwnerID, postID) {
+    async uploadRealmojis(file) {
       const getUploadUrl = () => {
         return fetch(
           `${this.$store.state.proxyUrl}/https://mobile.bereal.com/api/content/realmojis/upload-url?mimeType=image/webp`,
@@ -97,7 +71,7 @@ export default {
           return "success";
         });
       };
-      const postRealmoji = (d) => {
+      const postRealmoji = (d,postOwnerID, postID ) => {
         return fetch(
           `${this.$store.state.proxyUrl}/https://mobile.bereal.com/api/content/realmojis/instant?postId=${postID}&postUserId=${postOwnerID}`,
           {
@@ -137,7 +111,6 @@ export default {
             return data;
           });
       };
-
       return new Promise((resolve, reject) => {
         let uud;
         getUploadUrl()
@@ -146,7 +119,18 @@ export default {
             uud = uploadUrlData;
           })
           .then(() => putPhoto(uud.data.url, file, uud.data.headers))
-          .then(() => postRealmoji(uud))
+          .then(() => {
+            console.log("postsLoaded: ", this.postsLoaded);
+            const promises = [];
+            for (const post in this.postsLoaded) {
+              if (this.user.id != this.postsLoaded[post].ownerID) {
+                promises.push(
+                  postRealmoji(uud, this.postsLoaded[post].ownerID, this.postsLoaded[post].id)
+                );
+              }
+            }
+            return Promise.all(promises);
+          })
           .then(() => {
             resolve("Realmoji uploaded successfully!");
           })
@@ -155,10 +139,24 @@ export default {
           });
       });
     },
-    submitRealMoji(OwnerID, postID) {
-      this.uploadPhotoToBeReal(this.file, OwnerID, postID).catch((e) => {
-        this.$store.commit("error", e);
-      });
+
+    submitRealMojis() {
+      if (this.file === undefined || this.file === null) {
+        this.$store.commit("error", "No image selected");
+        return;
+      }
+      this.loading = true;
+      this.uploadRealmojis(this.file)
+        .then(() => {
+          this.loading = false;
+          this.file = null;
+          this.imageurl = null;
+          this.$store.dispatch("getPosts");
+        })
+        .catch((e) => {
+          this.loading = false;
+          this.$store.commit("error", e);
+        });
     },
   },
 };
@@ -216,7 +214,7 @@ export default {
         </label>
 
         <div>
-          <MyButton @clickedd="reactToAll" :loading="loading"
+          <MyButton @clickedd="submitRealMojis" :loading="loading"
             >Upload Realmojis</MyButton
           >
         </div>
