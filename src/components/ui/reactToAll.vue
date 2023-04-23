@@ -71,7 +71,7 @@ export default {
           return "success";
         });
       };
-      const postRealmoji = (d,postOwnerID, postID ) => {
+      const postRealmoji = (d, postOwnerID, postID) => {
         return fetch(
           `${this.$store.state.proxyUrl}/https://mobile.bereal.com/api/content/realmojis/instant?postId=${postID}&postUserId=${postOwnerID}`,
           {
@@ -125,7 +125,11 @@ export default {
             for (const post in this.postsLoaded) {
               if (this.user.id != this.postsLoaded[post].ownerID) {
                 promises.push(
-                  postRealmoji(uud, this.postsLoaded[post].ownerID, this.postsLoaded[post].id)
+                  postRealmoji(
+                    uud,
+                    this.postsLoaded[post].ownerID,
+                    this.postsLoaded[post].id
+                  )
                 );
               }
             }
