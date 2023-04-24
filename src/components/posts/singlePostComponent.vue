@@ -157,6 +157,15 @@ export default defineComponent({
               {{ reverseGeo }}
             </span>
           </div>
+          <div class="mt-[-3%]" v-if="post.music">
+            <span class="ml-3 text-sm">
+              {{ post.music.track }} - {{ post.music.artist }}
+            </span>
+            <audio controls v-if="post.music.preview">
+              <source :src="post.music.preview" type="audio/mpeg" />
+              Your browser does not support the audio element.
+            </audio>
+          </div>
         </div>
         <div>
           <!-- Add trash icon -->
