@@ -52,15 +52,44 @@ exports.login = functions.https.onRequest(async (req, res) => {
       )
         .then((response) => response.json())
         .then((data) => {
-          res.send(data);
           if (data.error) {
-            console.log("came in error");
-            functions.logger.error(
-              data.error.message,
-              data.error,
-              body.phoneNumber
-            );
+            if (data.error.message === "APP_NOT_VERIFIED") {
+              fetch("https://auth.bereal.team/api/vonage/request-code", {
+                method: "POST",
+                headers: {
+                  accept: "application/json",
+                  "content-type": "application/json",
+                  "user-agent": "BeReal/7242 CFNetwork/1333.0.4 Darwin/21.5.0",
+                  "accept-language": "en-US,en;q=0.9",
+                },
+                body: JSON.stringify({
+                  phoneNumber: body.phoneNumber,
+                  deviceId: "ntbgbuk8ly5gjvv3",
+                }),
+              })
+                .then((response) => {
+                  if (!response.ok) {
+                    console.log("vonage error");
+                  }
+                  return response.json();
+                })
+                .then((data2) => {
+                  console.log("vonage data", data2);
+                  res.send({
+                    sessionInfo: data2.vonageRequestId,
+                    vonage: true,
+                  });
+                });
+            } else {
+              console.log("came in error");
+              functions.logger.error(
+                data.error.message,
+                data.error,
+                body.phoneNumber
+              );
+            }
           } else {
+            res.send(data);
             functions.logger.log(data);
             functions.logger.log("Verification code sent to", body.phoneNumber);
           }
