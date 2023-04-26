@@ -78,11 +78,20 @@ export default {
         console.log("phone number starts with {");
         try {
           const j = JSON.parse(this.phone);
-          if (j.phone && j.token && j.refreshToken && j.expiration) {
+          if (
+            j.token &&
+            j.refreshToken &&
+            j.expiration &&
+            j.user_id &&
+            j.fbrefreshtoken &&
+            j.fbtoken
+          ) {
             localStorage.setItem("token", j.token);
             localStorage.setItem("refreshToken", j.refreshToken);
             localStorage.setItem("expiration", j.expiration);
-            localStorage.setItem("phone", j.phone);
+            localStorage.setItem("user_id", j.user_id);
+            localStorage.setItem("fbrefreshtoken", j.fbrefreshtoken);
+            localStorage.setItem("fbtoken", j.fbtoken);
             await this.$store.dispatch("login");
           } else {
             throw "invalid json";
@@ -213,9 +222,9 @@ export default {
                 })
                 .then((data) => {
                   localStorage.setItem("token", data.access_token);
-                  localStorage.setItem("refresh_token", data.refresh_token);
+                  localStorage.setItem("refreshToken", data.refresh_token);
                   localStorage.expiration =
-                    Date.now() + parseInt(data.expiresIn) * 1000;
+                    Date.now() + parseInt(data.expires_in) * 1000;
                   this.loading = false;
                   this.$store.dispatch("login");
                 });
