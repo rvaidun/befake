@@ -31,7 +31,9 @@ const store = createStore({
       localStorage.removeItem("token");
       localStorage.removeItem("expiration");
       localStorage.removeItem("refreshToken");
-      localStorage.removeItem("phone");
+      localStorage.removeItem("user_id");
+      localStorage.removeItem("fbrefreshtoken");
+      localStorage.removeItem("fbtoken");
       state.loggedIn = false;
     },
     login(state) {
@@ -97,76 +99,66 @@ const store = createStore({
       }
     },
     async getPosts({ commit, state, dispatch }) {
-      return new Promise((resolve, reject) => {
-        return dispatch("refresh")
-          .then((res) => {
-            Promise.all([
-              fetch(
-                `${state.proxyUrl}/https://mobile.bereal.com/api/feeds/friends`,
-                {
-                  method: "GET",
-                  headers: {
-                    accept: "application/json",
-                    "content-type": "application/json",
-                    "user-agent":
-                      "BeReal/7242 CFNetwork/1333.0.4 Darwin/21.5.0",
-                    "accept-language": "en-US,en;q=0.9",
-                    authorization: `Bearer ${localStorage.getItem("token")}` ?? "",
-                  },
-                }
-              )
-                .then((res) => {
-                  if (!res.ok) throw new Error("Error getting posts");
-                  return res.json();
-                })
-                .then((data) => {
-                  // move user to the top of the list
-                  for (let i = 0; i < data.length; i++) {
-                    if (data[i].ownerID === state.user.id) {
-                      // remove i and move to top
-                      let user = data.splice(i, 1);
-                      console.log(user);
-                      data.unshift(user[0]);
-                      data.posted = true;
-                      break;
-                    }
-                  }
-                  commit("posts", data);
-                }),
-              fetch(
-                `${state.proxyUrl}/https://mobile.bereal.com/api/person/me`,
-                {
-                  method: "GET",
-                  headers: {
-                    accept: "application/json",
-                    "content-type": "application/json",
-                    "user-agent":
-                      "BeReal/7242 CFNetwork/1333.0.4 Darwin/21.5.0",
-                    "accept-language": "en-US,en;q=0.9",
-                    authorization: `Bearer ${localStorage.getItem("token")}` ?? "",
-                  },
-                }
-              )
-                .then((res) => {
-                  if (!res.ok) throw new Error("Error getting user");
-                  return res.json();
-                })
-                .then((data) => {
-                  commit("user", data);
-                }),
-            ])
-              .then(() => {
-                console.log("resolving to true");
-                resolve(true);
+      return dispatch("refresh")
+        .then(() =>
+          Promise.all([
+            fetch(
+              `${state.proxyUrl}/https://mobile.bereal.com/api/feeds/friends`,
+              {
+                method: "GET",
+                headers: {
+                  accept: "application/json",
+                  "content-type": "application/json",
+                  "user-agent": "BeReal/7242 CFNetwork/1333.0.4 Darwin/21.5.0",
+                  "accept-language": "en-US,en;q=0.9",
+                  authorization:
+                    `Bearer ${localStorage.getItem("token")}` ?? "",
+                },
+              }
+            )
+              .then((res) => {
+                if (!res.ok) throw new Error("Error getting posts");
+                return res.json();
               })
-              .catch((err) => {
-                reject(err);
-              });
-          })
-          .catch((err) => {
-            reject(err);
-          });
-      });
+              .then((data) => {
+                // move user to the top of the list
+                for (let i = 0; i < data.length; i++) {
+                  if (data[i].ownerID === state.user.id) {
+                    // remove i and move to top
+                    let user = data.splice(i, 1);
+                    console.log(user);
+                    data.unshift(user[0]);
+                    data.posted = true;
+                    break;
+                  }
+                }
+                commit("posts", data);
+              }),
+            fetch(`${state.proxyUrl}/https://mobile.bereal.com/api/person/me`, {
+              method: "GET",
+              headers: {
+                accept: "application/json",
+                "content-type": "application/json",
+                "user-agent": "BeReal/7242 CFNetwork/1333.0.4 Darwin/21.5.0",
+                "accept-language": "en-US,en;q=0.9",
+                authorization: `Bearer ${localStorage.getItem("token")}` ?? "",
+              },
+            })
+              .then((res) => {
+                if (!res.ok) throw new Error("Error getting user");
+                return res.json();
+              })
+              .then((data) => {
+                commit("user", data);
+              }),
+          ])
+        )
+        .then(() => {
+          return true;
+        })
+        .catch((err) => {
+          reject(err);
+        });
     },
     async getUser({ commit, state, dispatch }) {
       // const x = await dispatch("refresh");

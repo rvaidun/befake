@@ -10,7 +10,9 @@ export default {
         token: localStorage.getItem("token") ?? "",
         refreshToken: localStorage.getItem("refreshToken") ?? "",
         expiration: localStorage.getItem("expiration") ?? "",
-        phone: localStorage.getItem("phone") ?? "",
+        user_id: localStorage.getItem("user_id") ?? "",
+        fbrefreshtoken: localStorage.getItem("fbrefreshtoken") ?? "",
+        fbtoken: localStorage.getItem("fbtoken") ?? "",
       }),
       hideNavbar: true,
     };
