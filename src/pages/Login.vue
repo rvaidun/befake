@@ -190,6 +190,13 @@ export default {
                 `${this.$store.state.proxyUrl}/https://auth.bereal.team/token?grant_type=firebase`,
                 {
                   method: "POST",
+                  headers: {
+                    accept: "application/json",
+                    "content-type": "application/json",
+                    "user-agent":
+                      "BeReal/7242 CFNetwork/1333.0.4 Darwin/21.5.0",
+                    "accept-language": "en-US,en;q=0.9",
+                  },
                   body: JSON.stringify({
                     grant_type: "firebase",
                     client_id: "android",

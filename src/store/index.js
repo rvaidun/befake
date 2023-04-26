@@ -111,7 +111,7 @@ const store = createStore({
                     "user-agent":
                       "BeReal/7242 CFNetwork/1333.0.4 Darwin/21.5.0",
                     "accept-language": "en-US,en;q=0.9",
-                    authorization: localStorage.getItem("token") ?? "",
+                    authorization: `Bearer ${localStorage.getItem("token")}` ?? "",
                   },
                 }
               )
@@ -143,7 +143,7 @@ const store = createStore({
                     "user-agent":
                       "BeReal/7242 CFNetwork/1333.0.4 Darwin/21.5.0",
                     "accept-language": "en-US,en;q=0.9",
-                    authorization: localStorage.getItem("token") ?? "",
+                    authorization: `Bearer ${localStorage.getItem("token")}` ?? "",
                   },
                 }
               )
