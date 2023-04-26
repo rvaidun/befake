@@ -55,7 +55,9 @@ const store = createStore({
       commit("login");
     },
     refresh({ commit, state }) {
+      console.log("in refresh");
       if (Date.now() > localStorage.getItem("expiration")) {
+        console.log("in refresh if");
         return fetch(
           `${state.proxyUrl}/https://securetoken.googleapis.com/v1/token?key=AIzaSyDwjfEeparokD7sXPVQli9NsTuhT6fJ6iA`,
           {
@@ -75,24 +77,55 @@ const store = createStore({
             },
             body: JSON.stringify({
               grant_type: "refresh_token",
-              refresh_token: localStorage.getItem("refreshToken"),
+              refresh_token: localStorage.getItem("fbrefreshtoken"),
             }),
           }
         )
           .then((res) => {
+            if (!res.ok) {
+              throw Error(res.statusText);
+            }
             return res.json();
           })
-          .then((data) => {
-            localStorage.setItem("token", data.access_token);
-            localStorage.setItem(
-              "expiration",
-              Date.now() + data.expires_in * 1000
-            );
-            localStorage.setItem("refreshToken", data.refresh_token);
-            return Promise.resolve(true);
+          .then((tokendata) => {
+            localStorage.setItem("fbrefreshtoken", tokendata.refresh_token);
+            localStorage.setItem("fbtoken", tokendata.id_token);
+            localStorage.setItem("user_id", tokendata.user_id);
+            return fetch(
+              `${state.proxyUrl}/https://auth.bereal.team/token?grant_type=firebase`,
+              {
+                method: "POST",
+                headers: {
+                  accept: "application/json",
+                  "content-type": "application/json",
+                  "user-agent": "BeReal/7242 CFNetwork/1333.0.4 Darwin/21.5.0",
+                  "accept-language": "en-US,en;q=0.9",
+                },
+                body: JSON.stringify({
+                  grant_type: "firebase",
+                  client_id: "android",
+                  client_secret: "F5A71DA-32C7-425C-A3E3-375B4DACA406",
+                  token: tokendata.id_token,
+                }),
+              }
+            )
+              .then((res) => {
+                if (!res.ok) {
+                  throw Error(res.statusText);
+                }
+                return res.json();
+              })
+              .then((data) => {
+                localStorage.setItem("token", data.access_token);
+                localStorage.setItem("refreshToken", data.refresh_token);
+                localStorage.expiration =
+                  Date.now() + parseInt(data.expires_in) * 1000;
+                return true;
+              });
           })
           .catch((err) => {
-            return Promise.reject(err);
+            console.log("error while refreshing");
+            console.log(err);
           });
       } else {
         return Promise.resolve(true);
@@ -100,8 +133,9 @@ const store = createStore({
     },
     async getPosts({ commit, state, dispatch }) {
       return dispatch("refresh")
-        .then(() =>
-          Promise.all([
+        .then(() => {
+          console.log("successfully refreshed");
+          return Promise.all([
             fetch(
               `${state.proxyUrl}/https://mobile.bereal.com/api/feeds/friends`,
               {
@@ -151,8 +185,8 @@ const store = createStore({
               .then((data) => {
                 commit("user", data);
               }),
-          ])
-        )
+          ]);
+        })
         .then(() => {
           return true;
         })
