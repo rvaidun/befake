@@ -43,7 +43,7 @@
             <a href="https://www.github.com/rvaidun/">Github </a>
             <a href="https://www.instagram.com/rahulvaidun/">Instagram </a>
             <!-- email -->
-            <a href="mailto:rahul.vaidun@gmail.com">Email</a>
+            <a href="mailto:rahul@befake.fr">Email</a>
             <a href="https://ko-fi.com/rahulvaidun" class="font-bold"
               >Donation</a
             >

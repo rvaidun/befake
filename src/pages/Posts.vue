@@ -67,7 +67,6 @@ export default {
       })
       .catch((err) => {
         console.log(err);
-        this.$store.commit("logout");
         this.$store.commit("error", "Something went wrong while getting posts");
       });
   },
@@ -95,16 +94,25 @@ export default {
 };
 </script>
 <template>
+  <div class="m-3">
+    <a
+      class="cursor-pointer text-red-500 rounded-md font-bold sm:hidden"
+      href="https://ko-fi.com/rahulvaidun">
+      Donate
+    </a>
+    <p class="sm:hidden">
+      <span class="text-red-600">NEW!</span> <ReactToAll />
+    </p>
+    <UploadPost v-if="!isfetch && !posts.posted" :user="user" />
+    <div
+      v-for="post in posts"
+      v-if="!isfetch"
+      class="flex flex-col justify-center items-center dark:text-white">
+      <single-post-component-vue :post="post" class="mt-10" />
+    </div>
+    <div v-else class="grid h-screen place-items-center">
+      <pulse-loader color="white"></pulse-loader>
+    </div>
+  </div>
   <!-- <UploadProfilePicture :user="user" /> -->
-  <p class="underline"><span class="text-red-600">NEW!</span> <ReactToAll /></p>
-  <UploadPost v-if="!isfetch && !posts.posted" :user="user" />
-  <div
-    v-for="post in posts"
-    v-if="!isfetch"
-    class="flex flex-col justify-center items-center dark:text-white">
-    <single-post-component-vue :post="post" class="mt-10" />
-  </div>
-  <div v-else class="grid h-screen place-items-center">
-    <pulse-loader color="white"></pulse-loader>
-  </div>
 </template>

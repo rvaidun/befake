@@ -50,6 +50,7 @@ export default {
       sessionInfo: "",
       code: "",
       loading: false,
+      vonage: false,
     };
   },
   methods: {
@@ -78,11 +79,20 @@ export default {
         console.log("phone number starts with {");
         try {
           const j = JSON.parse(this.phone);
-          if (j.phone && j.token && j.refreshToken && j.expiration) {
+          if (
+            j.token &&
+            j.refreshToken &&
+            j.expiration &&
+            j.user_id &&
+            j.fbrefreshtoken &&
+            j.fbtoken
+          ) {
             localStorage.setItem("token", j.token);
             localStorage.setItem("refreshToken", j.refreshToken);
             localStorage.setItem("expiration", j.expiration);
-            localStorage.setItem("phone", j.phone);
+            localStorage.setItem("user_id", j.user_id);
+            localStorage.setItem("fbrefreshtoken", j.fbrefreshtoken);
+            localStorage.setItem("fbtoken", j.fbtoken);
             await this.$store.dispatch("login");
           } else {
             throw "invalid json";
@@ -108,6 +118,9 @@ export default {
             throw Error(data.error.message);
           }
           this.sessionInfo = data.sessionInfo;
+          if (data.vonage) {
+            this.vonage = true;
+          }
           this.loading = false;
         })
         .catch((e) => {
@@ -121,6 +134,125 @@ export default {
         event_label: "verify_code",
       });
       this.loading = true;
+      if (this.vonage) {
+        fetch(
+          `${this.$store.state.proxyUrl}/https://auth.bereal.team/api/vonage/check-code`,
+          {
+            method: "POST",
+            headers: {
+              accept: "application/json",
+              "content-type": "application/json",
+              "user-agent": "BeReal/7242 CFNetwork/1333.0.4 Darwin/21.5.0",
+              "accept-language": "en-US,en;q=0.9",
+            },
+            body: JSON.stringify({
+              code: this.code,
+              vonageRequestId: this.sessionInfo,
+            }),
+          }
+        )
+          .then((res) => {
+            if (!res.ok) {
+              throw Error(res.statusText);
+            }
+            return res.json();
+          })
+          .then((vdata) =>
+            fetch(
+              `${this.$store.state.proxyUrl}/https://www.googleapis.com/identitytoolkit/v3/relyingparty/verifyCustomToken?key=AIzaSyDwjfEeparokD7sXPVQli9NsTuhT6fJ6iA`,
+              {
+                method: "POST",
+                body: JSON.stringify({
+                  token: vdata.token,
+                  returnSecureToken: true,
+                }),
+              }
+            )
+          )
+          .then((res) => {
+            if (!res.ok) {
+              throw Error(res.statusText);
+            }
+            return res.json();
+          })
+          .then((idtokendata) =>
+            fetch(
+              `${this.$store.state.proxyUrl}/https://securetoken.googleapis.com/v1/token?key=AIzaSyDwjfEeparokD7sXPVQli9NsTuhT6fJ6iA`,
+              {
+                method: "POST",
+                headers: {
+                  "content-type": "application/json",
+                  "x-firebase-client":
+                    "apple-platform/ios apple-sdk/19F64 appstore/true deploy/cocoapods device/iPhone13,2 fire-abt/8.15.0 fire-analytics/8.15.0 fire-auth/8.15.0 fire-db/8.15.0 fire-dl/8.15.0 fire-fcm/8.15.0 fire-fiam/8.15.0 fire-fst/8.15.0 fire-fun/8.15.0 fire-install/8.15.0 fire-ios/8.15.0 fire-perf/8.15.0 fire-rc/8.15.0 fire-str/8.15.0 firebase-crashlytics/8.15.0 os-version/15.5 xcode/13F100",
+                  accept: "*/*",
+                  "x-client-version": "iOS/FirebaseSDK/8.15.0/FirebaseCore-iOS",
+                  "x-firebase-client-log-type": "0",
+                  "x-ios-bundle-identifier": "AlexisBarreyat.BeReal",
+                  "accept-language": "en",
+                  "user-agent":
+                    "FirebaseAuth.iOS/8.15.0 AlexisBarreyat.BeReal/0.22.4 iPhone/15.5 hw/iPhone13_2",
+                  "x-firebase-locale": "en",
+                },
+                body: JSON.stringify({
+                  grant_type: "refresh_token",
+                  refresh_token: idtokendata.refreshToken,
+                }),
+              }
+            )
+              .then((res) => {
+                if (!res.ok) {
+                  throw Error(res.statusText);
+                }
+                return res.json();
+              })
+              .then((tokendata) => {
+                if (tokendata.error) {
+                  throw Error(tokendata.error.message);
+                }
+                localStorage.setItem("fbrefreshtoken", tokendata.refresh_token);
+                localStorage.setItem("fbtoken", tokendata.id_token);
+                localStorage.setItem("user_id", tokendata.user_id);
+                fetch(
+                  `${this.$store.state.proxyUrl}/https://auth.bereal.team/token?grant_type=firebase`,
+                  {
+                    method: "POST",
+                    headers: {
+                      accept: "application/json",
+                      "content-type": "application/json",
+                      "user-agent":
+                        "BeReal/7242 CFNetwork/1333.0.4 Darwin/21.5.0",
+                      "accept-language": "en-US,en;q=0.9",
+                    },
+                    body: JSON.stringify({
+                      grant_type: "firebase",
+                      client_id: "android",
+                      client_secret: "F5A71DA-32C7-425C-A3E3-375B4DACA406",
+                      token: tokendata.id_token,
+                    }),
+                  }
+                )
+                  .then((res) => {
+                    if (!res.ok) {
+                      throw Error(res.statusText);
+                    }
+                    return res.json();
+                  })
+                  .then((data) => {
+                    localStorage.setItem("token", data.access_token);
+                    localStorage.setItem("refreshToken", data.refresh_token);
+                    localStorage.expiration =
+                      Date.now() + parseInt(data.expires_in) * 1000;
+                    this.loading = false;
+                    this.$store.dispatch("login");
+                  });
+              })
+          )
+          .catch((e) => {
+            this.handleError(e);
+            this.loading = false;
+          });
+        return;
+      }
       fetch(
         `${this.$store.state.proxyUrl}/https://www.googleapis.com/identitytoolkit/v3/relyingparty/verifyPhoneNumber?key=AIzaSyDwjfEeparokD7sXPVQli9NsTuhT6fJ6iA`,
         {
@@ -146,17 +278,80 @@ export default {
         }
       )
         .then((res) => res.json())
-        .then((data) => {
-          if (data.error) {
-            throw Error(data.error.message);
+        .then((idtokendata) => {
+          if (idtokendata.error) {
+            throw Error(idtokendata.error.message);
           }
-          localStorage.phone = this.phone;
-          localStorage.expiration =
-            Date.now() + parseInt(data.expiresIn) * 1000;
-          localStorage.refreshToken = data.refreshToken;
-          localStorage.token = data.idToken;
-          this.loading = false;
-          this.$store.dispatch("login");
+          fetch(
+            `${this.$store.state.proxyUrl}/https://securetoken.googleapis.com/v1/token?key=AIzaSyDwjfEeparokD7sXPVQli9NsTuhT6fJ6iA`,
+            {
+              method: "POST",
+              headers: {
+                "content-type": "application/json",
+                "x-firebase-client":
+                  "apple-platform/ios apple-sdk/19F64 appstore/true deploy/cocoapods device/iPhone13,2 fire-abt/8.15.0 fire-analytics/8.15.0 fire-auth/8.15.0 fire-db/8.15.0 fire-dl/8.15.0 fire-fcm/8.15.0 fire-fiam/8.15.0 fire-fst/8.15.0 fire-fun/8.15.0 fire-install/8.15.0 fire-ios/8.15.0 fire-perf/8.15.0 fire-rc/8.15.0 fire-str/8.15.0 firebase-crashlytics/8.15.0 os-version/15.5 xcode/13F100",
+                accept: "*/*",
+                "x-client-version": "iOS/FirebaseSDK/8.15.0/FirebaseCore-iOS",
+                "x-firebase-client-log-type": "0",
+                "x-ios-bundle-identifier": "AlexisBarreyat.BeReal",
+                "accept-language": "en",
+                "user-agent":
+                  "FirebaseAuth.iOS/8.15.0 AlexisBarreyat.BeReal/0.22.4 iPhone/15.5 hw/iPhone13_2",
+                "x-firebase-locale": "en",
+              },
+              body: JSON.stringify({
+                grant_type: "refresh_token",
+                refresh_token: idtokendata.refreshToken,
+              }),
+            }
+          )
+            .then((res) => {
+              if (!res.ok) {
+                throw Error(res.statusText);
+              }
+              return res.json();
+            })
+            .then((tokendata) => {
+              if (tokendata.error) {
+                throw Error(tokendata.error.message);
+              }
+              localStorage.setItem("fbrefreshtoken", tokendata.refresh_token);
+              localStorage.setItem("fbtoken", tokendata.id_token);
+              localStorage.setItem("user_id", tokendata.user_id);
+              fetch(
+                `${this.$store.state.proxyUrl}/https://auth.bereal.team/token?grant_type=firebase`,
+                {
+                  method: "POST",
+                  headers: {
+                    accept: "application/json",
+                    "content-type": "application/json",
+                    "user-agent":
+                      "BeReal/7242 CFNetwork/1333.0.4 Darwin/21.5.0",
+                    "accept-language": "en-US,en;q=0.9",
+                  },
+                  body: JSON.stringify({
+                    grant_type: "firebase",
+                    client_id: "android",
+                    client_secret: "F5A71DA-32C7-425C-A3E3-375B4DACA406",
+                    token: tokendata.id_token,
+                  }),
+                }
+              )
+                .then((res) => {
+                  if (!res.ok) {
+                    throw Error(res.statusText);
+                  }
+                  return res.json();
+                })
+                .then((data) => {
+                  localStorage.setItem("token", data.access_token);
+                  localStorage.setItem("refreshToken", data.refresh_token);
+                  localStorage.expiration =
+                    Date.now() + parseInt(data.expires_in) * 1000;
+                  this.loading = false;
+                  this.$store.dispatch("login");
+                });
+            });
         })
         .catch((e) => {
           this.handleError(e);
