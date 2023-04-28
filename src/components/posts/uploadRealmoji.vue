@@ -146,11 +146,11 @@ export default {
 };
 </script>
 <template>
-  <div class="flex items-center gap-3">
+  <div class="flex flex-col items-center gap-3">
     <div>
       <label :for="postID">
         <div
-          class="border-white w-24 h-24 rounded-[50%] border-2 cursor-pointer">
+          class="border-white w-20 h-20 rounded-[50%] border-2 cursor-pointer">
           <input
             type="file"
             :id="postID"
@@ -158,8 +158,8 @@ export default {
             name="image"
             @change="onFileChange" />
 
-          <div v-if="!file">
-            <img src="../../assets/add.svg" alt="plus" />
+          <div v-if="!file" class="flex items-center justify-center h-full">
+            <img src="../../assets/add.svg" alt="plus" class="w-14" />
           </div>
           <div v-else class="cursor-pointer">
             <img
@@ -170,8 +170,6 @@ export default {
         </div>
       </label>
     </div>
-    <div>
-      <MyButton @clickedd="submitRealMoji" :loading="loading">Upload</MyButton>
-    </div>
+    <MyButton @clickedd="submitRealMoji" :loading="loading">Upload</MyButton>
   </div>
 </template>

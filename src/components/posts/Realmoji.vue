@@ -4,14 +4,14 @@ export default {
 };
 </script>
 <template>
-  <div class="flex items-center mb-2">
+  <div class="flex flex-col items-center">
     <div class="relative">
       <img
         referrerpolicy="no-referrer"
         v-bind:src="realmoji.uri"
-        class="w-24 rounded-[50%]" />
+        class="w-20 rounded-[50%]" />
 
-      <span class="absolute top-[50px] left-[60px] text-5xl"
+      <span class="absolute top-[50px] left-[60px] text-2xl"
         >{{ realmoji.emoji }}
       </span>
     </div>
