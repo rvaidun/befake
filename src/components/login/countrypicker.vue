@@ -11,8 +11,8 @@ export default {
   methods: {
     selectCountry(value) {
       console.log(value);
+      if (value == null) return;
       localStorage.setItem("previousCountry", value.isoCode);
-      if (value === null) return;
       this.$emit("asdfasdf", value.dialCode);
       const papa = document.querySelector("div.vs__selected-options");
       const flag = document.createElement("img");
