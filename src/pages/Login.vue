@@ -53,6 +53,13 @@ export default {
       vonage: false,
     };
   },
+  watch: {
+    code(newValue) {
+      if (newValue.length === 6) {
+        this.verifyCode();
+      }
+    },
+  },
   methods: {
     handleError(message) {
       this.$store.commit("error", message);
