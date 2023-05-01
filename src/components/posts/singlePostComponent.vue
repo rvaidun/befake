@@ -2,6 +2,7 @@
 import { defineComponent } from "vue";
 import moment from "moment";
 import PopupModal from "./PopupModal.vue";
+import DeletePopup from "./deletePopup.vue";
 import MyButton from "../ui/Button.vue";
 import MyInput from "../ui/Input.vue";
 import UploadRealmoji from "./uploadRealmoji.vue";
@@ -100,7 +101,7 @@ export default defineComponent({
       this.isOwner = true;
     }
   },
-  components: { PopupModal, MyButton, MyInput, UploadRealmoji, Realmoji },
+  components: { PopupModal, MyButton, MyInput, UploadRealmoji, Realmoji, DeletePopup },
 });
 </script>
 <style>
@@ -167,15 +168,7 @@ export default defineComponent({
             </audio>
           </div>
         </div>
-        <div>
-          <!-- Add trash icon -->
-          <img
-            class="cursor-pointer h-6 ml-20"
-            @click="this.$store.dispatch('deletePost')"
-            v-if="isOwner"
-            src="../../assets/icons8-trash-can.svg"
-            alt="trash" />
-        </div>
+        <DeletePopup v-if="isOwner"/>
         <PopupModal v-if="showModal" @close="showModal = false">
           <template v-slot:body>
             <iframe

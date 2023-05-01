@@ -2,7 +2,7 @@
 import PopupModal from "../posts/PopupModal.vue";
 import MyButton from "../ui/Button.vue";
 export default {
-  name: "deletePopup",
+  name: "DeletePopup",
   components: {
     PopupModal,
     MyButton,
@@ -10,14 +10,9 @@ export default {
   data() {
     return {
       showPopup: false,
-      popupTitle: "Delete post",
+      popupTitle: "Delete post?",
       popupContent: "Are you sure you want to delete your post?",
-      file: null,
-      imageurl: null,
       loading: false,
-      image: {},
-      user: this.$store.state.user,
-      postsLoaded: this.$store.state.posts,
     };
   },
   methods: {
@@ -46,23 +41,11 @@ export default {
         <h3 class="font-bold">{{ popupTitle }}</h3>
         <p class="pb-10">{{ popupContent }}</p>
       </div>
-      <div class="flex items-center gap-3">
-        <label>
-          <div class="border-white w-24 h-24 rounded-[50%] border-2 cursor-pointer">
-            <input type="file" style="display: none" name="image" @change="onFileChange" />
-            <div v-if="!file">
-              <img src="../../assets/add.svg" alt="plus" />
-            </div>
-            <div v-else class="cursor-pointer">
-              <img :src="imageurl" class="w-24 rounded-[50%]" alt="realmoji to upload" />
-            </div>
-          </div>
-        </label>
 
-        <div>
-          <MyButton @clickedd="this.$store.dispatch('deletePost')" :loading="loading">Yes, delete</MyButton>
-        </div>
+      <div>
+        <MyButton @clickedd="this.$store.dispatch('deletePost')" :loading="loading">Yes, delete</MyButton>
       </div>
+
     </template>
   </PopupModal>
 </template>
