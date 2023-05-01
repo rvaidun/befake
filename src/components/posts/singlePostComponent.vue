@@ -31,9 +31,7 @@ export default defineComponent({
       this.post.secondaryPhotoURL = temp;
     },
     postdate() {
-      return moment(this.post.creationDate._seconds * 1000).format(
-        "MM-DD-YYYY h:mm:ss"
-      );
+      return moment(this.post.creationDate._seconds * 1000).fromNow();
     },
     cleancomment(s) {
       s = s.replaceAll("<", "&lt;");
@@ -123,153 +121,158 @@ export default defineComponent({
 }
 </style>
 <template>
-  <div
-    class="block p-3 w-[100%] sm:w-auto bg-black sm:border sm:border-white rounded-lg shadow-md">
-    <div class="flex flex-col">
-      <div class="flex items-center sm:justify-center">
-        <img
-          referrerpolicy="no-referrer"
-          v-bind:src="
-            post.user.profilePicture
-              ? post.user.profilePicture.url
-              : 'https://ui-avatars.com/api/?length=1' +
+  <div>
+    <div class="w-full sm:w-auto bg-black">
+      <div class="flex flex-col gap-3">
+        <div class="flex items-center sm:justify-center gap-3">
+          <img
+            referrerpolicy="no-referrer"
+            v-bind:src="
+              post.user.profilePicture
+                ? post.user.profilePicture.url
+                : 'https://ui-avatars.com/api/?length=1' +
+                  '&name=' +
+                  post.user.username +
+                  '&background=' +
+                  color
+            "
+            class="w-12 rounded-full sm:w-16"
+            @error="
+              'https://ui-avatars.com/api/?length=1' +
                 '&name=' +
                 post.user.username +
                 '&background=' +
                 color
-          "
-          class="w-10 rounded-[50%] sm:w-28 m-3"
-          @error="
-            'https://ui-avatars.com/api/?length=1' +
-              '&name=' +
-              post.user.username +
-              '&background=' +
-              color
-          "
-          alt="pofilepic" />
-        <div>
-          <div>
-            <span class="font-bold ml-3">
-              {{ post.user.username }}
-            </span>
-          </div>
-          <div class="mt-[-3%]">
-            <span class="ml-3 text-sm cursor-pointer" @click="showModal = true">
-              {{ reverseGeo }}
-            </span>
-          </div>
-          <div class="mt-[-3%]" v-if="post.music">
-            <span class="ml-3 text-sm">
-              {{ post.music.track }} - {{ post.music.artist }}
-            </span>
-            <audio controls v-if="post.music.preview">
-              <source :src="post.music.preview" type="audio/mpeg" />
-              Your browser does not support the audio element.
-            </audio>
-          </div>
-        </div>
-        <DeletePopup v-if="isOwner"/>
-        <PopupModal v-if="showModal" @close="showModal = false">
-          <template v-slot:body>
-            <iframe
-              title="map"
-              class="ml-3"
-              width="300"
-              height="300"
-              style="border: 0"
-              loading="lazy"
-              v-if="post.location"
-              allowfullscreen
-              referrerpolicy="no-referrer-when-downgrade"
-              :src="iframesrc">
-            </iframe>
-          </template>
-        </PopupModal>
-      </div>
-      <div class="flex items-center justify-center">
-        <div class="relative top-0 left-0 justify-center">
-          <img
-            referrerpolicy="no-referrer"
-            v-bind:src="post.photoURL"
-            class="relative top-0 left-0 rounded-md sm:w-[400px] w-[100%]"
-            @click="hideSecondaryPhoto = !hideSecondaryPhoto"
-            alt="postImage" />
-          <img
-            referrerpolicy="no-referrer"
-            v-bind:src="post.secondaryPhotoURL"
-            class="absolute top-2 left-2 w-[35%] rounded-md border-2 border-black"
-            @click="reverseImages"
-            v-if="!hideSecondaryPhoto"
-            alt="postImage" />
-        </div>
-      </div>
-
-      <div class="flex items-center font-bold mt-2 justify-center">
-        <span> {{ postdate() }} </span>
-        <span class="ml-3">Retakes - {{ post.retakeCounter }}</span>
-      </div>
-      <div class="flex flex-col">
-        <span v-if="post.caption">
-          <span class="font-bold">{{ post.user.username + ": " }} </span>
-          {{ post.caption }}
-        </span>
-      </div>
-      <div v-if="post.comment" class="flex flex-col sm:w-[500px]">
-        <div v-for="c in post.comment">
-          <span class="font-bold"> {{ c.userName + ": " }}</span>
-          <span v-html="cleancomment(c.text)"></span>
-        </div>
-      </div>
-      <div class="text-center mt-4">
-        <div class="flex flex-col mt-4 ml-[25%] w-[100%]">
-          <div v-if="this.post.realMojis.length > 2">
-            <Realmoji
-              v-for="e in post.realMojis.slice(0, 2)"
-              :key="e.id"
-              :realmoji="e" />
-            <Transition name="slide">
-              <div v-if="showEmojis">
-                <Realmoji
-                  v-for="e in post.realMojis.slice(2)"
-                  :key="e.id"
-                  :realmoji="e" />
+            "
+            alt="pofilepic" />
+          <div class="w-full flex justify-between items-center">
+            <div class="leading-4">
+              <div class="font-bold">
+                {{ post.user.username }}
               </div>
-            </Transition>
-            <div class="flex items-center mb-2">
-              <button
-                class="px-2 py-1 border rounded-md font-bold text-black bg-white"
-                @click="showEmojis = !showEmojis">
-                {{
-                  (showEmojis ? "Hide" : "Show") +
-                  " " +
-                  (this.post.realMojis.length - 2) +
-                  " " +
-                  (this.post.realMojis.length - 2 == 1
-                    ? "realmoji"
-                    : "realmojis")
-                }}
-              </button>
+              <div class="flex gap-3">
+                <div
+                  v-if="reverseGeo"
+                  class="text-sm cursor-pointer"
+                  @click="showModal = true">
+                  {{ reverseGeo }}
+                </div>
+                <div v-if="post.music">
+                  <div class="text-sm">
+                    {{ post?.music?.track }} - {{ post?.music?.artist }}
+                  </div>
+                  <audio controls v-if="post.music?.preview">
+                    <source :src="post.music.preview" type="audio/mpeg" />
+                    Your browser does not support the audio element.
+                  </audio>
+                </div>
+              </div>
+            </div>
+            <DeletePopup v-if="isOwner"/>
+          </div>
+          <PopupModal v-if="showModal" @close="showModal = false">
+            <template v-slot:body>
+              <iframe
+                title="map"
+                class="ml-3"
+                width="300"
+                height="300"
+                style="border: 0"
+                loading="lazy"
+                v-if="post.location"
+                allowfullscreen
+                referrerpolicy="no-referrer-when-downgrade"
+                :src="iframesrc">
+              </iframe>
+            </template>
+          </PopupModal>
+        </div>
+        <div class="flex items-center justify-center">
+          <div class="relative justify-center">
+            <img
+              referrerpolicy="no-referrer"
+              v-bind:src="post.photoURL"
+              class="rounded-md w-full"
+              @click="hideSecondaryPhoto = !hideSecondaryPhoto"
+              alt="postImage" />
+            <img
+              referrerpolicy="no-referrer"
+              v-bind:src="post.secondaryPhotoURL"
+              class="absolute top-2 left-2 w-[35%] rounded-md border-2 border-black"
+              @click="reverseImages"
+              v-if="!hideSecondaryPhoto"
+              alt="postImage" />
+          </div>
+        </div>
+
+        <div class="flex gap-2 text-sm justify-start">
+          <span> {{ postdate() }} </span>
+          &bull;
+          <span>{{ post.retakeCounter }} Retakes</span>
+        </div>
+        <div class="flex flex-col">
+          <span v-if="post.caption">
+            <span class="font-bold">{{ post.user.username + ": " }} </span>
+            {{ post.caption }}
+          </span>
+        </div>
+        <div v-if="post.comment" class="flex flex-col sm:w-[500px]">
+          <div v-for="c in post.comment" :key="c.id">
+            <span class="font-bold"> {{ c.userName + ": " }}</span>
+            <span v-html="cleancomment(c.text)"></span>
+          </div>
+        </div>
+        <div class="text-center">
+          <div class="flex flex-col w-full">
+            <div v-if="this.post.realMojis.length > 2">
+              <Realmoji
+                v-for="e in post.realMojis.slice(0, 2)"
+                :key="e.id"
+                :realmoji="e" />
+              <Transition name="slide">
+                <div v-if="showEmojis">
+                  <Realmoji
+                    v-for="e in post.realMojis.slice(2)"
+                    :key="e.id"
+                    :realmoji="e" />
+                </div>
+              </Transition>
+              <div class="flex items-center mb-2">
+                <button
+                  class="px-2 py-1 border rounded-md font-bold text-black bg-white"
+                  @click="showEmojis = !showEmojis">
+                  {{
+                    (showEmojis ? "Hide" : "Show") +
+                    " " +
+                    (this.post.realMojis.length - 2) +
+                    " " +
+                    (this.post.realMojis.length - 2 == 1
+                      ? "realmoji"
+                      : "realmojis")
+                  }}
+                </button>
+              </div>
+            </div>
+            <div v-else class="flex gap-3 flex-wrap">
+              <Realmoji v-for="e in post.realMojis" :key="e.id" :realmoji="e" />
+              <UploadRealmoji
+                v-if="!isOwner"
+                :postID="post.id"
+                :postOwnerID="post.ownerID" />
             </div>
           </div>
-          <div v-else>
-            <Realmoji v-for="e in post.realMojis" :key="e.id" :realmoji="e" />
-          </div>
-          <UploadRealmoji
-            v-if="!isOwner"
-            :postID="post.id"
-            :postOwnerID="post.ownerID" />
+        </div>
+        <div class="flex w-full">
+          <MyInput
+            @enterPressed="submitComment"
+            v-model="comment"
+            placeholder="Comment"
+            typeOfInput="text" />
+          <MyButton @clickedd="submitComment" :loading="submitCommentLoading"
+            >Submit</MyButton
+          >
         </div>
       </div>
-    </div>
-    <div class="flex">
-      <MyInput
-        @enterPressed="submitComment"
-        v-model="comment"
-        placeholder="Comment"
-        typeOfInput="text" />
-      <MyButton @clickedd="submitComment" :loading="submitCommentLoading"
-        >Submit</MyButton
-      >
     </div>
   </div>
 </template>
