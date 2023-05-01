@@ -99,7 +99,14 @@ export default defineComponent({
       this.isOwner = true;
     }
   },
-  components: { PopupModal, MyButton, MyInput, UploadRealmoji, Realmoji, DeletePopup },
+  components: {
+    PopupModal,
+    MyButton,
+    MyInput,
+    UploadRealmoji,
+    Realmoji,
+    DeletePopup,
+  },
 });
 </script>
 <style>
@@ -168,7 +175,7 @@ export default defineComponent({
                 </div>
               </div>
             </div>
-            <DeletePopup v-if="isOwner"/>
+            <DeletePopup v-if="isOwner" />
           </div>
           <PopupModal v-if="showModal" @close="showModal = false">
             <template v-slot:body>

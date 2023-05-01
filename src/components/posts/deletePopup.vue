@@ -31,8 +31,12 @@ export default {
 <style scoped></style>
 
 <template>
-  <div id='trashIconContainer'>
-    <img id='trashIcon' class="cursor-pointer h-6 ml-20" @click="showPopup = true" src="../../assets/icons8-trash-can.svg"
+  <div id="trashIconContainer">
+    <img
+      id="trashIcon"
+      class="cursor-pointer h-6 ml-20"
+      @click="showPopup = true"
+      src="../../assets/icons8-trash-can.svg"
       alt="trash" />
   </div>
   <PopupModal v-if="showPopup" @close="closePopup">
@@ -43,9 +47,12 @@ export default {
       </div>
 
       <div>
-        <MyButton @clickedd="this.$store.dispatch('deletePost')" :loading="loading">Yes, delete</MyButton>
+        <MyButton
+          @clickedd="this.$store.dispatch('deletePost')"
+          :loading="loading"
+          >Yes, delete</MyButton
+        >
       </div>
-
     </template>
   </PopupModal>
 </template>
