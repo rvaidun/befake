@@ -9,7 +9,7 @@
       <VueCountryCode @asdfasdf="setCountryCode" />
       <MyInput
         @enterPressed="sendCode"
-        typeOfInput="text"
+        typeOfInput="tel"
         v-model="phone"
         placeholder="Phone Number"
         class="max-w-sm" />
