@@ -137,7 +137,7 @@ const store = createStore({
           console.log("successfully refreshed");
           return Promise.all([
             fetch(
-              `${state.proxyUrl}/https://mobile.bereal.com/api/feeds/friends`,
+              `${state.proxyUrl}/https://mobile.bereal.com/api/feeds/friends-v1`,
               {
                 method: "GET",
                 headers: {
@@ -155,18 +155,45 @@ const store = createStore({
                 return res.json();
               })
               .then((data) => {
+                //console.log(data);
+
+                let posts = [];
+                posts = data.friendsPosts;
+                if (data.userPosts) posts.push(data.userPosts);
+                let allPosts = [];
+
+                for (let entry of posts) {
+                  for (let post of entry.posts) {
+                    allPosts.push({
+                      ...post,
+                      user: entry.user,
+                    });
+                  }
+                }
+
+                allPosts.sort(function (a, b) {
+                  //sort by post date
+                  return new Date(b.takenAt) - new Date(a.takenAt);
+                });
+
+                console.log(allPosts);
+
                 // move user to the top of the list
-                for (let i = 0; i < data.length; i++) {
-                  if (data[i].ownerID === state.user.id) {
+                for (let i = 0; i < allPosts.length; i++) {
+                  if (
+                    allPosts[i].user.id === state.user.id &&
+                    allPosts[i].isMain
+                  ) {
                     // remove i and move to top
-                    let user = data.splice(i, 1);
+                    let user = allPosts.splice(i, 1);
                     console.log(user);
-                    data.unshift(user[0]);
-                    data.posted = true;
+                    allPosts.unshift(user[0]);
+                    allPosts.posted = true;
                     break;
                   }
                 }
-                commit("posts", data);
+
+                commit("posts", allPosts);
               }),
             fetch(`${state.proxyUrl}/https://mobile.bereal.com/api/person/me`, {
               method: "GET",
