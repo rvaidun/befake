@@ -11,7 +11,7 @@ export default defineComponent({
   data() {
     return {
       iframesrc: this.post.location
-        ? `https://www.google.com/maps/embed/v1/place?key=AIzaSyDPvCQ4RXgvhbboTmKh2qLnfY50aJxcD0E&q=${this.post.location._latitude}, ${this.post.location._longitude}`
+        ? `https://www.google.com/maps/embed/v1/place?key=AIzaSyDPvCQ4RXgvhbboTmKh2qLnfY50aJxcD0E&q=${this.post.location.latitude}, ${this.post.location.longitude}`
         : "",
       reverseGeo: "",
       revbgeo: "",
@@ -25,12 +25,12 @@ export default defineComponent({
   },
   methods: {
     reverseImages() {
-      const temp = this.post.photoURL;
-      this.post.photoURL = this.post.secondaryPhotoURL;
-      this.post.secondaryPhotoURL = temp;
+      const temp = this.post.primary.url;
+      this.post.primary.url = this.post.secondary.url;
+      this.post.secondary.url = temp;
     },
     postdate() {
-      return moment(this.post.creationDate._seconds * 1000).format(
+      return moment(this.post.creationDate).format(
         "MM-DD-YYYY h:mm:ss"
       );
     },
@@ -45,7 +45,7 @@ export default defineComponent({
       this.submitCommentLoading = true;
       Promise.all([]);
       fetch(
-        `${this.$store.state.proxyUrl}/https://mobile.bereal.com/api/content/comments?postId=${this.post.id}&postUserId=${this.post.ownerID}`,
+        `${this.$store.state.proxyUrl}/https://mobile.bereal.com/api/content/comments?postId=${this.post.id}&postUserId=${this.post.user.id}`,
         {
           method: "POST",
           headers: {
@@ -85,7 +85,7 @@ export default defineComponent({
   async beforeMount() {
     if (this.post.location) {
       fetch(
-        `https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/reverseGeocode?location=${this.post.location._longitude},${this.post.location._latitude}&langCode=fr&outSR=&forStorage=false&f=pjson`
+        `https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/reverseGeocode?location=${this.post.location.longitude},${this.post.location.latitude}&langCode=fr&outSR=&forStorage=false&f=pjson`
       )
         .then((res) => res.json())
         .then((data) => {
@@ -96,7 +96,7 @@ export default defineComponent({
           console.log("error in reverse geocoding");
         });
     }
-    if (this.$store.state.user.id === this.post.ownerID) {
+    if (this.$store.state.user.id === this.post.user.id) {
       this.isOwner = true;
     }
   },
@@ -197,13 +197,13 @@ export default defineComponent({
         <div class="relative top-0 left-0 justify-center">
           <img
             referrerpolicy="no-referrer"
-            v-bind:src="post.photoURL"
+            v-bind:src="post.primary.url"
             class="relative top-0 left-0 rounded-md sm:w-[400px] w-[100%]"
             @click="hideSecondaryPhoto = !hideSecondaryPhoto"
             alt="postImage" />
           <img
             referrerpolicy="no-referrer"
-            v-bind:src="post.secondaryPhotoURL"
+            v-bind:src="post.secondary.url"
             class="absolute top-2 left-2 w-[35%] rounded-md border-2 border-black"
             @click="reverseImages"
             v-if="!hideSecondaryPhoto"
@@ -221,10 +221,10 @@ export default defineComponent({
           {{ post.caption }}
         </span>
       </div>
-      <div v-if="post.comment" class="flex flex-col sm:w-[500px]">
-        <div v-for="c in post.comment">
-          <span class="font-bold"> {{ c.userName + ": " }}</span>
-          <span v-html="cleancomment(c.text)"></span>
+      <div v-if="post.comments" class="flex flex-col sm:w-[500px]">
+        <div v-for="c in post.comments">
+          <span class="font-bold"> {{ c.user.username + ": " }}</span>
+          <span v-html="cleancomment(c.content)"></span>
         </div>
       </div>
       <div class="text-center mt-4">
@@ -264,7 +264,7 @@ export default defineComponent({
           <UploadRealmoji
             v-if="!isOwner"
             :postID="post.id"
-            :postOwnerID="post.ownerID" />
+            :postOwnerID="post.user.id" />
         </div>
       </div>
     </div>
