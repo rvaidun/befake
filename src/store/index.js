@@ -155,8 +155,6 @@ const store = createStore({
                 return res.json();
               })
               .then((data) => {
-                //console.log(data);
-
                 let posts = [];
                 posts = data.friendsPosts;
                 if (data.userPosts) posts.push(data.userPosts);
@@ -175,8 +173,6 @@ const store = createStore({
                   //sort by post date
                   return new Date(b.takenAt) - new Date(a.takenAt);
                 });
-
-                console.log(allPosts);
 
                 // move user to the top of the list
                 for (let i = 0; i < allPosts.length; i++) {
