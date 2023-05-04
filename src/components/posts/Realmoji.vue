@@ -8,8 +8,9 @@ export default {
     <div class="relative">
       <img
         referrerpolicy="no-referrer"
-        v-bind:src="realmoji.uri"
-        class="w-20 rounded-[50%]" />
+        v-bind:src="realmoji.media.url"
+        class="w-24 rounded-[50%]" 
+        alt="realmoji"/>
 
       <span class="absolute top-[50px] left-[60px] text-2xl"
         >{{ realmoji.emoji }}
