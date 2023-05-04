@@ -134,36 +134,26 @@ export default defineComponent({
     <div class="w-full sm:w-auto bg-black">
       <div class="flex flex-col gap-3">
         <div class="flex items-center sm:justify-center gap-3">
-          <img
-            referrerpolicy="no-referrer"
-            v-bind:src="
-              post.user.profilePicture
-                ? post.user.profilePicture.url
-                : 'https://ui-avatars.com/api/?length=1' +
-                  '&name=' +
-                  post.user.username +
-                  '&background=' +
-                  color
-            "
-            class="w-12 rounded-full sm:w-16"
-            @error="
-              'https://ui-avatars.com/api/?length=1' +
-                '&name=' +
-                post.user.username +
-                '&background=' +
-                color
-            "
-            alt="pofilepic" />
+          <img referrerpolicy="no-referrer" v-bind:src="post.user.profilePicture
+            ? post.user.profilePicture.url
+            : 'https://ui-avatars.com/api/?length=1' +
+            '&name=' +
+            post.user.username +
+            '&background=' +
+            color
+            " class="w-12 rounded-full sm:w-16" @error="'https://ui-avatars.com/api/?length=1' +
+    '&name=' +
+    post.user.username +
+    '&background=' +
+    color
+    " alt="pofilepic" />
           <div class="w-full flex justify-between items-center">
             <div class="leading-4">
               <div class="font-bold">
                 {{ post.user.username }}
               </div>
               <div class="flex gap-3">
-                <div
-                  v-if="reverseGeo"
-                  class="text-sm cursor-pointer"
-                  @click="showModal = true">
+                <div v-if="reverseGeo" class="text-sm cursor-pointer" @click="showModal = true">
                   {{ reverseGeo }}
                 </div>
                 <div v-if="post.music">
@@ -181,105 +171,73 @@ export default defineComponent({
           </div>
           <PopupModal v-if="showModal" @close="showModal = false">
             <template v-slot:body>
-              <iframe
-                title="map"
-                class="ml-3"
-                width="300"
-                height="300"
-                style="border: 0"
-                loading="lazy"
-                v-if="post.location"
-                allowfullscreen
-                referrerpolicy="no-referrer-when-downgrade"
-                :src="iframesrc">
+              <iframe title="map" class="ml-3" width="300" height="300" style="border: 0" loading="lazy"
+                v-if="post.location" allowfullscreen referrerpolicy="no-referrer-when-downgrade" :src="iframesrc">
               </iframe>
             </template>
           </PopupModal>
         </div>
         <div class="flex items-center justify-center">
           <div class="relative justify-center">
-            <img
-              referrerpolicy="no-referrer"
-              v-bind:src="post.primary.url"
-              class="rounded-md w-full"
-              @click="hideSecondaryPhoto = !hideSecondaryPhoto"
-              alt="postImage" />
-            <img
-              referrerpolicy="no-referrer"
-              v-bind:src="post.secondary.url"
-              class="absolute top-2 left-2 w-[35%] rounded-md border-2 border-black"
-              @click="reverseImages"
-              v-if="!hideSecondaryPhoto"
-              alt="postImage" />
+            <img referrerpolicy="no-referrer" v-bind:src="post.primary.url" class="rounded-md w-full"
+              @click="hideSecondaryPhoto = !hideSecondaryPhoto" alt="postImage" />
+            <img referrerpolicy="no-referrer" v-bind:src="post.secondary.url"
+              class="absolute top-2 left-2 w-[35%] rounded-md border-2 border-black" @click="reverseImages"
+              v-if="!hideSecondaryPhoto" alt="postImage" />
           </div>
         </div>
 
-      <div class="flex items-center font-bold mt-2 justify-center">
-        <span> {{ postdate() }} </span>
-        <span class="ml-3">Retakes - {{ post.retakeCounter }}</span>
-      </div>
-      <div class="flex flex-col">
-        <span v-if="post.caption">
-          <span class="font-bold">{{ post.user.username + ": " }} </span>
-          {{ post.caption }}
-        </span>
-      </div>
-      <div v-if="post.comment" class="flex flex-col sm:w-[500px]">
-        <div v-for="c in post.comment">
-          <span class="font-bold"> {{ c.userName + ": " }}</span>
-          <span v-html="cleancomment(c.text)"></span>
+        <div class="flex items-center font-bold mt-2 justify-center">
+          <span> {{ postdate() }} </span>
+          <span class="ml-3">Retakes - {{ post.retakeCounter }}</span>
         </div>
-      </div>
-      <div class="text-center mt-4">
-        <div class="flex flex-col mt-4 ml-[25%] w-[100%]">
-          <div v-if="this.post.realMojis.length > 2">
-            <Realmoji
-              v-for="e in post.realMojis.slice(0, 2)"
-              :key="e.id"
-              :realmoji="e" />
-            <Transition name="slide">
-              <div v-if="showEmojis">
-                <Realmoji
-                  v-for="e in post.realMojis.slice(2)"
-                  :key="e.id"
-                  :realmoji="e" />
+        <div class="flex flex-col">
+          <span v-if="post.caption">
+            <span class="font-bold">{{ post.user.username + ": " }} </span>
+            {{ post.caption }}
+          </span>
+        </div>
+        <div v-if="post.comment" class="flex flex-col sm:w-[500px]">
+          <div v-for="c in post.comment">
+            <span class="font-bold"> {{ c.userName + ": " }}</span>
+            <span v-html="cleancomment(c.text)"></span>
+          </div>
+        </div>
+        <div class="text-center mt-4">
+          <div class="flex flex-col mt-4 ml-[25%] w-[100%]">
+            <div v-if="this.post.realMojis.length > 2">
+              <Realmoji v-for="e in post.realMojis.slice(0, 2)" :key="e.id" :realmoji="e" />
+              <Transition name="slide">
+                <div v-if="showEmojis">
+                  <Realmoji v-for="e in post.realMojis.slice(2)" :key="e.id" :realmoji="e" />
+                </div>
+              </Transition>
+              <div class="flex items-center mb-2">
+                <button class="px-2 py-1 border rounded-md font-bold text-black bg-white"
+                  @click="showEmojis = !showEmojis">
+                  {{
+                    (showEmojis ? "Hide" : "Show") +
+                    " " +
+                    (this.post.realMojis.length - 2) +
+                    " " +
+                    (this.post.realMojis.length - 2 == 1
+                      ? "realmoji"
+                      : "realmojis")
+                  }}
+                </button>
               </div>
-            </Transition>
-            <div class="flex items-center mb-2">
-              <button
-                class="px-2 py-1 border rounded-md font-bold text-black bg-white"
-                @click="showEmojis = !showEmojis">
-                {{
-                  (showEmojis ? "Hide" : "Show") +
-                  " " +
-                  (this.post.realMojis.length - 2) +
-                  " " +
-                  (this.post.realMojis.length - 2 == 1
-                    ? "realmoji"
-                    : "realmojis")
-                }}
-              </button>
             </div>
+            <div v-else>
+              <Realmoji v-for="e in post.realMojis" :key="e.id" :realmoji="e" />
+            </div>
+            <UploadRealmoji v-if="!isOwner" :postID="post.id" :postOwnerID="post.ownerID" />
           </div>
-          <div v-else>
-            <Realmoji v-for="e in post.realMojis" :key="e.id" :realmoji="e" />
-          </div>
-          <UploadRealmoji
-            v-if="!isOwner"
-            :postID="post.id"
-            :postOwnerID="post.ownerID" />
         </div>
       </div>
-    </div>
-    <div class="flex">
-      <MyInput
-        @enterPressed="submitComment"
-        v-model="comment"
-        placeholder="Comment"
-        typeOfInput="text" />
-      <MyButton @clickedd="submitComment" :loading="submitCommentLoading"
-        >Submit</MyButton
-      >
+      <div class="flex">
+        <MyInput @enterPressed="submitComment" v-model="comment" placeholder="Comment" typeOfInput="text" />
+        <MyButton @clickedd="submitComment" :loading="submitCommentLoading">Submit</MyButton>
+      </div>
     </div>
   </div>
 </template>
