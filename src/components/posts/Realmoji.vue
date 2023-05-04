@@ -9,8 +9,8 @@ export default {
       <img
         referrerpolicy="no-referrer"
         v-bind:src="realmoji.media.url"
-        class="w-24 rounded-[50%]" 
-        alt="realmoji"/>
+        class="w-24 rounded-[50%]"
+        alt="realmoji" />
 
       <span class="absolute top-[50px] left-[60px] text-2xl"
         >{{ realmoji.emoji }}
