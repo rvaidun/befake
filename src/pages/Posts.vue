@@ -26,9 +26,7 @@ export default {
       event_category: "posts",
       event_label: "view_posts",
     });
-    Promise.all([
-      this.$store.dispatch("getPosts"),
-    ])
+    Promise.all([this.$store.dispatch("getPosts")])
       .then(() => {
         this.isfetch = false;
       })
