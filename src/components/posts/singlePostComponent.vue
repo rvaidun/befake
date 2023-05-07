@@ -1,6 +1,5 @@
 <script>
 import { defineComponent } from "vue";
-import moment from "moment";
 import PopupModal from "./PopupModal.vue";
 import DeletePopup from "./deletePopup.vue";
 import MyButton from "../ui/Button.vue";
@@ -32,7 +31,6 @@ export default defineComponent({
     },
     postdate() {
       return new Date(this.post.creationDate).toLocaleString();
-      // return moment(this.post.creationDate).format("MM-DD-YYYY h:mm:ss");
     },
     cleancomment(s) {
       s = s.replaceAll("<", "&lt;");
@@ -133,36 +131,27 @@ export default defineComponent({
     <div class="w-full sm:w-auto bg-black flex-shrink-0">
       <div class="flex flex-col gap-3">
         <div class="flex items-center sm:justify-center gap-3">
-          <img
-            referrerpolicy="no-referrer"
-            v-bind:src="
-              user.profilePicture
-                ? user.profilePicture.url
-                : 'https://ui-avatars.com/api/?length=1' +
-                  '&name=' +
-                  user.username +
-                  '&background=' +
-                  color
-            "
-            class="w-12 rounded-full sm:w-16"
-            @error="
-              'https://ui-avatars.com/api/?length=1' +
-                '&name=' +
-                user.username +
-                '&background=' +
-                color
-            "
-            alt="pofilepic" />
+          <img referrerpolicy="no-referrer" v-bind:src="user.profilePicture
+              ? user.profilePicture.url
+              : 'https://ui-avatars.com/api/?length=1' +
+              '&name=' +
+              user.username +
+              '&background=' +
+              color
+            " class="w-12 rounded-full sm:w-16" @error="
+    'https://ui-avatars.com/api/?length=1' +
+    '&name=' +
+    user.username +
+    '&background=' +
+    color
+    " alt="pofilepic" />
           <div class="w-full flex justify-between items-center">
             <div class="leading-4">
               <div class="font-bold">
                 {{ user.username }}
               </div>
               <div class="flex flex-col leading-5">
-                <div
-                  v-if="reverseGeo"
-                  class="text-sm cursor-pointer"
-                  @click="showModal = true">
+                <div v-if="reverseGeo" class="text-sm cursor-pointer" @click="showModal = true">
                   {{ reverseGeo }}
                 </div>
                 <div v-if="post.music">
@@ -180,36 +169,19 @@ export default defineComponent({
           </div>
           <PopupModal v-if="showModal" @close="showModal = false">
             <template v-slot:body>
-              <iframe
-                title="map"
-                class="ml-3"
-                width="300"
-                height="300"
-                style="border: 0"
-                loading="lazy"
-                v-if="post.location"
-                allowfullscreen
-                referrerpolicy="no-referrer-when-downgrade"
-                :src="iframesrc">
+              <iframe title="map" class="ml-3" width="300" height="300" style="border: 0" loading="lazy"
+                v-if="post.location" allowfullscreen referrerpolicy="no-referrer-when-downgrade" :src="iframesrc">
               </iframe>
             </template>
           </PopupModal>
         </div>
         <div class="flex items-center justify-center">
           <div class="relative justify-center">
-            <img
-              referrerpolicy="no-referrer"
-              v-bind:src="post.primary.url"
-              class="rounded-md w-full"
-              @click="hideSecondaryPhoto = !hideSecondaryPhoto"
-              alt="postImage" />
-            <img
-              referrerpolicy="no-referrer"
-              v-bind:src="post.secondary.url"
-              class="absolute top-2 left-2 w-[35%] rounded-md border-2 border-black"
-              @click="reverseImages"
-              v-if="!hideSecondaryPhoto"
-              alt="postImage" />
+            <img referrerpolicy="no-referrer" v-bind:src="post.primary.url" class="rounded-md w-full"
+              @click="hideSecondaryPhoto = !hideSecondaryPhoto" alt="postImage" />
+            <img referrerpolicy="no-referrer" v-bind:src="post.secondary.url"
+              class="absolute top-2 left-2 w-[35%] rounded-md border-2 border-black" @click="reverseImages"
+              v-if="!hideSecondaryPhoto" alt="postImage" />
           </div>
         </div>
 
@@ -230,25 +202,14 @@ export default defineComponent({
           </div>
         </div>
       </div>
-      <div
-        v-if="this.post.realMojis.length > 0"
-        class="text-center mt-4 grid grid-cols-4 w-full gap-4">
+      <div v-if="this.post.realMojis.length > 0" class="text-center mt-4 grid grid-cols-4 w-full gap-4">
         <Realmoji v-for="e in post.realMojis" :key="e.id" :realmoji="e" />
-        <UploadRealmoji
-          v-if="!isOwner"
-          :postID="post.id"
-          :postOwnerID="user.id" />
+        <UploadRealmoji v-if="!isOwner" :postID="post.id" :postOwnerID="user.id" />
       </div>
     </div>
     <div class="flex my-5">
-      <MyInput
-        @enterPressed="submitComment"
-        v-model="comment"
-        placeholder="Comment"
-        typeOfInput="text" />
-      <MyButton @clickedd="submitComment" :loading="submitCommentLoading"
-        >Submit</MyButton
-      >
+      <MyInput @enterPressed="submitComment" v-model="comment" placeholder="Comment" typeOfInput="text" />
+      <MyButton @clickedd="submitComment" :loading="submitCommentLoading">Submit</MyButton>
     </div>
   </div>
 </template>
