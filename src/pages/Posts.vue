@@ -10,6 +10,7 @@ import UploadPost from "../components/posts/uploadPost.vue";
 import { mapState } from "vuex";
 import UploadProfilePicture from "../components/posts/uploadProfilePicture.vue";
 import ReactToAll from "../components/ui/reactToAll.vue";
+import Carousel from "../components/ui/Carousel.vue";
 export default {
   components: {
     singlePostComponentVue,
@@ -18,6 +19,7 @@ export default {
     UploadPost,
     UploadProfilePicture,
     ReactToAll,
+    Carousel,
   },
   async beforeMount() {
     event("view_posts", {
@@ -109,7 +111,18 @@ export default {
       v-for="post in posts"
       v-if="!isfetch"
       class="flex flex-col justify-center items-center dark:text-white">
-      <single-post-component-vue :post="post" class="mt-10" />
+      <single-post-component-vue
+        :post="post.posts[0]"
+        class="mt-10"
+        :user="post.user"
+        v-if="post.posts.length == 1" />
+      <Carousel :length="post.posts.length" v-else>
+        <single-post-component-vue
+          v-for="p in post.posts"
+          :post="p"
+          class="mt-10 overflow-hidden"
+          :user="post.user" />
+      </Carousel>
     </div>
     <div v-else class="grid h-screen place-items-center">
       <pulse-loader color="white"></pulse-loader>

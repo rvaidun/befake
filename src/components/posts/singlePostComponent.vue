@@ -7,7 +7,7 @@ import MyInput from "../ui/Input.vue";
 import UploadRealmoji from "./uploadRealmoji.vue";
 import Realmoji from "./Realmoji.vue";
 export default defineComponent({
-  props: ["post"],
+  props: ["post", "user"],
   data() {
     return {
       iframesrc: this.post.location
@@ -30,9 +30,7 @@ export default defineComponent({
       this.post.secondary.url = temp;
     },
     postdate() {
-      return moment(this.post.creationDate).format(
-        "MM-DD-YYYY h:mm:ss"
-      );
+      return moment(this.post.creationDate).format("MM-DD-YYYY h:mm:ss");
     },
     cleancomment(s) {
       s = s.replaceAll("<", "&lt;");
@@ -45,7 +43,7 @@ export default defineComponent({
       this.submitCommentLoading = true;
       Promise.all([]);
       fetch(
-        `${this.$store.state.proxyUrl}/https://mobile.bereal.com/api/content/comments?postId=${this.post.id}&postUserId=${this.post.user.id}`,
+        `${this.$store.state.proxyUrl}/https://mobile.bereal.com/api/content/comments?postId=${this.post.id}&postUserId=${this.user.id}`,
         {
           method: "POST",
           headers: {
@@ -77,7 +75,7 @@ export default defineComponent({
       let letters = "0123456789ABCDEF";
       let color = "";
       for (let i = 0; i < 6; i++) {
-        color += letters[this.post.user.username.charCodeAt(i) % 16];
+        color += letters[this.user.username.charCodeAt(i) % 16];
       }
       return color;
     },
@@ -96,7 +94,7 @@ export default defineComponent({
           console.log("error in reverse geocoding");
         });
     }
-    if (this.$store.state.user.id === this.post.user.id) {
+    if (this.$store.state.user.id === this.user.id) {
       this.isOwner = true;
     }
   },
@@ -123,17 +121,17 @@ export default defineComponent({
 </style>
 <template>
   <div
-    class="block p-3 w-[100%] sm:w-auto bg-black sm:border sm:border-white rounded-lg shadow-md">
+    class="block p-3 w-[100%] sm:w-auto bg-black sm:border sm:border-white rounded-lg shadow-md flex-shrink-0">
     <div class="flex flex-col">
       <div class="flex items-center sm:justify-center">
         <img
           referrerpolicy="no-referrer"
           v-bind:src="
-            post.user.profilePicture
-              ? post.user.profilePicture.url
+            user.profilePicture
+              ? user.profilePicture.url
               : 'https://ui-avatars.com/api/?length=1' +
                 '&name=' +
-                post.user.username +
+                user.username +
                 '&background=' +
                 color
           "
@@ -141,7 +139,7 @@ export default defineComponent({
           @error="
             'https://ui-avatars.com/api/?length=1' +
               '&name=' +
-              post.user.username +
+              user.username +
               '&background=' +
               color
           "
@@ -149,7 +147,7 @@ export default defineComponent({
         <div>
           <div>
             <span class="font-bold ml-3">
-              {{ post.user.username }}
+              {{ user.username }}
             </span>
           </div>
           <div class="mt-[-3%]">
@@ -217,7 +215,7 @@ export default defineComponent({
       </div>
       <div class="flex flex-col">
         <span v-if="post.caption">
-          <span class="font-bold">{{ post.user.username + ": " }} </span>
+          <span class="font-bold">{{ user.username + ": " }} </span>
           {{ post.caption }}
         </span>
       </div>
@@ -264,11 +262,11 @@ export default defineComponent({
           <UploadRealmoji
             v-if="!isOwner"
             :postID="post.id"
-            :postOwnerID="post.user.id" />
+            :postOwnerID="user.id" />
         </div>
       </div>
     </div>
-    <div class="flex">
+    <div class="flex mb-5">
       <MyInput
         @enterPressed="submitComment"
         v-model="comment"
