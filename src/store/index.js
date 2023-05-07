@@ -155,41 +155,11 @@ const store = createStore({
                 return res.json();
               })
               .then((data) => {
-                let posts = [];
-                posts = data.friendsPosts;
-                if (data.userPosts) posts.push(data.userPosts);
-                let allPosts = [];
+                // if data.userPosts exist and data.friendsPosts exist and data.friendsPosts.length > 0 then prepend the userPosts object to the friendsPosts array
+                if (data.userPosts && data.friendsPosts)
+                  data.friendsPosts.unshift(data.userPosts);
 
-                for (let entry of posts) {
-                  for (let post of entry.posts) {
-                    allPosts.push({
-                      ...post,
-                      user: entry.user,
-                    });
-                  }
-                }
-
-                allPosts.sort(function (a, b) {
-                  //sort by post date
-                  return new Date(b.takenAt) - new Date(a.takenAt);
-                });
-
-                // move user to the top of the list
-                for (let i = 0; i < allPosts.length; i++) {
-                  if (
-                    allPosts[i].user.id === state.user.id &&
-                    allPosts[i].isMain
-                  ) {
-                    // remove i and move to top
-                    let user = allPosts.splice(i, 1);
-                    console.log(user);
-                    allPosts.unshift(user[0]);
-                    allPosts.posted = true;
-                    break;
-                  }
-                }
-
-                commit("posts", allPosts);
+                commit("posts", data.friendsPosts);
               }),
             fetch(`${state.proxyUrl}/https://mobile.bereal.com/api/person/me`, {
               method: "GET",
