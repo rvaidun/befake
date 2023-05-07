@@ -18,6 +18,7 @@ export default {
       console.log(e);
       this.file = e.target.files[0];
       this.imageurl = URL.createObjectURL(this.file);
+      this.submitRealMoji();
     },
     async uploadPhotoToBeReal(file) {
       // https://cdn.bereal.network/Photos/WGpTqIX0diZQu3UjoZE8FnUAzNi2/realmoji/WGpTqIX0diZQu3UjoZE8FnUAzNi2-realmoji-instant-1669332458.webp
@@ -145,31 +146,29 @@ export default {
   components: { MyButton },
 };
 </script>
-<template>
-  <div class="flex flex-col items-center gap-3">
-    <div>
-      <label :for="postID">
-        <div
-          class="border-white w-20 h-20 rounded-[50%] border-2 cursor-pointer">
-          <input
-            type="file"
-            :id="postID"
-            style="display: none"
-            name="image"
-            @change="onFileChange" />
 
-          <div v-if="!file" class="flex items-center justify-center h-full">
-            <img src="../../assets/add.svg" alt="plus" class="w-14" />
-          </div>
-          <div v-else class="cursor-pointer">
-            <img
-              :src="imageurl"
-              class="w-24 rounded-[50%]"
-              alt="realmoji to upload" />
-          </div>
+<template>
+  <div>
+    <label :for="postID">
+      <div
+        class="border-white w-full aspect-square rounded-[50%] border-2 cursor-pointer">
+        <input
+          type="file"
+          :id="postID"
+          style="display: none"
+          name="image"
+          @change="onFileChange" />
+
+        <div v-if="!file" class="flex items-center justify-center h-full">
+          <img src="../../assets/add.svg" class="w-10" alt="plus" />
         </div>
-      </label>
-    </div>
-    <MyButton @clickedd="submitRealMoji" :loading="loading">Upload</MyButton>
+        <div v-else class="cursor-pointer">
+          <img
+            :src="imageurl"
+            class="w-full h-full aspect-square object-cover rounded-[50%]"
+            alt="realmoji to upload" />
+        </div>
+      </div>
+    </label>
   </div>
 </template>

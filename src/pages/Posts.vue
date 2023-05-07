@@ -109,8 +109,9 @@ export default {
     </div>
     <UploadPost v-if="!isfetch && !posts.posted" :user="user" />
     <div
-      v-for="post in posts"
       v-if="!isfetch"
+      v-for="post in posts"
+      :key="post.id"
       class="flex flex-col justify-center items-center dark:text-white">
       <single-post-component-vue
         :post="post.posts[0]"
@@ -119,7 +120,8 @@ export default {
         v-if="post.posts.length == 1" />
       <Carousel :length="post.posts.length" v-else>
         <single-post-component-vue
-          v-for="p in post.posts"
+          v-for="p in post.posts.reverse()"
+          :key="p.id"
           :post="p"
           class="mt-10 overflow-hidden"
           :user="post.user" />

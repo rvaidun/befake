@@ -31,7 +31,8 @@ export default defineComponent({
       this.post.secondary.url = temp;
     },
     postdate() {
-      return moment(this.post.creationDate).format("MM-DD-YYYY h:mm:ss");
+      return new Date(this.post.creationDate).toLocaleString();
+      // return moment(this.post.creationDate).format("MM-DD-YYYY h:mm:ss");
     },
     cleancomment(s) {
       s = s.replaceAll("<", "&lt;");
@@ -157,7 +158,7 @@ export default defineComponent({
               <div class="font-bold">
                 {{ user.username }}
               </div>
-              <div class="flex gap-3">
+              <div class="flex flex-col leading-5">
                 <div
                   v-if="reverseGeo"
                   class="text-sm cursor-pointer"
@@ -229,48 +230,17 @@ export default defineComponent({
           </div>
         </div>
       </div>
-      <div class="text-center mt-4">
-        <div class="flex flex-col mt-4 ml-[25%] w-[100%]">
-          <div v-if="this.post.realMojis.length > 2">
-            <Realmoji
-              v-for="e in post.realMojis.slice(0, 2)"
-              :key="e.id"
-              :realmoji="e" />
-            <Transition name="slide">
-              <div v-if="showEmojis">
-                <Realmoji
-                  v-for="e in post.realMojis.slice(2)"
-                  :key="e.id"
-                  :realmoji="e" />
-              </div>
-            </Transition>
-            <div class="flex items-center mb-2">
-              <button
-                class="px-2 py-1 border rounded-md font-bold text-black bg-white"
-                @click="showEmojis = !showEmojis">
-                {{
-                  (showEmojis ? "Hide" : "Show") +
-                  " " +
-                  (this.post.realMojis.length - 2) +
-                  " " +
-                  (this.post.realMojis.length - 2 == 1
-                    ? "realmoji"
-                    : "realmojis")
-                }}
-              </button>
-            </div>
-          </div>
-          <div v-else>
-            <Realmoji v-for="e in post.realMojis" :key="e.id" :realmoji="e" />
-          </div>
-          <UploadRealmoji
-            v-if="!isOwner"
-            :postID="post.id"
-            :postOwnerID="user.id" />
-        </div>
+      <div
+        v-if="this.post.realMojis.length > 0"
+        class="text-center mt-4 grid grid-cols-4 w-full gap-4">
+        <Realmoji v-for="e in post.realMojis" :key="e.id" :realmoji="e" />
+        <UploadRealmoji
+          v-if="!isOwner"
+          :postID="post.id"
+          :postOwnerID="user.id" />
       </div>
     </div>
-    <div class="flex mb-5">
+    <div class="flex my-5">
       <MyInput
         @enterPressed="submitComment"
         v-model="comment"
