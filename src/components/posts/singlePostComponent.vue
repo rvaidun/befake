@@ -8,7 +8,7 @@ import MyInput from "../ui/Input.vue";
 import UploadRealmoji from "./uploadRealmoji.vue";
 import Realmoji from "./Realmoji.vue";
 export default defineComponent({
-  props: ["post"],
+  props: ["post", "user"],
   data() {
     return {
       iframesrc: this.post.location
@@ -44,7 +44,7 @@ export default defineComponent({
       this.submitCommentLoading = true;
       Promise.all([]);
       fetch(
-        `${this.$store.state.proxyUrl}/https://mobile.bereal.com/api/content/comments?postId=${this.post.id}&postUserId=${this.post.user.id}`,
+        `${this.$store.state.proxyUrl}/https://mobile.bereal.com/api/content/comments?postId=${this.post.id}&postUserId=${this.user.id}`,
         {
           method: "POST",
           headers: {
@@ -76,7 +76,7 @@ export default defineComponent({
       let letters = "0123456789ABCDEF";
       let color = "";
       for (let i = 0; i < 6; i++) {
-        color += letters[this.post.user.username.charCodeAt(i) % 16];
+        color += letters[this.user.username.charCodeAt(i) % 16];
       }
       return color;
     },
@@ -95,7 +95,7 @@ export default defineComponent({
           console.log("error in reverse geocoding");
         });
     }
-    if (this.$store.state.user.id === this.post.user.id) {
+    if (this.$store.state.user.id === this.user.id) {
       this.isOwner = true;
     }
   },
@@ -129,17 +129,17 @@ export default defineComponent({
 </style>
 <template>
   <div>
-    <div class="w-full sm:w-auto bg-black">
+    <div class="w-full sm:w-auto bg-black flex-shrink-0">
       <div class="flex flex-col gap-3">
         <div class="flex items-center sm:justify-center gap-3">
           <img
             referrerpolicy="no-referrer"
             v-bind:src="
-              post.user.profilePicture
-                ? post.user.profilePicture.url
+              user.profilePicture
+                ? user.profilePicture.url
                 : 'https://ui-avatars.com/api/?length=1' +
                   '&name=' +
-                  post.user.username +
+                  user.username +
                   '&background=' +
                   color
             "
@@ -147,7 +147,7 @@ export default defineComponent({
             @error="
               'https://ui-avatars.com/api/?length=1' +
                 '&name=' +
-                post.user.username +
+                user.username +
                 '&background=' +
                 color
             "
@@ -155,7 +155,7 @@ export default defineComponent({
           <div class="w-full flex justify-between items-center">
             <div class="leading-4">
               <div class="font-bold">
-                {{ post.user.username }}
+                {{ user.username }}
               </div>
               <div class="flex gap-3">
                 <div
@@ -218,7 +218,7 @@ export default defineComponent({
         </div>
         <div class="flex flex-col">
           <span v-if="post.caption">
-            <span class="font-bold">{{ post.user.username + ": " }} </span>
+            <span class="font-bold">{{ user.username + ": " }} </span>
             {{ post.caption }}
           </span>
         </div>
@@ -228,57 +228,57 @@ export default defineComponent({
             <span v-html="cleancomment(c.text)"></span>
           </div>
         </div>
-        <div class="text-center mt-4">
-          <div class="flex flex-col mt-4 ml-[25%] w-[100%]">
-            <div v-if="this.post.realMojis.length > 2">
-              <Realmoji
-                v-for="e in post.realMojis.slice(0, 2)"
-                :key="e.id"
-                :realmoji="e" />
-              <Transition name="slide">
-                <div v-if="showEmojis">
-                  <Realmoji
-                    v-for="e in post.realMojis.slice(2)"
-                    :key="e.id"
-                    :realmoji="e" />
-                </div>
-              </Transition>
-              <div class="flex items-center mb-2">
-                <button
-                  class="px-2 py-1 border rounded-md font-bold text-black bg-white"
-                  @click="showEmojis = !showEmojis">
-                  {{
-                    (showEmojis ? "Hide" : "Show") +
-                    " " +
-                    (this.post.realMojis.length - 2) +
-                    " " +
-                    (this.post.realMojis.length - 2 == 1
-                      ? "realmoji"
-                      : "realmojis")
-                  }}
-                </button>
+      </div>
+      <div class="text-center mt-4">
+        <div class="flex flex-col mt-4 ml-[25%] w-[100%]">
+          <div v-if="this.post.realMojis.length > 2">
+            <Realmoji
+              v-for="e in post.realMojis.slice(0, 2)"
+              :key="e.id"
+              :realmoji="e" />
+            <Transition name="slide">
+              <div v-if="showEmojis">
+                <Realmoji
+                  v-for="e in post.realMojis.slice(2)"
+                  :key="e.id"
+                  :realmoji="e" />
               </div>
+            </Transition>
+            <div class="flex items-center mb-2">
+              <button
+                class="px-2 py-1 border rounded-md font-bold text-black bg-white"
+                @click="showEmojis = !showEmojis">
+                {{
+                  (showEmojis ? "Hide" : "Show") +
+                  " " +
+                  (this.post.realMojis.length - 2) +
+                  " " +
+                  (this.post.realMojis.length - 2 == 1
+                    ? "realmoji"
+                    : "realmojis")
+                }}
+              </button>
             </div>
-            <div v-else>
-              <Realmoji v-for="e in post.realMojis" :key="e.id" :realmoji="e" />
-            </div>
-            <UploadRealmoji
-              v-if="!isOwner"
-              :postID="post.id"
-              :postOwnerID="post.ownerID" />
           </div>
+          <div v-else>
+            <Realmoji v-for="e in post.realMojis" :key="e.id" :realmoji="e" />
+          </div>
+          <UploadRealmoji
+            v-if="!isOwner"
+            :postID="post.id"
+            :postOwnerID="user.id" />
         </div>
       </div>
-      <div class="flex">
-        <MyInput
-          @enterPressed="submitComment"
-          v-model="comment"
-          placeholder="Comment"
-          typeOfInput="text" />
-        <MyButton @clickedd="submitComment" :loading="submitCommentLoading"
-          >Submit</MyButton
-        >
-      </div>
+    </div>
+    <div class="flex mb-5">
+      <MyInput
+        @enterPressed="submitComment"
+        v-model="comment"
+        placeholder="Comment"
+        typeOfInput="text" />
+      <MyButton @clickedd="submitComment" :loading="submitCommentLoading"
+        >Submit</MyButton
+      >
     </div>
   </div>
 </template>
