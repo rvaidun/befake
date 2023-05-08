@@ -108,7 +108,7 @@ export default defineComponent({
   },
 });
 </script>
-<style>
+<style scoped>
 .slide-enter-active,
 .slide-leave-active {
   transition: max-height 1s;
@@ -125,6 +125,12 @@ export default defineComponent({
   overflow: hidden;
   max-height: 0;
 }
+
+.hide-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+
 </style>
 <template>
   <div
@@ -232,15 +238,19 @@ export default defineComponent({
           <span v-html="cleancomment(c.text)"></span>
         </div>
       </div>
-    </div>
-    <div
-      v-if="this.post.realMojis.length > 0"
-      class="text-center mt-4 grid grid-cols-4 w-full gap-4">
-      <Realmoji v-for="e in post.realMojis" :key="e.id" :realmoji="e" />
-      <UploadRealmoji
-        v-if="!isOwner"
-        :postID="post.id"
-        :postOwnerID="user.id" />
+
+      <div
+        v-if="this.post.realMojis.length > 0"
+        class="realmoji-slider text-center mt-4 grid grid-flow-col grid w-full gap-4 overflow-auto whitespace-nowrap hide-scroll">
+
+
+        <UploadRealmoji
+          v-if="!isOwner"
+          :postID="post.id"
+          :postOwnerID="user.id" />
+        <Realmoji v-for="e in post.realMojis" :key="e.id" :realmoji="e" />
+
+      </div>
     </div>
   </div>
   <div class="flex my-5">
