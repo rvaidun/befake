@@ -216,41 +216,41 @@ export default defineComponent({
         </div>
       </div>
 
-        <div class="flex items-center font-bold mt-2 justify-center">
-          <span> {{ postdate() }} </span>
-          <span class="ml-3">Retakes - {{ post.retakeCounter }}</span>
-        </div>
-        <div class="flex flex-col">
-          <span v-if="post.caption">
-            <span class="font-bold">{{ user.username + ": " }} </span>
-            {{ post.caption }}
-          </span>
-        </div>
-        <div v-if="post.comment" class="flex flex-col sm:w-[500px]">
-          <div v-for="c in post.comment">
-            <span class="font-bold"> {{ c.userName + ": " }}</span>
-            <span v-html="cleancomment(c.text)"></span>
-          </div>
+      <div class="flex items-center font-bold mt-2 justify-center">
+        <span> {{ postdate() }} </span>
+        <span class="ml-3">Retakes - {{ post.retakeCounter }}</span>
+      </div>
+      <div class="flex flex-col">
+        <span v-if="post.caption">
+          <span class="font-bold">{{ user.username + ": " }} </span>
+          {{ post.caption }}
+        </span>
+      </div>
+      <div v-if="post.comment" class="flex flex-col sm:w-[500px]">
+        <div v-for="c in post.comment">
+          <span class="font-bold"> {{ c.userName + ": " }}</span>
+          <span v-html="cleancomment(c.text)"></span>
         </div>
       </div>
-      <div
-        v-if="this.post.realMojis.length > 0"
-        class="text-center mt-4 grid grid-cols-4 w-full gap-4">
-        <Realmoji v-for="e in post.realMojis" :key="e.id" :realmoji="e" />
-        <UploadRealmoji
-          v-if="!isOwner"
-          :postID="post.id"
-          :postOwnerID="user.id" />
-      </div>
     </div>
-    <div class="flex my-5">
-      <MyInput
-        @enterPressed="submitComment"
-        v-model="comment"
-        placeholder="Comment"
-        typeOfInput="text" />
-      <MyButton @clickedd="submitComment" :loading="submitCommentLoading"
-        >Submit</MyButton
-      >
+    <div
+      v-if="this.post.realMojis.length > 0"
+      class="text-center mt-4 grid grid-cols-4 w-full gap-4">
+      <Realmoji v-for="e in post.realMojis" :key="e.id" :realmoji="e" />
+      <UploadRealmoji
+        v-if="!isOwner"
+        :postID="post.id"
+        :postOwnerID="user.id" />
     </div>
+  </div>
+  <div class="flex my-5">
+    <MyInput
+      @enterPressed="submitComment"
+      v-model="comment"
+      placeholder="Comment"
+      typeOfInput="text" />
+    <MyButton @clickedd="submitComment" :loading="submitCommentLoading"
+      >Submit</MyButton
+    >
+  </div>
 </template>
