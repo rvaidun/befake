@@ -15,6 +15,6 @@ export default {
         >{{ realmoji.emoji }}
       </span>
     </div>
-    <span class="font-bold ml-4">{{ realmoji.userName }}</span>
+    <span class="font-bold ml-4">{{ realmoji.user.username }}</span>
   </div>
 </template>
