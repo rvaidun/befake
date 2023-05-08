@@ -253,5 +253,4 @@ export default defineComponent({
         >Submit</MyButton
       >
     </div>
-  </div>
 </template>
