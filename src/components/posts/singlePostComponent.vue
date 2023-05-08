@@ -129,8 +129,6 @@ export default defineComponent({
 .hide-scroll::-webkit-scrollbar {
   display: none;
 }
-
-
 </style>
 <template>
   <div
@@ -242,14 +240,11 @@ export default defineComponent({
       <div
         v-if="this.post.realMojis.length > 0"
         class="realmoji-slider text-center mt-4 grid grid-flow-col grid w-full gap-4 overflow-auto whitespace-nowrap hide-scroll">
-
-
         <UploadRealmoji
           v-if="!isOwner"
           :postID="post.id"
           :postOwnerID="user.id" />
         <Realmoji v-for="e in post.realMojis" :key="e.id" :realmoji="e" />
-
       </div>
     </div>
   </div>
