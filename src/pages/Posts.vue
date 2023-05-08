@@ -86,7 +86,7 @@ export default {
           v-for="p in post.posts.reverse()"
           :key="p.id"
           :post="p"
-          class="mt-10 overflow-hidden"
+          class="mt-10"
           :user="post.user" />
       </Carousel>
     </div>

@@ -20,8 +20,6 @@ defineProps({
         >{{ realmoji.emoji }}
       </span>
     </div>
-    <span class="font-bold md:text-md text-xs break-words">{{
-      realmoji.user.username
-    }}</span>
+    <span class="font-bold ml-4">{{ realmoji.user.username }}</span>
   </div>
 </template>

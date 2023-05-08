@@ -127,89 +127,94 @@ export default defineComponent({
 }
 </style>
 <template>
-  <div>
-    <div class="w-full sm:w-auto bg-black flex-shrink-0">
-      <div class="flex flex-col gap-3">
-        <div class="flex items-center sm:justify-center gap-3">
-          <img
-            referrerpolicy="no-referrer"
-            v-bind:src="
-              user.profilePicture
-                ? user.profilePicture.url
-                : 'https://ui-avatars.com/api/?length=1' +
-                  '&name=' +
-                  user.username +
-                  '&background=' +
-                  color
-            "
-            class="w-12 rounded-full sm:w-16"
-            @error="
-              'https://ui-avatars.com/api/?length=1' +
+  <div
+    class="block p-3 h-[100%] max-w-xl w-auto bg-black sm:border sm:border-white rounded-lg shadow-md flex-shrink-0">
+    <div class="flex flex-col">
+      <div class="flex items-center sm:justify-center">
+        <img
+          referrerpolicy="no-referrer"
+          v-bind:src="
+            user.profilePicture
+              ? user.profilePicture.url
+              : 'https://ui-avatars.com/api/?length=1' +
                 '&name=' +
                 user.username +
                 '&background=' +
                 color
-            "
-            alt="pofilepic" />
-          <div class="w-full flex justify-between items-center">
-            <div class="leading-4">
-              <div class="font-bold">
-                {{ user.username }}
-              </div>
-              <div class="flex flex-col leading-5">
-                <div
-                  v-if="reverseGeo"
-                  class="text-sm cursor-pointer"
-                  @click="showModal = true">
-                  {{ reverseGeo }}
-                </div>
-                <div v-if="post.music">
-                  <div class="text-sm">
-                    {{ post?.music?.track }} - {{ post?.music?.artist }}
-                  </div>
-                  <audio controls v-if="post.music?.preview">
-                    <source :src="post.music.preview" type="audio/mpeg" />
-                    Your browser does not support the audio element.
-                  </audio>
-                </div>
-              </div>
-            </div>
-            <DeletePopup v-if="isOwner" />
+          "
+          class="w-10 rounded-[50%] sm:w-28 m-3"
+          @error="
+            'https://ui-avatars.com/api/?length=1' +
+              '&name=' +
+              user.username +
+              '&background=' +
+              color
+          "
+          alt="pofilepic" />
+        <div>
+          <div>
+            <span class="font-bold ml-3">
+              {{ user.username }}
+            </span>
           </div>
-          <PopupModal v-if="showModal" @close="showModal = false">
-            <template v-slot:body>
-              <iframe
-                title="map"
-                class="ml-3"
-                width="300"
-                height="300"
-                style="border: 0"
-                loading="lazy"
-                v-if="post.location"
-                allowfullscreen
-                referrerpolicy="no-referrer-when-downgrade"
-                :src="iframesrc">
-              </iframe>
-            </template>
-          </PopupModal>
-        </div>
-        <div class="flex items-center justify-center">
-          <div class="relative justify-center">
-            <img
-              referrerpolicy="no-referrer"
-              v-bind:src="post.primary.url"
-              class="rounded-md w-full"
-              @click="hideSecondaryPhoto = !hideSecondaryPhoto"
-              alt="postImage" />
-            <img
-              referrerpolicy="no-referrer"
-              v-bind:src="post.secondary.url"
-              class="absolute top-2 left-2 w-[35%] rounded-md border-2 border-black"
-              @click="reverseImages"
-              v-if="!hideSecondaryPhoto"
-              alt="postImage" />
+          <div class="mt-[-3%]">
+            <span class="ml-3 text-sm cursor-pointer" @click="showModal = true">
+              {{ reverseGeo }}
+            </span>
+          </div>
+          <div class="mt-[-3%]" v-if="post.music">
+            <span class="ml-3 text-sm">
+              {{ post.music.track }} - {{ post.music.artist }}
+            </span>
+            <audio controls v-if="post.music.preview">
+              <source :src="post.music.preview" type="audio/mpeg" />
+              Your browser does not support the audio element.
+            </audio>
           </div>
         </div>
+        <div>
+          <!-- Add trash icon -->
+          <img
+            class="cursor-pointer h-6 ml-20"
+            @click="this.$store.dispatch('deletePost')"
+            v-if="isOwner"
+            src="../../assets/icons8-trash-can.svg"
+            alt="trash" />
+        </div>
+        <PopupModal v-if="showModal" @close="showModal = false">
+          <template v-slot:body>
+            <iframe
+              title="map"
+              class="ml-3"
+              width="300"
+              height="300"
+              style="border: 0"
+              loading="lazy"
+              v-if="post.location"
+              allowfullscreen
+              referrerpolicy="no-referrer-when-downgrade"
+              :src="iframesrc">
+            </iframe>
+          </template>
+        </PopupModal>
+      </div>
+      <div class="flex items-center justify-center">
+        <div class="relative top-0 left-0 justify-center">
+          <img
+            referrerpolicy="no-referrer"
+            v-bind:src="post.primary.url"
+            class="relative top-0 left-0 rounded-md sm:w-[400px] w-[100%]"
+            @click="hideSecondaryPhoto = !hideSecondaryPhoto"
+            alt="postImage" />
+          <img
+            referrerpolicy="no-referrer"
+            v-bind:src="post.secondary.url"
+            class="absolute top-2 left-2 w-[35%] rounded-md border-2 border-black"
+            @click="reverseImages"
+            v-if="!hideSecondaryPhoto"
+            alt="postImage" />
+        </div>
+      </div>
 
         <div class="flex items-center font-bold mt-2 justify-center">
           <span> {{ postdate() }} </span>
