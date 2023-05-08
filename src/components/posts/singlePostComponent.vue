@@ -121,7 +121,7 @@ export default defineComponent({
 </style>
 <template>
   <div
-    class="block p-3 w-[100%] sm:w-auto bg-black sm:border sm:border-white rounded-lg shadow-md flex-shrink-0">
+    class="block p-3 h-[100%] max-w-xl w-auto bg-black sm:border sm:border-white rounded-lg shadow-md flex-shrink-0">
     <div class="flex flex-col">
       <div class="flex items-center sm:justify-center">
         <img

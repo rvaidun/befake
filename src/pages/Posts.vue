@@ -120,7 +120,7 @@ export default {
         <single-post-component-vue
           v-for="p in post.posts"
           :post="p"
-          class="mt-10 overflow-hidden"
+          class="mt-10"
           :user="post.user" />
       </Carousel>
     </div>
