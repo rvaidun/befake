@@ -22,17 +22,19 @@ export default {
   methods: {
     next() {
       this.curr === this.length - 1 ? (this.curr = 0) : this.curr++;
+      this.$emit("next");
     },
     prev() {
       this.curr === 0 ? (this.curr = this.length - 1) : this.curr--;
+      this.$emit("prev");
     },
   },
 };
 </script>
 <template>
-  <div class="overflow-hidden relative whitespace-nowrap">
+  <div class="overflow-hidden sm:relative relative w-[100%]">
     <div
-      class="flex transition-transform ease-out duration-500"
+      class="flex transition-transform ease-out duration-500 sm:w-[400px]"
       :style="{ transform: `translateX(-${curr * 100}%)` }">
       <slot></slot>
     </div>
