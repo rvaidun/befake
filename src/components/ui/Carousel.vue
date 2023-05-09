@@ -32,9 +32,9 @@ export default {
 };
 </script>
 <template>
-  <div class="overflow-hidden sm:relative">
+  <div class="overflow-hidden relative">
     <div
-      class="flex transition-transform ease-out duration-500 sm:w-[400px]"
+      class="flex transition-transform ease-out duration-500 w-[400px]"
       :style="{ transform: `translateX(-${curr * 100}%)` }">
       <slot></slot>
     </div>

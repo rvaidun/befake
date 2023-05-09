@@ -226,7 +226,7 @@ export default defineComponent({
             <img
               referrerpolicy="no-referrer"
               v-bind:src="p.primary.url"
-              class="relative top-0 left-0 rounded-md sm:w-[400px] w-[100%]"
+              class="relative top-0 left-0 rounded-md w-[400px]"
               @click="hideSecondaryPhoto = !hideSecondaryPhoto"
               alt="postImage" />
             <img
@@ -235,8 +235,9 @@ export default defineComponent({
               class="absolute top-2 left-2 w-[35%] rounded-md border-2 border-black"
               @click="reverseImages"
               v-if="!hideSecondaryPhoto"
-              alt="postImage" /></div
-        ></Carousel>
+              alt="postImage" />
+          </div>
+        </Carousel>
         <div class="relative top-0 left-0 justify-center" v-else>
           <img
             referrerpolicy="no-referrer"
@@ -270,48 +271,13 @@ export default defineComponent({
           <span v-html="cleancomment(c.content)"></span>
         </div>
       </div>
-      <div class="text-center mt-4">
-        <div class="flex flex-col mt-4 ml-[25%] w-[100%]">
-          <div v-if="this.curpost.realMojis.length > 2">
-            <Realmoji
-              v-for="e in curpost.realMojis.slice(0, 2)"
-              :key="e.id"
-              :realmoji="e" />
-            <Transition name="slide">
-              <div v-if="showEmojis">
-                <Realmoji
-                  v-for="e in curpost.realMojis.slice(2)"
-                  :key="e.id"
-                  :realmoji="e" />
-              </div>
-            </Transition>
-            <div class="flex items-center mb-2">
-              <button
-                class="px-2 py-1 border rounded-md font-bold text-black bg-white"
-                @click="showEmojis = !showEmojis">
-                {{
-                  (showEmojis ? "Hide" : "Show") +
-                  " " +
-                  (this.curpost.realMojis.length - 2) +
-                  " " +
-                  (this.curpost.realMojis.length - 2 == 1
-                    ? "realmoji"
-                    : "realmojis")
-                }}
-              </button>
-            </div>
-          </div>
-          <div v-else>
-            <Realmoji
-              v-for="e in curpost.realMojis"
-              :key="e.id"
-              :realmoji="e" />
-          </div>
-          <UploadRealmoji
-            v-if="!isOwner"
-            :postID="curpost.id"
-            :postOwnerID="user.id" />
-        </div>
+      <div class="flex gap-3 items-center overflow-auto mt-4 w-[500px]">
+        <Realmoji :key="e.id" :realmoji="e" v-for="e in curpost.realMojis" />
+        <UploadRealmoji
+          v-if="!isOwner"
+          :postID="curpost.id"
+          :postOwnerID="user.id"
+          class="ml-4" />
       </div>
     </div>
     <div class="flex mb-5">

@@ -4,7 +4,7 @@ export default {
 };
 </script>
 <template>
-  <div class="flex items-center mb-2">
+  <div class="flex flex-col items-center mb-2">
     <div class="relative">
       <img
         referrerpolicy="no-referrer"
