@@ -22,11 +22,23 @@ export default {
   methods: {
     next() {
       this.curr === this.length - 1 ? (this.curr = 0) : this.curr++;
-      this.$emit("next");
+      const cp = this.$refs.carousel.children[this.curr];
+      console.log(cp);
+      if (cp.scrollIntoViewIfNeeded)
+        cp.scrollIntoViewIfNeeded({ behavior: "smooth" });
+      else if (cp.scrollIntoView) {
+        cp.scrollIntoView({ behavior: "smooth" });
+      }
     },
     prev() {
       this.curr === 0 ? (this.curr = this.length - 1) : this.curr--;
-      this.$emit("prev");
+      const cp = this.$refs.carousel.children[this.curr];
+
+      if (cp.scrollIntoViewIfNeeded)
+        cp.scrollIntoViewIfNeeded({ behavior: "smooth" });
+      else if (cp.scrollIntoView) {
+        cp.scrollIntoView({ behavior: "smooth" });
+      }
     },
     scrollHandler(e) {
       // massive shoutout to stackoverflow user klaas leussink for this solution
@@ -62,6 +74,7 @@ export default {
   <div class="relative w-[400px]">
     <div
       class="flex snap-x snap-mandatory overflow-x-scroll scroll-smooth scrollbar-hide"
+      ref="carousel"
       @scroll="scrollHandler">
       <slot></slot>
     </div>
