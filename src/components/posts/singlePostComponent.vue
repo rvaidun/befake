@@ -70,12 +70,20 @@ export default defineComponent({
         });
     },
     nextCarousel() {
+      console.log(this.$refs);
       console.log(this.currindex);
       this.currindex === this.post.length - 1
         ? (this.currindex = 0)
         : this.currindex++;
       console.log(this.currindex);
       this.curpost = this.post[this.currindex];
+      const cp = this.$refs[this.curpost.id][0];
+      console.log(cp);
+      if (cp.scrollIntoViewIfNeeded)
+        cp.scrollIntoViewIfNeeded({ behavior: "smooth" });
+      else if (cp.scrollIntoView) {
+        cp.scrollIntoView({ behavior: "smooth" });
+      }
     },
     prevCarousel() {
       this.currindex === 0
@@ -121,6 +129,37 @@ export default defineComponent({
     UploadRealmoji,
     Realmoji,
     Carousel,
+  },
+  created() {
+    this.observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            console.log(this.curpost, entry.target.id);
+            if (entry.target.id === this.curpost.id) {
+              console.log("already set");
+            } else {
+              const t = this.post.find((post) => post.id === entry.target.id);
+              if (t) {
+                this.curpost = t;
+                this.currindex = this.post.indexOf(t);
+              }
+            }
+          }
+        });
+      },
+      {
+        threshold: 1,
+      }
+    );
+  },
+  mounted() {
+    // observe all .carouselimage elements
+    const carouselimages = document.querySelectorAll(".carouselimages");
+    console.log(carouselimages);
+    carouselimages.forEach((image) => {
+      this.observer.observe(image);
+    });
   },
 });
 </script>
@@ -221,8 +260,10 @@ export default defineComponent({
           :length="post.length"
           @prev="prevCarousel">
           <div
-            class="relative top-0 left-0 justify-center flex-shrink-0"
-            v-for="p in post">
+            class="relative flex-shrink-0 snap-start w-[95%] m-3 carouselimages"
+            v-for="p in post"
+            :ref="p.id"
+            :id="p.id">
             <img
               referrerpolicy="no-referrer"
               v-bind:src="p.primary.url"
