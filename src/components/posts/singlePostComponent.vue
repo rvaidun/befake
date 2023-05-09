@@ -6,13 +6,13 @@ import MyButton from "../ui/Button.vue";
 import MyInput from "../ui/Input.vue";
 import UploadRealmoji from "./uploadRealmoji.vue";
 import Realmoji from "./Realmoji.vue";
+import Carousel from "../ui/Carousel.vue";
 export default defineComponent({
   props: ["post", "user"],
   data() {
     return {
-      iframesrc: this.post.location
-        ? `https://www.google.com/maps/embed/v1/place?key=AIzaSyDPvCQ4RXgvhbboTmKh2qLnfY50aJxcD0E&q=${this.post.location.latitude}, ${this.post.location.longitude}`
-        : "",
+      currindex: 0,
+      curpost: this.post[0],
       reverseGeo: "",
       revbgeo: "",
       showModal: false,
@@ -25,12 +25,12 @@ export default defineComponent({
   },
   methods: {
     reverseImages() {
-      const temp = this.post.primary.url;
-      this.post.primary.url = this.post.secondary.url;
-      this.post.secondary.url = temp;
+      const temp = this.curpost.primary.url;
+      this.curpost.primary.url = this.curpost.secondary.url;
+      this.curpost.secondary.url = temp;
     },
     postdate() {
-      return moment(this.post.creationDate).format("MM-DD-YYYY h:mm:ss");
+      return moment(this.curpost.creationDate).format("MM-DD-YYYY h:mm:ss");
     },
     cleancomment(s) {
       s = s.replaceAll("<", "&lt;");
@@ -43,7 +43,7 @@ export default defineComponent({
       this.submitCommentLoading = true;
       Promise.all([]);
       fetch(
-        `${this.$store.state.proxyUrl}/https://mobile.bereal.com/api/content/comments?postId=${this.post.id}&postUserId=${this.user.id}`,
+        `${this.$store.state.proxyUrl}/https://mobile.bereal.com/api/content/comments?postId=${this.curpost.id}&postUserId=${this.user.id}`,
         {
           method: "POST",
           headers: {
@@ -69,6 +69,22 @@ export default defineComponent({
           );
         });
     },
+    nextCarousel() {
+      console.log(this.currindex);
+      this.currindex === this.post.length - 1
+        ? (this.currindex = 0)
+        : this.currindex++;
+      console.log(this.currindex);
+      this.curpost = this.post[this.currindex];
+    },
+    prevCarousel() {
+      this.currindex === 0
+        ? (this.currindex = this.post.length - 1)
+        : this.currindex--;
+      console.log(this.currindex);
+
+      this.curpost = this.post[this.currindex];
+    },
   },
   computed: {
     color() {
@@ -81,9 +97,9 @@ export default defineComponent({
     },
   },
   async beforeMount() {
-    if (this.post.location) {
+    if (this.curpost.location) {
       fetch(
-        `https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/reverseGeocode?location=${this.post.location.longitude},${this.post.location.latitude}&langCode=fr&outSR=&forStorage=false&f=pjson`
+        `https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/reverseGeocode?location=${this.curpost.location.longitude},${this.curpost.location.latitude}&langCode=fr&outSR=&forStorage=false&f=pjson`
       )
         .then((res) => res.json())
         .then((data) => {
@@ -98,7 +114,14 @@ export default defineComponent({
       this.isOwner = true;
     }
   },
-  components: { PopupModal, MyButton, MyInput, UploadRealmoji, Realmoji },
+  components: {
+    PopupModal,
+    MyButton,
+    MyInput,
+    UploadRealmoji,
+    Realmoji,
+    Carousel,
+  },
 });
 </script>
 <style>
@@ -121,7 +144,7 @@ export default defineComponent({
 </style>
 <template>
   <div
-    class="block p-3 h-[100%] max-w-xl w-auto bg-black sm:border sm:border-white rounded-lg shadow-md flex-shrink-0">
+    class="block w-[100%] bg-black rounded-lg shadow-md sm:w-auto border border-white p-3 sm:max-w-fit sm:h-[100%]">
     <div class="flex flex-col">
       <div class="flex items-center sm:justify-center">
         <img
@@ -155,12 +178,12 @@ export default defineComponent({
               {{ reverseGeo }}
             </span>
           </div>
-          <div class="mt-[-3%]" v-if="post.music">
+          <div class="mt-[-3%]" v-if="curpost.music">
             <span class="ml-3 text-sm">
-              {{ post.music.track }} - {{ post.music.artist }}
+              {{ curpost.music.track }} - {{ curpost.music.artist }}
             </span>
-            <audio controls v-if="post.music.preview">
-              <source :src="post.music.preview" type="audio/mpeg" />
+            <audio controls v-if="curpost.music.preview">
+              <source :src="curpost.music.preview" type="audio/mpeg" />
               Your browser does not support the audio element.
             </audio>
           </div>
@@ -183,25 +206,47 @@ export default defineComponent({
               height="300"
               style="border: 0"
               loading="lazy"
-              v-if="post.location"
+              v-if="curpost.location"
               allowfullscreen
               referrerpolicy="no-referrer-when-downgrade"
-              :src="iframesrc">
+              :src="`https://www.google.com/maps/embed/v1/place?key=AIzaSyDPvCQ4RXgvhbboTmKh2qLnfY50aJxcD0E&q=${this.curpost.location.latitude}, ${this.curpost.location.longitude}`">
             </iframe>
           </template>
         </PopupModal>
       </div>
       <div class="flex items-center justify-center">
-        <div class="relative top-0 left-0 justify-center">
+        <Carousel
+          v-if="post.length > 1"
+          @next="nextCarousel"
+          :length="post.length"
+          @prev="prevCarousel">
+          <div
+            class="relative top-0 left-0 justify-center flex-shrink-0"
+            v-for="p in post">
+            <img
+              referrerpolicy="no-referrer"
+              v-bind:src="p.primary.url"
+              class="relative top-0 left-0 rounded-md sm:w-[400px] w-[100%]"
+              @click="hideSecondaryPhoto = !hideSecondaryPhoto"
+              alt="postImage" />
+            <img
+              referrerpolicy="no-referrer"
+              v-bind:src="p.secondary.url"
+              class="absolute top-2 left-2 w-[35%] rounded-md border-2 border-black"
+              @click="reverseImages"
+              v-if="!hideSecondaryPhoto"
+              alt="postImage" /></div
+        ></Carousel>
+        <div class="relative top-0 left-0 justify-center" v-else>
           <img
             referrerpolicy="no-referrer"
-            v-bind:src="post.primary.url"
+            v-bind:src="curpost.primary.url"
             class="relative top-0 left-0 rounded-md sm:w-[400px] w-[100%]"
             @click="hideSecondaryPhoto = !hideSecondaryPhoto"
             alt="postImage" />
           <img
             referrerpolicy="no-referrer"
-            v-bind:src="post.secondary.url"
+            v-bind:src="curpost.secondary.url"
             class="absolute top-2 left-2 w-[35%] rounded-md border-2 border-black"
             @click="reverseImages"
             v-if="!hideSecondaryPhoto"
@@ -211,31 +256,31 @@ export default defineComponent({
 
       <div class="flex items-center font-bold mt-2 justify-center">
         <span> {{ postdate() }} </span>
-        <span class="ml-3">Retakes - {{ post.retakeCounter }}</span>
+        <span class="ml-3">Retakes - {{ curpost.retakeCounter }}</span>
       </div>
       <div class="flex flex-col">
-        <span v-if="post.caption">
+        <span v-if="curpost.caption">
           <span class="font-bold">{{ user.username + ": " }} </span>
-          {{ post.caption }}
+          {{ curpost.caption }}
         </span>
       </div>
-      <div v-if="post.comments" class="flex flex-col sm:w-[500px]">
-        <div v-for="c in post.comments">
+      <div v-if="curpost.comments" class="flex flex-col sm:w-[500px]">
+        <div v-for="c in curpost.comments">
           <span class="font-bold"> {{ c.user.username + ": " }}</span>
           <span v-html="cleancomment(c.content)"></span>
         </div>
       </div>
       <div class="text-center mt-4">
         <div class="flex flex-col mt-4 ml-[25%] w-[100%]">
-          <div v-if="this.post.realMojis.length > 2">
+          <div v-if="this.curpost.realMojis.length > 2">
             <Realmoji
-              v-for="e in post.realMojis.slice(0, 2)"
+              v-for="e in curpost.realMojis.slice(0, 2)"
               :key="e.id"
               :realmoji="e" />
             <Transition name="slide">
               <div v-if="showEmojis">
                 <Realmoji
-                  v-for="e in post.realMojis.slice(2)"
+                  v-for="e in curpost.realMojis.slice(2)"
                   :key="e.id"
                   :realmoji="e" />
               </div>
@@ -247,9 +292,9 @@ export default defineComponent({
                 {{
                   (showEmojis ? "Hide" : "Show") +
                   " " +
-                  (this.post.realMojis.length - 2) +
+                  (this.curpost.realMojis.length - 2) +
                   " " +
-                  (this.post.realMojis.length - 2 == 1
+                  (this.curpost.realMojis.length - 2 == 1
                     ? "realmoji"
                     : "realmojis")
                 }}
@@ -257,11 +302,14 @@ export default defineComponent({
             </div>
           </div>
           <div v-else>
-            <Realmoji v-for="e in post.realMojis" :key="e.id" :realmoji="e" />
+            <Realmoji
+              v-for="e in curpost.realMojis"
+              :key="e.id"
+              :realmoji="e" />
           </div>
           <UploadRealmoji
             v-if="!isOwner"
-            :postID="post.id"
+            :postID="curpost.id"
             :postOwnerID="user.id" />
         </div>
       </div>
