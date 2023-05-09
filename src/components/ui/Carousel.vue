@@ -28,6 +28,25 @@ export default {
       this.curr === 0 ? (this.curr = this.length - 1) : this.curr--;
       this.$emit("prev");
     },
+    scrollHandler(e) {
+      // massive shoutout to stackoverflow user klaas leussink for this solution
+      // https://stackoverflow.com/questions/65952068/determine-if-a-snap-scroll-elements-snap-scrolling-event-is-complete
+      var atSnappingPoint = e.target.scrollLeft % e.target.offsetWidth === 0;
+      var timeOut = atSnappingPoint ? 0 : 150;
+
+      console.log("here");
+      clearTimeout(e.target.scrollTimeout);
+      e.target.scrollTimeout = setTimeout(() => {
+        if (!timeOut) {
+          console.log("snapped");
+          const index = e.target.scrollLeft / e.target.offsetWidth;
+          this.curr = index;
+          this.$emit("scroll", index);
+        } else {
+          console.log("user stopped scrolling");
+        }
+      }, timeOut);
+    },
   },
 };
 </script>
@@ -43,7 +62,7 @@ export default {
   <div class="relative w-[400px]">
     <div
       class="flex snap-x snap-mandatory overflow-x-scroll scroll-smooth scrollbar-hide"
-      ref="carousel">
+      @scroll="scrollHandler">
       <slot></slot>
     </div>
     <button

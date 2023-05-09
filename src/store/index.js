@@ -156,8 +156,11 @@ const store = createStore({
               })
               .then((data) => {
                 // if data.userPosts exist and data.friendsPosts exist and data.friendsPosts.length > 0 then prepend the userPosts object to the friendsPosts array
-                if (data.userPosts && data.friendsPosts)
+                if (data.userPosts && data.friendsPosts) {
+                  data.userPosts.posts.push(data.friendsPosts[0].posts[0]);
+                  data.userPosts.posts.push(data.friendsPosts[1].posts[0]);
                   data.friendsPosts.unshift(data.userPosts);
+                }
 
                 commit("posts", data.friendsPosts);
               }),
