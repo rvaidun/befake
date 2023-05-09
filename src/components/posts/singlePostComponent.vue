@@ -11,7 +11,6 @@ export default defineComponent({
   props: ["post", "user"],
   data() {
     return {
-      currindex: 0,
       curpost: this.post[0],
       reverseGeo: "",
       revbgeo: "",
@@ -69,33 +68,8 @@ export default defineComponent({
           );
         });
     },
-    nextCarousel() {
-      console.log(this.$refs);
-      console.log(this.currindex);
-      this.currindex === this.post.length - 1
-        ? (this.currindex = 0)
-        : this.currindex++;
-      console.log(this.currindex);
-      this.curpost = this.post[this.currindex];
-      const cp = this.$refs[this.curpost.id][0];
-      console.log(cp);
-      if (cp.scrollIntoViewIfNeeded)
-        cp.scrollIntoViewIfNeeded({ behavior: "smooth" });
-      else if (cp.scrollIntoView) {
-        cp.scrollIntoView({ behavior: "smooth" });
-      }
-    },
-    prevCarousel() {
-      this.currindex === 0
-        ? (this.currindex = this.post.length - 1)
-        : this.currindex--;
-      console.log(this.currindex);
-
-      this.curpost = this.post[this.currindex];
-    },
     scrollCarousel(i) {
-      this.currindex = i;
-      this.curpost = this.post[this.currindex];
+      this.curpost = this.post[i];
     },
   },
   computed: {
@@ -231,6 +205,7 @@ export default defineComponent({
           v-if="post.length > 1"
           @next="nextCarousel"
           :length="post.length"
+          :post="post"
           @prev="prevCarousel"
           @scroll="scrollCarousel">
           <div
