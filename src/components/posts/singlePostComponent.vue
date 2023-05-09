@@ -93,6 +93,10 @@ export default defineComponent({
 
       this.curpost = this.post[this.currindex];
     },
+    scrollCarousel(i) {
+      this.currindex = i;
+      this.curpost = this.post[this.currindex];
+    },
   },
   computed: {
     color() {
@@ -129,37 +133,6 @@ export default defineComponent({
     UploadRealmoji,
     Realmoji,
     Carousel,
-  },
-  created() {
-    this.observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            console.log(this.curpost, entry.target.id);
-            if (entry.target.id === this.curpost.id) {
-              console.log("already set");
-            } else {
-              const t = this.post.find((post) => post.id === entry.target.id);
-              if (t) {
-                this.curpost = t;
-                this.currindex = this.post.indexOf(t);
-              }
-            }
-          }
-        });
-      },
-      {
-        threshold: 1,
-      }
-    );
-  },
-  mounted() {
-    // observe all .carouselimage elements
-    const carouselimages = document.querySelectorAll(".carouselimages");
-    console.log(carouselimages);
-    carouselimages.forEach((image) => {
-      this.observer.observe(image);
-    });
   },
 });
 </script>
@@ -258,9 +231,10 @@ export default defineComponent({
           v-if="post.length > 1"
           @next="nextCarousel"
           :length="post.length"
-          @prev="prevCarousel">
+          @prev="prevCarousel"
+          @scroll="scrollCarousel">
           <div
-            class="relative flex-shrink-0 snap-start w-[95%] m-3 carouselimages"
+            class="relative flex-shrink-0 snap-start w-[100%] snap-normal"
             v-for="p in post"
             :ref="p.id"
             :id="p.id">
