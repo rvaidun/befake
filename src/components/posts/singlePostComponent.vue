@@ -261,7 +261,7 @@ export default defineComponent({
           <span v-html="cleancomment(c.content)"></span>
         </div>
       </div>
-      <div class="flex gap-3 items-center overflow-auto mt-4 w-[500px]">
+      <div class="flex gap-3 items-center overflow-auto mt-4">
         <Realmoji :key="e.id" :realmoji="e" v-for="e in curpost.realMojis" />
         <UploadRealmoji
           v-if="!isOwner"
