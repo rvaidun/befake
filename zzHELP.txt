@@ -1,0 +1,4 @@
+#### git config commit.gpgsign true 
+#### git for-each-ref --format '%(refname:short)' refs/heads | xargs git branch -D   #remover redundant local branches
+#### git remote update --prune            #update branches from remote also upstream branches
+#### git remote update origin --prune            #update branches from remote only origin

@@ -166,7 +166,7 @@ const store = createStore({
                 //   post.posts.reverse();
                 // });
 
-                commit("posts", data.friendsPosts);
+                commit("posts", data.friendsPosts.reverse());
               }),
             fetch(`${state.proxyUrl}/https://mobile.bereal.com/api/person/me`, {
               method: "GET",

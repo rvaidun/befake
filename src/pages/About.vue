@@ -59,7 +59,6 @@
             >xKRISTOFx</a
           >
           <div class="pt-2 flex flex-col items-center">
-            <!-- place in spans text to look good:Student at Technikum Nowoczesnych Technologii, Kleszczów, Poland I made numerous improvements to the application, improved selection of countries, responding to all bereals at once and many other minor ones. Contact Click on my green nickname -->
             <p>
               Student at Technikum Nowoczesnych Technologii, Kleszczów, Poland
             </p>

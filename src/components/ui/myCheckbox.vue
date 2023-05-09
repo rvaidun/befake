@@ -1,4 +1,3 @@
-<!-- CustomInput.vue -->
 <script>
 export default {
   props: ["modelValue"],

@@ -73,9 +73,14 @@ export default {
 <template>
   <div class="relative w-[400px]">
     <div
+<<<<<<< HEAD
       class="flex snap-x snap-mandatory overflow-x-scroll scroll-smooth scrollbar-hide"
       ref="carousel"
       @scroll="scrollHandler">
+=======
+      class="flex transition-transform ease-out duration-500"
+      :style="{ transform: `translateX(-${curr * 100}%)` }">
+>>>>>>> 2f4d2705ff11cdba9d940a1c386e699c18edcd57
       <slot></slot>
     </div>
     <button
@@ -88,6 +93,7 @@ export default {
       class="p-1 rounded-full shadow bg-white/80 text-gray-800 hover:bg-white absolute top-[50%] left-[95%]">
       <font-awesome-icon :icon="['fas', 'chevron-right']" />
     </button>
+<<<<<<< HEAD
     <div class="absolute bottom-4 right-0 left-0">
       <div class="flex items-center justify-center gap-2">
         <div
@@ -95,6 +101,16 @@ export default {
           v-for="(_, i) in length"
           :class="{ 'p-2': curr === i, 'bg-opacity-50': curr !== i }"></div>
       </div>
+=======
+  </div>
+
+  <div class="absolute bottom-4 right-0 left-0">
+    <div class="flex items-center justify-center gap-2">
+      <div
+        class="transition-all w-3 h-3 bg-white rounded-full"
+        v-for="(_, i) in length"
+        :class="{ 'p-2': curr === i, 'bg-opacity-50': curr !== i }"></div>
+>>>>>>> 2f4d2705ff11cdba9d940a1c386e699c18edcd57
     </div>
   </div>
 </template>

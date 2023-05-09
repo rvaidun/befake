@@ -1,7 +1,7 @@
 <script>
 import { defineComponent } from "vue";
-import moment from "moment";
 import PopupModal from "./PopupModal.vue";
+import DeletePopup from "./deletePopup.vue";
 import MyButton from "../ui/Button.vue";
 import MyInput from "../ui/Input.vue";
 import UploadRealmoji from "./uploadRealmoji.vue";
@@ -29,7 +29,7 @@ export default defineComponent({
       this.curpost.secondary.url = temp;
     },
     postdate() {
-      return moment(this.curpost.creationDate).format("MM-DD-YYYY h:mm:ss");
+      return new Date(this.post.creationDate).toLocaleString();
     },
     cleancomment(s) {
       s = s.replaceAll("<", "&lt;");
@@ -107,10 +107,11 @@ export default defineComponent({
     UploadRealmoji,
     Realmoji,
     Carousel,
+    DeletePopup,
   },
 });
 </script>
-<style>
+<style scoped>
 .slide-enter-active,
 .slide-leave-active {
   transition: max-height 1s;
@@ -126,6 +127,10 @@ export default defineComponent({
 .slide-leave-to {
   overflow: hidden;
   max-height: 0;
+}
+
+.hide-scroll::-webkit-scrollbar {
+  display: none;
 }
 </style>
 <template>
@@ -270,15 +275,15 @@ export default defineComponent({
           class="ml-4" />
       </div>
     </div>
-    <div class="flex mb-5">
-      <MyInput
-        @enterPressed="submitComment"
-        v-model="comment"
-        placeholder="Comment"
-        typeOfInput="text" />
-      <MyButton @clickedd="submitComment" :loading="submitCommentLoading"
-        >Submit</MyButton
-      >
-    </div>
+  </div>
+  <div class="flex my-5">
+    <MyInput
+      @enterPressed="submitComment"
+      v-model="comment"
+      placeholder="Comment"
+      typeOfInput="text" />
+    <MyButton @clickedd="submitComment" :loading="submitCommentLoading"
+      >Submit</MyButton
+    >
   </div>
 </template>

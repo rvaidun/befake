@@ -26,44 +26,7 @@ export default {
       event_category: "posts",
       event_label: "view_posts",
     });
-    Promise.all([
-      this.$store.dispatch("getPosts"),
-      // this.$store.dispatch("getUser"),
-      // fetch(
-      //   "https://arcane-woodland-79412.herokuapp.com/https://mobile.bereal.com/api/relationships/friends",
-      //   {
-      //     method: "GET",
-      //     headers: {
-      //       accept: "application/json",
-      //       "content-type": "application/json",
-      //       "user-agent": "BeReal/7242 CFNetwork/1333.0.4 Darwin/21.5.0",
-      //       authorization: localStorage.getItem("token") ?? "",
-      //       "accept-language": "en-US,en;q=0.9",
-      //     },
-      //   }
-      // )
-      //   .then((res) => res.json())
-      //   .then((data) => {
-      //     this.friends = data.data;
-      //   }),
-      // fetch(
-      //   `${this.$store.state.proxyUrl}/https://mobile.bereal.com/api/feeds/memories`,
-      //   {
-      //     method: "GET",
-      //     headers: {
-      //       accept: "application/json",
-      //       "content-type": "application/json",
-      //       "user-agent": "BeReal/7242 CFNetwork/1333.0.4 Darwin/21.5.0",
-      //       authorization: localStorage.getItem("token") ?? "",
-      //       "accept-language": "en-US,en;q=0.9",
-      //     },
-      //   }
-      // )
-      //   .then((res) => res.json())
-      //   .then((data) => {
-      //     this.memories = data.data;
-      //   }),
-    ])
+    Promise.all([this.$store.dispatch("getPosts")])
       .then(() => {
         this.isfetch = false;
       })
@@ -91,25 +54,27 @@ export default {
     ...mapState({
       user: (state) => state.user,
       posts: (state) => state.posts,
-      // userPosted: (state) => state.userPosted,
     }),
   },
 };
 </script>
 <template>
-  <div class="m-3">
-    <a
-      class="cursor-pointer text-red-500 rounded-md font-bold sm:hidden"
-      href="https://ko-fi.com/rahulvaidun">
-      Donate
-    </a>
-    <p class="sm:hidden">
-      <span class="text-red-600">NEW!</span> <ReactToAll />
-    </p>
+  <div class="p-3 md:p-0 max-w-xl mx-auto flex flex-col gap-10">
+    <div>
+      <a
+        class="cursor-pointer text-red-500 rounded-md font-bold sm:hidden"
+        href="https://ko-fi.com/rahulvaidun">
+        Donate
+      </a>
+      <p class="sm:hidden">
+        <span class="text-red-600">NEW!</span> <ReactToAll />
+      </p>
+    </div>
     <UploadPost v-if="!isfetch && !posts.posted" :user="user" />
     <div
-      v-for="post in posts"
       v-if="!isfetch"
+      v-for="post in posts"
+      :key="post.id"
       class="flex flex-col justify-center items-center dark:text-white">
       <single-post-component-vue
         :post="post.posts"

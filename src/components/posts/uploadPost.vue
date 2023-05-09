@@ -235,7 +235,6 @@ export default {
           placeholder="Longitude"
           typeOfInput="number" />
       </div>
-      <!-- Submit -->
       <div class="flex justify-center">
         <MyButton @clickedd="submitPost" :loading="loading"> Submit </MyButton>
       </div>
