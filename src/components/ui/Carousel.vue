@@ -31,11 +31,19 @@ export default {
   },
 };
 </script>
+<style>
+.scrollbar-hide {
+  -ms-overflow-style: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+</style>
 <template>
-  <div class="overflow-hidden relative">
+  <div class="relative w-[400px]">
     <div
-      class="flex transition-transform ease-out duration-500 w-[400px]"
-      :style="{ transform: `translateX(-${curr * 100}%)` }">
+      class="flex snap-x snap-mandatory overflow-x-scroll scroll-smooth scrollbar-hide"
+      ref="carousel">
       <slot></slot>
     </div>
     <button
