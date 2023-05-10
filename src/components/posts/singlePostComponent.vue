@@ -185,16 +185,11 @@ export default defineComponent({
       <div class="flex items-center justify-center">
         <Carousel
           v-if="post.length > 1"
-          @next="nextCarousel"
           :length="post.length"
-          :post="post"
-          @prev="prevCarousel"
           @scroll="scrollCarousel">
           <div
             class="relative flex-shrink-0 snap-start w-[100%] snap-normal"
-            v-for="p in post"
-            :ref="p.id"
-            :id="p.id">
+            v-for="p in post">
             <img
               referrerpolicy="no-referrer"
               v-bind:src="p.primary.url"
