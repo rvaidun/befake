@@ -110,24 +110,6 @@ export default defineComponent({
   },
 });
 </script>
-<style>
-.slide-enter-active,
-.slide-leave-active {
-  transition: max-height 1s;
-}
-
-.slide-enter-to,
-.slide-leave-from {
-  overflow: hidden;
-  max-height: 1000px;
-}
-
-.slide-enter-from,
-.slide-leave-to {
-  overflow: hidden;
-  max-height: 0;
-}
-</style>
 <template>
   <div
     class="block w-[100%] bg-black rounded-lg shadow-md sm:w-auto border border-white p-3 sm:max-w-fit sm:h-[100%]">
