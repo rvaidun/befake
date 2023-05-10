@@ -155,16 +155,16 @@ const store = createStore({
                 return res.json();
               })
               .then((data) => {
-                // if data.userPosts exist and data.friendsPosts exist and data.friendsPosts.length > 0 then prepend the userPosts object to the friendsPosts array
-                if (data.userPosts && data.friendsPosts) {
-                  data.friendsPosts.unshift(data.userPosts);
-                }
                 // reverse data.friendsPosts
                 data.friendsPosts.reverse();
                 // for each post in data.friendsPosts reverse the posts
                 // data.friendsPosts.forEach((post) => {
                 //   post.posts.reverse();
                 // });
+                // if data.userPosts exist and data.friendsPosts exist and data.friendsPosts.length > 0 then prepend the userPosts object to the friendsPosts array
+                if (data.userPosts && data.friendsPosts) {
+                  data.friendsPosts.unshift(data.userPosts);
+                }
 
                 commit("posts", data.friendsPosts);
               }),

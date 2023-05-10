@@ -30,3 +30,6 @@ coverage
 
 # lockfiles
 package-lock.json
+
+#other
+zzHELP.txt
