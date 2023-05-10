@@ -137,7 +137,7 @@ const store = createStore({
           console.log("successfully refreshed");
           return Promise.all([
             fetch(
-              `${state.proxyUrl}/https://mobile.bereal.com/api/feeds/friends`,
+              `${state.proxyUrl}/https://mobile.bereal.com/api/feeds/friends-v1`,
               {
                 method: "GET",
                 headers: {
@@ -155,18 +155,18 @@ const store = createStore({
                 return res.json();
               })
               .then((data) => {
-                // move user to the top of the list
-                for (let i = 0; i < data.length; i++) {
-                  if (data[i].ownerID === state.user.id) {
-                    // remove i and move to top
-                    let user = data.splice(i, 1);
-                    console.log(user);
-                    data.unshift(user[0]);
-                    data.posted = true;
-                    break;
-                  }
+                // reverse data.friendsPosts
+                data.friendsPosts.reverse();
+                // for each post in data.friendsPosts reverse the posts
+                // data.friendsPosts.forEach((post) => {
+                //   post.posts.reverse();
+                // });
+                // if data.userPosts exist and data.friendsPosts exist and data.friendsPosts.length > 0 then prepend the userPosts object to the friendsPosts array
+                if (data.userPosts && data.friendsPosts) {
+                  data.friendsPosts.unshift(data.userPosts);
                 }
-                commit("posts", data);
+
+                commit("posts", data.friendsPosts);
               }),
             fetch(`${state.proxyUrl}/https://mobile.bereal.com/api/person/me`, {
               method: "GET",

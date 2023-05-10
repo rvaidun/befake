@@ -47,6 +47,6 @@ export default {
   </Transition>
   <div class="bg-black text-white">
     <NavbarVue />
-    <router-view />
+    <router-view class="mt-20 z-30" />
   </div>
 </template>

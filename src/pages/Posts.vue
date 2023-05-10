@@ -10,6 +10,7 @@ import UploadPost from "../components/posts/uploadPost.vue";
 import { mapState } from "vuex";
 import UploadProfilePicture from "../components/posts/uploadProfilePicture.vue";
 import ReactToAll from "../components/ui/reactToAll.vue";
+import Carousel from "../components/ui/Carousel.vue";
 export default {
   components: {
     singlePostComponentVue,
@@ -18,6 +19,7 @@ export default {
     UploadPost,
     UploadProfilePicture,
     ReactToAll,
+    Carousel,
   },
   async beforeMount() {
     event("view_posts", {
@@ -95,21 +97,29 @@ export default {
 };
 </script>
 <template>
-  <div class="m-3">
-    <a
-      class="cursor-pointer text-red-500 rounded-md font-bold sm:hidden"
-      href="https://ko-fi.com/rahulvaidun">
-      Donate
-    </a>
-    <p class="sm:hidden">
-      <span class="text-red-600">NEW!</span> <ReactToAll />
-    </p>
+  <div class="p-3 md:p-0 max-w-xl mx-auto flex flex-col gap-10">
+    <div>
+      <a
+        class="cursor-pointer text-red-500 rounded-md font-bold sm:hidden"
+        href="https://ko-fi.com/rahulvaidun">
+        Donate
+      </a>
+      <p class="sm:hidden">
+        <span class="text-red-600">NEW!</span> <ReactToAll />
+      </p>
+    </div>
     <UploadPost v-if="!isfetch && !posts.posted" :user="user" />
     <div
       v-for="post in posts"
       v-if="!isfetch"
+      :key="post.id"
       class="flex flex-col justify-center items-center dark:text-white">
-      <single-post-component-vue :post="post" class="mt-10" />
+      <single-post-component-vue
+        :post="post.posts"
+        class="mt-10"
+        :user="post.user" />
+      <!-- <Carousel :length="post.posts.length" v-else>
+      </Carousel> -->
     </div>
     <div v-else class="grid h-screen place-items-center">
       <pulse-loader color="white"></pulse-loader>
