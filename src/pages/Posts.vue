@@ -31,7 +31,6 @@ export default {
         this.isfetch = false;
       })
       .catch((err) => {
-        
         this.$store.commit("error", "Something went wrong while getting posts");
       });
   },

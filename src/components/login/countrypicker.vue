@@ -10,7 +10,6 @@ export default {
   },
   methods: {
     selectCountry(value) {
-      
       if (value === null) return;
       localStorage.setItem("previousCountry", value.isoCode);
       this.$emit("asdfasdf", value.dialCode);
