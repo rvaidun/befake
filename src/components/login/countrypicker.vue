@@ -10,8 +10,8 @@ export default {
   },
   methods: {
     selectCountry(value) {
-      console.log(value);
-      if (value == null) return;
+      
+      if (value === null) return;
       localStorage.setItem("previousCountry", value.isoCode);
       this.$emit("asdfasdf", value.dialCode);
       const papa = document.querySelector("div.vs__selected-options");

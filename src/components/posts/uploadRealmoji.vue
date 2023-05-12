@@ -15,7 +15,7 @@ export default {
   },
   methods: {
     onFileChange(e) {
-      console.log(e);
+      
       this.file = e.target.files[0];
       this.imageurl = URL.createObjectURL(this.file);
       this.submitRealMoji();
@@ -100,7 +100,7 @@ export default {
             return res.json();
           })
           .then((data) => {
-            console.log(data);
+            
             return data;
           });
       };
@@ -109,7 +109,7 @@ export default {
         let uud;
         getUploadUrl()
           .then((uploadUrlData) => {
-            console.log(uploadUrlData);
+            
             uud = uploadUrlData;
           })
           .then(() => putPhoto(uud.data.url, file, uud.data.headers))

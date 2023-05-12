@@ -69,9 +69,9 @@ export default {
       });
     },
     setCountryCode(country) {
-      console.log(country);
+      
       this.cc = country;
-      console.log(this.cc);
+      
     },
     async sendCode() {
       event("send_code", {
@@ -81,9 +81,9 @@ export default {
       this.loading = true;
       // Check if phone number is valid
       // check if the string starts with a +
-      console.log(this.phone);
+      
       if (this.phone.startsWith("{")) {
-        console.log("phone number starts with {");
+        
         try {
           const j = JSON.parse(this.phone);
           if (
@@ -117,7 +117,7 @@ export default {
         }),
       })
         .then((res) => {
-          console.log(res.status);
+          
           return res.json();
         })
         .then((data) => {

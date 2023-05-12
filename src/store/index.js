@@ -19,12 +19,12 @@ const store = createStore({
   },
   mutations: {
     error(state, payload) {
-      console.log("in error mutation");
+      
       state.error.text = payload;
       state.error.show = true;
       setTimeout(() => {
         state.error.show = false;
-        console.log("in error after timeout");
+        
       }, 5000);
     },
     logout(state) {
@@ -55,9 +55,9 @@ const store = createStore({
       commit("login");
     },
     refresh({ commit, state }) {
-      console.log("in refresh");
+      
       if (Date.now() > localStorage.getItem("expiration")) {
-        console.log("in refresh if");
+        
         return fetch(
           `${state.proxyUrl}/https://securetoken.googleapis.com/v1/token?key=AIzaSyDwjfEeparokD7sXPVQli9NsTuhT6fJ6iA`,
           {
@@ -124,8 +124,8 @@ const store = createStore({
               });
           })
           .catch((err) => {
-            console.log("error while refreshing");
-            console.log(err);
+            
+            
           });
       } else {
         return Promise.resolve(true);
@@ -134,7 +134,7 @@ const store = createStore({
     async getPosts({ commit, state, dispatch }) {
       return dispatch("refresh")
         .then(() => {
-          console.log("successfully refreshed");
+          
           return Promise.all([
             fetch(
               `${state.proxyUrl}/https://mobile.bereal.com/api/feeds/friends-v1`,
