@@ -1,6 +1,6 @@
 # BeFake
 
-[https://befake-623af.web.app/](https://befake-623af.web.app/)
+[https://befake.ong/](https://befake.ong/)
 
 ## Features
 
@@ -19,7 +19,7 @@
    ![BeFake Upload](images/upload.png)
 
 3. Interactive Map
-   See where your friends are posting from on an interactive map.The map is interactive, so you can zoom in and out, and move around. You can also click on a marker to see the details of the post in a popup on the map! Once logged in see [https://befake-623af.web.app/map](https://befake-623af.web.app/map) to see the map. Note: The map is does not work well on mobile devices.
+   See where your friends are posting from on an interactive map.The map is interactive, so you can zoom in and out, and move around. You can also click on a marker to see the details of the post in a popup on the map! Once logged in see [https://befake.ong/map](https://befake.ong/map) to see the map. Note: The map is does not work well on mobile devices.
    ![BeFake Map](images/map.png)
 
 ## Development Setup
