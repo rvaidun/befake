@@ -98,6 +98,21 @@ export default {
           </router-link>
           <a
             class="cursor-pointer text-white sm:py-2 py-[0.6px] sm:px-3 rounded-md font-bold"
+            href="/conditions.html">
+            Terms and Conditions
+          </a>
+          <a
+            class="cursor-pointer text-white sm:py-2 py-[0.6px] sm:px-3 rounded-md font-bold"
+            href="/privacy.html">
+            Privacy Policy
+          </a>
+          <a
+            class="cursor-pointer text-white sm:py-2 py-[0.6px] sm:px-3 rounded-md font-bold"
+            href="/cookies.html">
+            Cookie Policy
+          </a>
+          <a
+            class="cursor-pointer text-white sm:py-2 py-[0.6px] sm:px-3 rounded-md font-bold"
             @click="this.$store.commit('logout')"
             v-if="this.$store.state.loggedIn">
             Logout
@@ -148,6 +163,21 @@ export default {
               @click="() => (showNav = false)">
               About
             </router-link>
+            <a
+              class="cursor-pointer text-white sm:py-2 py-[0.6px] sm:px-3 rounded-md font-bold"
+              href="/conditions.html">
+              Terms and Conditions
+            </a>
+            <a
+              class="cursor-pointer text-white sm:py-2 py-[0.6px] sm:px-3 rounded-md font-bold"
+              href="/privacy.html">
+              Privacy Policy
+            </a>
+            <a
+              class="cursor-pointer text-white sm:py-2 py-[0.6px] sm:px-3 rounded-md font-bold"
+              href="/cookies.html">
+              Cookie Policy
+            </a>
             <a
               class="cursor-pointer text-white sm:py-2 py-[0.6px] sm:px-3 rounded-md font-bold"
               @click="this.$store.commit('logout')"
