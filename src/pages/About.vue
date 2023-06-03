@@ -23,14 +23,8 @@
           done with <span class="font-bold">Tailwind CSS</span>
         </p>
         <p class="text-base">
-          I don't have plans on monetizing this site hence there will
-          <span class="font-bold">never</span> be ads on this website at least
-          for the forseeable future. However I will happily accept
-          <span class="font-bold text-red-600"
-            ><a href="https://ko-fi.com/rahulvaidun">donations</a></span
-          >
-          🤑🥰❤️. If you are interested in viewing the source code or making
-          your own contributions to BeFake check out our
+          If you are interested in viewing the source code or making your own
+          contributions to BeFake check out our
           <a class="text-blue-600" href="https://github.com/rvaidun/befake"
             >github repository</a
           >
