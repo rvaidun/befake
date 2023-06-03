@@ -4,6 +4,7 @@ import Home from "./pages/Home.vue";
 import About from "./pages/About.vue";
 import Friends from "./pages/Friends.vue";
 import Map from "./pages/Map.vue";
+import Blog from "./pages/Blog.vue";
 import "./index.css";
 import App from "./App.vue";
 import VueClipboard from "vue3-clipboard";
@@ -17,6 +18,8 @@ const routes = [
   { path: "/about", component: About },
   { path: "/search", component: Friends },
   { path: "/map", component: Map },
+  { path: "/blog", component: Blog },
+  { path: "/read/:id", component: Blog },
 ];
 
 const router = createRouter({
