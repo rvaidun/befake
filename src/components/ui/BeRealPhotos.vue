@@ -10,7 +10,7 @@ export default {
 };
 </script>
 <template>
-  <div class="bg-black rounded-lg shadow-md border border-white p-3 w-[40%]">
+  <div class="bg-black rounded-lg shadow-md border border-white p-3 sm:w-[40%]">
     <div class="relative top-0 left-0 justify-center">
       <img
         loading="lazy"
