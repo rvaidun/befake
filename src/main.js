@@ -4,7 +4,6 @@ import Home from "./pages/Home.vue";
 import About from "./pages/About.vue";
 import Friends from "./pages/Friends.vue";
 import Map from "./pages/Map.vue";
-import Blog from "./pages/Blog.vue";
 import "./index.css";
 import App from "./App.vue";
 import VueClipboard from "vue3-clipboard";
@@ -12,14 +11,14 @@ import { createRouter, createWebHistory } from "vue-router";
 import VueGtag from "vue-gtag";
 import store from "./store/index.js";
 import VueGoogleMaps from "@fawmi/vue-google-maps";
+import Memories from "./pages/Memories.vue";
 
 const routes = [
   { path: "/", component: Home },
   { path: "/about", component: About },
   { path: "/search", component: Friends },
   { path: "/map", component: Map },
-  { path: "/blog", component: Blog },
-  { path: "/read/:id", component: Blog },
+  { path: "/memories", component: Memories },
 ];
 
 const router = createRouter({
