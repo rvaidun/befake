@@ -17,8 +17,6 @@ export default {
       imageurl: null,
       loading: false,
       image: {},
-      user: this.$store.state.user,
-      postsLoaded: this.$store.state.posts,
     };
   },
   methods: {
@@ -122,17 +120,24 @@ export default {
           .then(() => {
             console.log("postsLoaded: ", this.postsLoaded);
             const promises = [];
-            for (const post in this.postsLoaded) {
-              if (this.user.id != this.postsLoaded[post].ownerID) {
-                promises.push(
-                  postRealmoji(
-                    uud,
-                    this.postsLoaded[post].ownerID,
-                    this.postsLoaded[post].id
-                  )
-                );
+            // for (const post in this.$store.state.posts) {
+            //   if (this.$store.state.user.id != this.postsLoaded[post].ownerID) {
+            //     promises.push(
+            //       postRealmoji(
+            //         uud,
+            //         this.postsLoaded[post].ownerID,
+            //         this.postsLoaded[post].id
+            //       )
+            //     );
+            //   }
+            // }
+            this.$store.state.posts.forEach((post) => {
+              if (this.$store.state.user.id != post.user.id) {
+                post.posts.forEach((p) => {
+                  promises.push(postRealmoji(uud, post.user.id, p.id));
+                });
               }
-            }
+            });
             return Promise.all(promises);
           })
           .then(() => {
