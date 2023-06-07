@@ -98,9 +98,9 @@ export default {
           </router-link>
           <router-link
             class="cursor-pointer text-white sm:py-2 py-[0.6px] sm:px-3 rounded-md font-bold"
-            to="/blog"
+            to="/memories"
             @click="() => (showNav = false)">
-            Blog
+            memories
           </router-link>
           <a
             class="cursor-pointer text-white sm:py-2 py-[0.6px] sm:px-3 rounded-md font-bold"
@@ -157,9 +157,9 @@ export default {
 
             <router-link
               class="cursor-pointer text-white sm:py-2 py-[0.6px] sm:px-3 rounded-md font-bold"
-              to="/blog"
+              to="/memories"
               @click="() => (showNav = false)">
-              Blog
+              Memoriues
             </router-link>
             <a
               class="cursor-pointer text-white sm:py-2 py-[0.6px] sm:px-3 rounded-md font-bold"

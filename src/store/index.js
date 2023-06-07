@@ -239,6 +239,23 @@ const store = createStore({
         }
       });
     },
+    async getMemories({ commit, state, dispatch }) {
+      fetch(`${state.proxyUrl}/https://mobile.bereal.com/api/feeds/memories`, {
+        method: "GET",
+        headers: {
+          accept: "application/json",
+          "content-type": "application/json",
+          "user-agent": "BeReal/7242 CFNetwork/1333.0.4 Darwin/21.5.0",
+          authorization: `Bearer ${localStorage.getItem("token") ?? ""}`,
+          "accept-language": "en-US,en;q=0.9",
+        },
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          console.log(data);
+          state.memories = data.data;
+        });
+    },
   },
 });
 
