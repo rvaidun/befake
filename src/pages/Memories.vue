@@ -23,8 +23,8 @@ export default {
 <template>
   <div>
     <p class="text-center text-2xl font-bold">Memories</p>
-    <div v-for="m in memories" class="m-4 flex flex-col">
-      <p class="text-center text-xl font-bold">{{ m.memoryDay }}</p>
+    <div v-for="m in memories" class="m-4 flex flex-col items-center">
+      <p class="text-xl font-bold">{{ m.memoryDay }}</p>
       <BeRealPhotos :primary="m.primary.url" :secondary="m.secondary.url" />
     </div>
   </div>
