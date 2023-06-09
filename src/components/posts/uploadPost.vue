@@ -88,14 +88,14 @@ export default {
           takenAt: taken_at,
           backCamera: {
             bucket: uploadUrlData.data[0].bucket,
-            height: 1500,
-            width: 2000,
+            height: 2000,
+            width: 1500,
             path: uploadUrlData.data[0].path,
           },
           frontCamera: {
             bucket: uploadUrlData.data[1].bucket,
-            height: 1500,
-            width: 2000,
+            height: 2000,
+            width: 1500,
             path: uploadUrlData.data[1].path,
           },
         };
