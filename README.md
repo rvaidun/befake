@@ -1,6 +1,6 @@
 # BeFake
 
-[https://befake.ong/](https://befake.ong/)
+Site will not be hosted anymore since I got a Cease & Desist from BeReal for unauthorized access to their API. Code will still be kept public for educational purposes and to point out the security vulnerabilities in the BeReal API
 
 ## Features
 
