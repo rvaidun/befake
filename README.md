@@ -62,4 +62,4 @@ Before you start contributing, please take a moment to read through the followin
 
 # Donations
 
-This project is free and open source. If you would like to support the development of this project, you can donate to the project using the following link [https://ko-fi.com/rahulvaidun](https://ko-fi.com/rahulvaidun)
+This project is free and open source. If you would like to support the development of this project, you can donate to the project [here](https://ko-fi.com/rahulvaidun)
