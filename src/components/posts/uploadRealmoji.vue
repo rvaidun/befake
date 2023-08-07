@@ -1,7 +1,11 @@
 <script>
 import MyButton from "../ui/Button.vue";
-import { v4 as uuidv4 } from "uuid";
-import moment from "moment";
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+import { library } from "@fortawesome/fontawesome-svg-core";
+import { faFaceSmile } from "@fortawesome/free-solid-svg-icons";
+import PulseLoader from "vue-spinner/src/PulseLoader.vue";
+library.add(faFaceSmile);
+
 export default {
   props: ["postID", "postOwnerID"],
   data() {
@@ -11,13 +15,16 @@ export default {
       loading: false,
       image: {},
       user: this.$store.state.user,
+      showRealmoji: false,
     };
   },
   methods: {
     onFileChange(e) {
       console.log(e);
       this.file = e.target.files[0];
+      if (!this.file) return;
       this.imageurl = URL.createObjectURL(this.file);
+      this.submitRealMoji();
     },
     async uploadPhotoToBeReal(file) {
       // https://cdn.bereal.network/Photos/WGpTqIX0diZQu3UjoZE8FnUAzNi2/realmoji/WGpTqIX0diZQu3UjoZE8FnUAzNi2-realmoji-instant-1669332458.webp
@@ -140,14 +147,57 @@ export default {
           this.$store.commit("error", e);
         });
     },
+    async submitPreset(emoji) {
+      console.log(emoji);
+      this.loading = true;
+      fetch(
+        `${this.$store.state.proxyUrl}/https://mobile.bereal.com/api/content/realmojis?postId=${this.postID}&postUserId=${this.postOwnerID}`,
+        {
+          method: "PUT",
+          headers: {
+            authorization: `Bearer ${localStorage.getItem("token") ?? ""}`,
+            accept: "application/json",
+            "content-type": "application/json",
+            "user-agent": "BeReal/7242 CFNetwork/1333.0.4 Darwin/21.5.0",
+            "accept-language": "en-US,en;q=0.9",
+          },
+          body: JSON.stringify({
+            emoji,
+          }),
+        }
+      ).then((res) => {
+        this.loading = false;
+        this.showRealmoji = false;
+        if (!res.ok) {
+          throw new Error("Failed to upload photo");
+        }
+        this.$store.dispatch("getPosts");
+      });
+    },
   },
 
-  components: { MyButton },
+  components: { MyButton, FontAwesomeIcon, PulseLoader },
 };
 </script>
 <template>
-  <div class="flex items-center gap-3">
-    <div>
+  <div class="flex gap-3 items-center">
+    <div
+      class="flex gap-3 image-container px-3"
+      :class="{ revealed: showRealmoji }">
+      <div
+        v-for="(realmoji, i) in user.realmojis"
+        :key="i"
+        class="relative cursor-pointer">
+        <img
+          referrerpolicy="no-referrer"
+          v-bind:src="realmoji.media.url"
+          class="w-24 rounded-[50%]"
+          @click="submitPreset(realmoji.emoji)" />
+
+        <span class="absolute top-[50px] left-[60px] text-5xl"
+          >{{ realmoji.emoji }}
+        </span>
+      </div>
       <label :for="postID">
         <div
           class="border-white w-24 h-24 rounded-[50%] border-2 cursor-pointer">
@@ -158,7 +208,7 @@ export default {
             name="image"
             @change="onFileChange" />
 
-          <div v-if="!file">
+          <div v-if="!file" class="cursor-pointer">
             <img src="../../assets/add.svg" alt="plus" />
           </div>
           <div v-else class="cursor-pointer">
@@ -170,8 +220,26 @@ export default {
         </div>
       </label>
     </div>
-    <div>
-      <MyButton @clickedd="submitRealMoji" :loading="loading">Upload</MyButton>
-    </div>
+
+    <font-awesome-icon
+      :icon="['fas', 'face-smile']"
+      class="text-6xl cursor-pointer"
+      @click="showRealmoji = !showRealmoji"
+      v-if="!loading" />
+    <pulse-loader color="white" v-else></pulse-loader>
   </div>
 </template>
+<style>
+.image-container {
+  transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out;
+  transform: translateX(-100%);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.revealed {
+  transform: translateX(0);
+  opacity: 1;
+  pointer-events: all;
+}
+</style>

@@ -230,7 +230,7 @@ const store = createStore({
           },
         }),
       }).then((res) => {
-        if (res.status / 100 === 2) {
+        if (res.ok) {
           commit("setposted", false);
           dispatch("getPosts");
           event("post", "delete");
