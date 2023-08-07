@@ -40,7 +40,6 @@ export default defineComponent({
     },
     submitComment() {
       this.submitCommentLoading = true;
-      Promise.all([]);
       fetch(
         `${this.$store.state.proxyUrl}/https://mobile.bereal.com/api/content/comments?postId=${this.curpost.id}&postUserId=${this.user.id}`,
         {
@@ -240,6 +239,8 @@ export default defineComponent({
       </div>
       <div class="flex gap-3 items-center overflow-auto mt-4">
         <Realmoji :key="e.id" :realmoji="e" v-for="e in curpost.realMojis" />
+      </div>
+      <div class="flex justify-end">
         <UploadRealmoji
           v-if="!isOwner"
           :postID="curpost.id"
