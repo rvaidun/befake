@@ -60,6 +60,9 @@ export default {
         event_category: "login",
         event_label: message,
       });
+      window.umami.track("error", {
+        error_message: message,
+      });
     },
     setCountryCode(country) {
       console.log(country);
@@ -71,6 +74,7 @@ export default {
         event_category: "login",
         event_label: "send_code",
       });
+      window.umami.track("send_code");
       this.loading = true;
       // Check if phone number is valid
       // check if the string starts with a +
@@ -133,6 +137,8 @@ export default {
         event_category: "login",
         event_label: "verify_code",
       });
+      window.umami.track("verify_code");
+
       this.loading = true;
       if (this.vonage) {
         fetch(
