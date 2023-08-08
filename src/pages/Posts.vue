@@ -26,6 +26,7 @@ export default {
       event_category: "posts",
       event_label: "view_posts",
     });
+    window.umami.track("view_posts");
     Promise.all([
       this.$store.dispatch("getPosts"),
       // this.$store.dispatch("getUser"),
