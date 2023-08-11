@@ -47,4 +47,6 @@ app.use(VueGoogleMaps, {
   },
 });
 app.component("v-select", VueSelect);
+app.config.globalProperties.window = window;
+
 app.mount("#app");
