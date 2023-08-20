@@ -70,9 +70,9 @@ export default {
           return "success";
         });
       };
-      const postRealmoji = (d) => {
+      const postRealmoji = (d, postid, postuserid) => {
         return fetch(
-          `${this.$store.state.proxyUrl}/https://mobile.bereal.com/api/content/realmojis/instant?postId=${this.postID}&postUserId=${this.postOwnerID}`,
+          `${this.$store.state.proxyUrl}/https://mobile.bereal.com/api/content/realmojis/instant?postId=${postid}&postUserId=${postuserid}`,
           {
             method: "PUT",
             headers: {
@@ -119,7 +119,20 @@ export default {
             uud = uploadUrlData;
           })
           .then(() => putPhoto(uud.data.url, file, uud.data.headers))
-          .then(() => postRealmoji(uud))
+          .then(() => {
+            if (this.postID) {
+              return postRealmoji(uud, this.postID, this.postOwnerID);
+            }
+            const promises = [];
+            this.$store.state.posts.forEach((post) => {
+              if (this.$store.state.user.id != post.user.id) {
+                post.posts.forEach((p) => {
+                  promises.push(postRealmoji(uud, post.user.id, p.id));
+                });
+              }
+            });
+            return Promise.all(promises);
+          })
           .then(() => {
             resolve("Realmoji uploaded successfully!");
           })
