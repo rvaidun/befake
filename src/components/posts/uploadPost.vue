@@ -18,6 +18,7 @@ export default {
         lng: null,
         devicelocation: false,
       },
+      postontime: false,
       public: false,
       retakes: null,
       caption: "",
@@ -79,8 +80,16 @@ export default {
       };
 
       // post new request to bereals post endpoint
-      const postBeReal = (uploadUrlData) => {
-        const taken_at = moment().format("YYYY-MM-DDTHH:mm:ss.SSSZ");
+      const postBeReal = async (uploadUrlData) => {
+        let taken_at;
+        if (this.postontime) {
+          taken_at = await this.getRandomTimeInBetween();
+        } else {
+          taken_at = moment().format("YYYY-MM-DDTHH:mm:ss.SSSZ");
+        }
+        // const taken_at = moment
+        //   .unix(1692470202)
+        //   .format("YYYY-MM-DDTHH:mm:ss.SSSZ");
         let payload = {
           visibility: ["friends"],
           isLate: false,
@@ -178,6 +187,33 @@ export default {
           this.$store.commit("error", e);
         });
     },
+    getRandomTimeInBetween() {
+      console.log(this.$store.state.user.region);
+      return fetch(
+        `${this.$store.state.proxyUrl}/https://mobile.bereal.com/api/bereal/moments/last/${this.$store.state.user.region}`,
+        {
+          method: "GET",
+          headers: {
+            origin: "https://mobile.bereal.com",
+            "content-type": "application/json",
+            authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      )
+        .then((res) => {
+          return res.json();
+        })
+        .then((data) => {
+          console.log(data);
+          const dateA = moment(data.startDate, "YYYY-MM-DDTHH:mm:ss.SSSZ");
+          const dateB = moment(data.endDate, "YYYY-MM-DDTHH:mm:ss.SSSZ");
+
+          const randomDate = moment(
+            dateA + Math.random() * (dateB - dateA)
+          ).format("YYYY-MM-DDTHH:mm:ss.SSSZ");
+          return randomDate;
+        });
+    },
   },
   computed: mapState(["user"]),
 };
@@ -213,6 +249,7 @@ export default {
       </div>
       Upload a post
       <div class="sm:flex">
+        <p>First box is back camera. Second box is front camera.</p>
         <UploadPostImage :secondary="false" @upload="upload" class="m-1" />
         <UploadPostImage :secondary="true" @upload="upload" class="m-1" />
       </div>
@@ -235,6 +272,10 @@ export default {
           placeholder="Longitude"
           typeOfInput="number" />
       </div>
+      <br />
+      <MyCheckbox class="m-1" v-model="postontime" />
+      <span class="m-1">Post on time</span>
+
       <!-- Submit -->
       <div class="flex justify-center">
         <MyButton @clickedd="submitPost" :loading="loading"> Submit </MyButton>
