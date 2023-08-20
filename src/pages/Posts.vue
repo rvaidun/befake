@@ -89,11 +89,7 @@ export default {
       </a>
       <p class="sm:hidden">
         <span class="text-red-600">NEW! </span>
-        <router-link
-          to="/memories"
-          class="p-1 bg-white text-black font-bold rounded-lg"
-          >Memories</router-link
-        >
+        Always post on time even when you're not online :)
       </p>
     </div>
     <UploadPost v-if="!isfetch && !posts.posted" :user="user" />
