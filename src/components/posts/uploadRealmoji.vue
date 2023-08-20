@@ -180,12 +180,12 @@ export default {
 };
 </script>
 <template>
-  <div class="flex gap-3 items-center overflow-x-scroll">
+  <div class="flex gap-3 items-center overflow-x-hidden">
     <div class="flex image-container gap-3" :class="{ revealed: showRealmoji }">
       <div
         v-for="(realmoji, i) in user.realmojis"
         :key="i"
-        class="relative cursor-pointer w-24">
+        class="relative cursor-pointer w-24 flex-shrink-0">
         <img
           referrerpolicy="no-referrer"
           v-bind:src="realmoji.media.url"
@@ -229,7 +229,9 @@ export default {
 </template>
 <style>
 .image-container {
-  /* display: flex; */
+  display: flex;
+  overflow-x: scroll;
+  overflow-y: hidden;
   transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out;
   transform: translateX(-100%);
   opacity: 0;
