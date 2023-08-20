@@ -244,8 +244,7 @@ export default defineComponent({
         <UploadRealmoji
           v-if="!isOwner"
           :postID="curpost.id"
-          :postOwnerID="user.id"
-          class="ml-4" />
+          :postOwnerID="user.id" />
       </div>
     </div>
     <div class="flex mb-5">
