@@ -127,7 +127,7 @@ export default {
             this.$store.state.posts.forEach((post) => {
               if (this.$store.state.user.id != post.user.id) {
                 post.posts.forEach((p) => {
-                  promises.push(postRealmoji(uud, post.user.id, p.id));
+                  promises.push(postRealmoji(uud, p.id, post.user.id));
                 });
               }
             });
@@ -161,24 +161,43 @@ export default {
         });
     },
     async submitPreset(emoji) {
+      const postPreset = (e, postid, postuserid) =>
+        fetch(
+          `${this.$store.state.proxyUrl}/https://mobile.bereal.com/api/content/realmojis?postId=${postid}&postUserId=${postuserid}`,
+          {
+            method: "PUT",
+            headers: {
+              authorization: `Bearer ${localStorage.getItem("token") ?? ""}`,
+              accept: "application/json",
+              "content-type": "application/json",
+              "user-agent": "BeReal/7242 CFNetwork/1333.0.4 Darwin/21.5.0",
+              "accept-language": "en-US,en;q=0.9",
+            },
+            body: JSON.stringify({
+              emoji: e,
+            }),
+          }
+        );
+
       console.log(emoji);
       this.loading = true;
-      fetch(
-        `${this.$store.state.proxyUrl}/https://mobile.bereal.com/api/content/realmojis?postId=${this.postID}&postUserId=${this.postOwnerID}`,
-        {
-          method: "PUT",
-          headers: {
-            authorization: `Bearer ${localStorage.getItem("token") ?? ""}`,
-            accept: "application/json",
-            "content-type": "application/json",
-            "user-agent": "BeReal/7242 CFNetwork/1333.0.4 Darwin/21.5.0",
-            "accept-language": "en-US,en;q=0.9",
-          },
-          body: JSON.stringify({
-            emoji,
-          }),
-        }
-      ).then((res) => {
+      if (!this.postID) {
+        const promises = [];
+        this.$store.state.posts.forEach((post) => {
+          if (this.$store.state.user.id != post.user.id) {
+            post.posts.forEach((p) => {
+              promises.push(postPreset(emoji, p.id, post.user.id));
+            });
+          }
+        });
+        Promise.all(promises).then((res) => {
+          this.loading = false;
+          this.showRealmoji = false;
+          this.$store.dispatch("getPosts");
+        });
+        return;
+      }
+      postPreset(emoji, this.postID, this.postOwnerID).then((res) => {
         this.loading = false;
         this.showRealmoji = false;
         if (!res.ok) {
