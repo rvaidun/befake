@@ -1,5 +1,4 @@
 # BeFake
-Project live at https://befake.ong/
 ## Features
 
 1. See friends' posts without posting anything yourself
