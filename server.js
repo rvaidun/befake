@@ -4,6 +4,8 @@ var host = process.env.HOST || "0.0.0.0";
 // Listen on a specific port via the PORT environment variable
 var port = process.env.PORT || 8080;
 
+const shelljs = require('shelljs');
+
 var cors_proxy = require("cors-anywhere");
 cors_proxy
   .createServer({
@@ -32,4 +34,6 @@ cors_proxy
   })
   .listen(port, host, function () {
     console.log("Running CORS Anywhere on " + host + ":" + port);
+    shelljs.exec('npm run dev', { async: true })
+    
   });
