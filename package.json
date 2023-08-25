@@ -1,5 +1,5 @@
 {
-  "name": "befake",
+  "name": "bepun",
   "version": "1.2.8",
   "scripts": {
     "dev": "vite --host & node server.js",
