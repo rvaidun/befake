@@ -1,5 +1,5 @@
 {
-  "name": "bepun",
+  "name": "befake",
   "version": "1.2.8",
   "scripts": {
     "dev": "concurrently -k \"vite --host\" \"node server.js\"",
