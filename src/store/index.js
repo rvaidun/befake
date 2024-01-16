@@ -145,6 +145,9 @@ const store = createStore({
                   "accept-language": "en-US,en;q=0.9",
                   authorization:
                     `Bearer ${localStorage.getItem("token")}` ?? "",
+                    'bereal-app-version-code': '14549',
+                    'bereal-signature': 'berealsignature',
+                    'bereal-device-id': 'berealdeviceid',
                 },
               }
             )
@@ -174,6 +177,9 @@ const store = createStore({
                 "user-agent": "BeReal/7242 CFNetwork/1333.0.4 Darwin/21.5.0",
                 "accept-language": "en-US,en;q=0.9",
                 authorization: `Bearer ${localStorage.getItem("token")}` ?? "",
+                'bereal-app-version-code': '14549',
+                'bereal-signature': 'berealsignature',
+                'bereal-device-id': 'berealdeviceid',
               },
             })
               .then((res) => {
