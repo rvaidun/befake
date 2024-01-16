@@ -104,7 +104,7 @@ export default {
         return;
       }
       fetch(
-        "https://www.googleapis.com/identitytoolkit/v3/relyingparty/verifyClient?key=AIzaSyDwjfEeparokD7sXPVQli9NsTuhT6fJ6iA",
+        `${this.$store.state.proxyUrl}/https://www.googleapis.com/identitytoolkit/v3/relyingparty/verifyClient?key=AIzaSyDwjfEeparokD7sXPVQli9NsTuhT6fJ6iA`,
         {
           method: "POST",
           headers: {
@@ -128,7 +128,7 @@ export default {
         .then((data) => {
           console.log("this is the data receipt:", data.receipt);
           fetch(
-            "https://www.googleapis.com/identitytoolkit/v3/relyingparty/sendVerificationCode?key=AIzaSyDwjfEeparokD7sXPVQli9NsTuhT6fJ6iA",
+            `${this.$store.state.proxyUrl}/https://www.googleapis.com/identitytoolkit/v3/relyingparty/sendVerificationCode?key=AIzaSyDwjfEeparokD7sXPVQli9NsTuhT6fJ6iA`,
             {
               method: "POST",
               headers: {
@@ -153,20 +153,23 @@ export default {
               if (data.error) {
                 if (data.error.message === "APP_NOT_VERIFIED") {
                   // handle app not verified
-                  fetch("https://auth.bereal.team/api/vonage/request-code", {
-                    method: "POST",
-                    headers: {
-                      accept: "application/json",
-                      "content-type": "application/json",
-                      "user-agent":
-                        "BeReal/7242 CFNetwork/1333.0.4 Darwin/21.5.0",
-                      "accept-language": "en-US,en;q=0.9",
-                    },
-                    body: JSON.stringify({
-                      phoneNumber: this.cc + this.phone,
-                      deviceId: "ntbgbuk8ly5gjvv3",
-                    }),
-                  })
+                  fetch(
+                    `${this.$store.state.proxyUrl}/https://auth.bereal.team/api/vonage/request-code`,
+                    {
+                      method: "POST",
+                      headers: {
+                        accept: "application/json",
+                        "content-type": "application/json",
+                        "user-agent":
+                          "BeReal/7242 CFNetwork/1333.0.4 Darwin/21.5.0",
+                        "accept-language": "en-US,en;q=0.9",
+                      },
+                      body: JSON.stringify({
+                        phoneNumber: this.cc + this.phone,
+                        deviceId: "ntbgbuk8ly5gjvv3",
+                      }),
+                    }
+                  )
                     .then((response) => {
                       if (!response.ok) {
                         console.log("vonage error");
@@ -267,7 +270,7 @@ export default {
         return;
       }
       fetch(
-        `https://www.googleapis.com/identitytoolkit/v3/relyingparty/verifyPhoneNumber?key=AIzaSyDwjfEeparokD7sXPVQli9NsTuhT6fJ6iA`,
+        `${this.$store.state.proxyUrl}/https://www.googleapis.com/identitytoolkit/v3/relyingparty/verifyPhoneNumber?key=AIzaSyDwjfEeparokD7sXPVQli9NsTuhT6fJ6iA`,
         {
           method: "POST",
           headers: {

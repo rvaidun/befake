@@ -3,8 +3,7 @@ import { event } from "vue-gtag";
 const store = createStore({
   state() {
     return {
-      proxyUrl: "http://localhost:8080", // cors-anywhere server
-      // proxyUrl: "/proxy",
+      proxyUrl: import.meta.env.VITE_PROXY_URL,
       loggedIn: localStorage.getItem("token") ? true : false,
       posts: [],
       user: {},
@@ -129,6 +128,7 @@ const store = createStore({
         return Promise.resolve(true);
       }
     },
+    async getFriendsOfFriends({ commit, state, dispatch }) {},
     async getPosts({ commit, state, dispatch }) {
       return dispatch("refresh")
         .then(() => {
@@ -189,7 +189,7 @@ const store = createStore({
           return true;
         })
         .catch((err) => {
-          reject(err);
+          commit("error", err);
         });
     },
     async getUser({ commit, state, dispatch }) {
