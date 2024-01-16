@@ -29,6 +29,7 @@
 }
 </style>
 <script>
+console.log("VITE PROXY URL", import.meta.env.VITE_PROXY_URL);
 import errorToast from "./components/ui/errorToast.vue";
 import NavbarVue from "./components/layout/Navbar.vue";
 export default {
