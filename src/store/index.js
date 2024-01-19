@@ -152,7 +152,11 @@ const store = createStore({
               }
             )
               .then((res) => {
-                if (!res.ok) throw new Error("Error getting posts");
+                if (!res.ok) {
+                  commit('logout');
+                  throw new Error("Invalit OTP, please retry");
+                };
+
                 return res.json();
               })
               .then((data) => {
@@ -184,7 +188,11 @@ const store = createStore({
             })
               .then((res) => {
                 if (!res.ok) throw new Error("Error getting user");
-                return res.json();
+                // go pack to login if the token is invalid
+                if (res.status === 401) {
+                  dispatch("refresh");
+                  return;
+                }
               })
               .then((data) => {
                 commit("user", data);
