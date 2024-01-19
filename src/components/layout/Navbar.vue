@@ -143,6 +143,7 @@ export default {
             <react-to-all v-if="this.$store.state.loggedIn" />
 
             <router-link
+              v-if="$store.state.loggedIn"
               class="cursor-pointer text-white sm:py-2 py-[0.6px] sm:px-3 rounded-md font-bold"
               to="/map"
               @click="() => (showNav = false)">
@@ -156,10 +157,11 @@ export default {
             </router-link>
 
             <router-link
+              v-if="$store.state.loggedIn"
               class="cursor-pointer text-white sm:py-2 py-[0.6px] sm:px-3 rounded-md font-bold"
               to="/memories"
               @click="() => (showNav = false)">
-              Memoriues
+              Memories
             </router-link>
             <a
               class="cursor-pointer text-white sm:py-2 py-[0.6px] sm:px-3 rounded-md font-bold"
