@@ -1,4 +1,5 @@
 # BeFake
+## BeFake is currently Broken
 ## Features
 
 1. See friends' posts without posting anything yourself
