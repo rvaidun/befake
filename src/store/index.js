@@ -128,7 +128,7 @@ const store = createStore({
         return Promise.resolve(true);
       }
     },
-    async getFriendsOfFriends({ commit, state, dispatch }) {},
+    async getFriendsOfFriends({ commit, state, dispatch }) { },
     async getPosts({ commit, state, dispatch }) {
       return dispatch("refresh")
         .then(() => {
@@ -145,9 +145,10 @@ const store = createStore({
                   "accept-language": "en-US,en;q=0.9",
                   authorization:
                     `Bearer ${localStorage.getItem("token")}` ?? "",
-                    'bereal-app-version-code': '14549',
-                    'bereal-signature': 'berealsignature',
-                    'bereal-device-id': 'berealdeviceid',
+                  'bereal-app-version-code': '14549',
+                  'bereal-signature': 'MToxNzA3NDgwMjI4OvR2hbFOdgnyAz1bfiCp68ul5sVZiHnv+NAZNySEcBfD',
+                  'bereal-timezone': 'Europe/Paris',
+                  'bereal-device-id': '937v3jb942b0h6u9'
                 },
               }
             )
@@ -178,8 +179,9 @@ const store = createStore({
                 "accept-language": "en-US,en;q=0.9",
                 authorization: `Bearer ${localStorage.getItem("token")}` ?? "",
                 'bereal-app-version-code': '14549',
-                'bereal-signature': 'berealsignature',
-                'bereal-device-id': 'berealdeviceid',
+                'bereal-signature': 'MToxNzA3NDgwMjI4OvR2hbFOdgnyAz1bfiCp68ul5sVZiHnv+NAZNySEcBfD',
+                'bereal-timezone': 'Europe/Paris',
+                'bereal-device-id': '937v3jb942b0h6u9'
               },
             })
               .then((res) => {
