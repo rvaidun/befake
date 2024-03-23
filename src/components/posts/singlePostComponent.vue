@@ -218,6 +218,10 @@ export default defineComponent({
             @click="reverseImages"
             v-if="!hideSecondaryPhoto"
             alt="postImage" />
+          <a v-if="curpost.btsMedia" v-bind:href="curpost.btsMedia.url"
+            class="absolute top-2 right-2 bg-black px-2 rounded-md" target="_blank">
+            <button class="text-white">bts</button>
+          </a>
         </div>
       </div>
 
