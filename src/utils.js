@@ -1,10 +1,13 @@
 import hmacSHA256 from 'crypto-js/hmac-sha256';
 import { Buffer } from "buffer";
+import { getHeaders } from './happyheaders';
 export function generateSignature() {
     // make a new signature
     const device_id = import.meta.env.VITE_BEREAL_DEVICE_ID;
     const tz = "America/Los_Angeles";
     const key = import.meta.env.VITE_BEREAL_SECRET_KEY
+    if (!key)
+        return getHeaders()
     // get current unix time in seconds
     const unixtime = `${Math.floor(Date.now() / 1000)}`;
     const data = `${device_id}${tz}${unixtime}`;
