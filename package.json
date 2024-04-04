@@ -16,6 +16,8 @@
     "@fortawesome/free-regular-svg-icons": "^6.4.0",
     "@fortawesome/free-solid-svg-icons": "^6.4.0",
     "@fortawesome/vue-fontawesome": "^3.0.3",
+    "buffer": "^6.0.3",
+    "crypto-js": "^4.2.0",
     "d3": "^7.6.1",
     "i": "^0.3.7",
     "js-sha256": "^0.9.0",

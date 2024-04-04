@@ -1,5 +1,8 @@
 import { createStore } from "vuex";
 import { event } from "vue-gtag";
+import hmacSHA256 from 'crypto-js/hmac-sha256';
+import { Buffer } from "buffer";
+import { generateSignature } from "../utils.js";
 const store = createStore({
   state() {
     return {
@@ -56,7 +59,7 @@ const store = createStore({
       if (Date.now() > localStorage.getItem("expiration")) {
         console.log("in refresh if");
         return fetch(
-          `${state.proxyUrl}/https://securetoken.googleapis.com/v1/token?key=AIzaSyDwjfEeparokD7sXPVQli9NsTuhT6fJ6iA`,
+          `${state.proxyUrl}/https://securetoken.googleapis.com/v1/token?key=AIzaSyCgNTZt6gzPMh-2voYXOvrt_UR_gpGl83Q`,
           {
             method: "POST",
             headers: {
@@ -128,11 +131,30 @@ const store = createStore({
         return Promise.resolve(true);
       }
     },
-    async getFriendsOfFriends({ commit, state, dispatch }) {},
+    async getFriendsOfFriends({ commit, state, dispatch }) { },
     async getPosts({ commit, state, dispatch }) {
       return dispatch("refresh")
         .then(() => {
-          console.log("successfully refreshed");
+          const t = generateSignature();
+          // console.log("asjdfaksjdfhkad", t);
+          // console.log("successfully refreshed");
+          // // make a new signature
+          // const device_id = "937v3jb942b0h6u9asdfasdfa";
+          // const tz = "America/Los_Angeles";
+          // const key = import.meta.env.VITE_BEREAL_SECRET_KEY
+          // // get current unix time in seconds
+          // const unixtime = `${Math.floor(Date.now() / 1000)}`;
+          // const data = `${device_id}${tz}${unixtime}`;
+          // // base64 encode the data
+          // const b64data = btoa(data);
+
+          // // create a SHA256 HMAC with the signature and the key
+          // const signature = hmacSHA256(b64data, key);
+          // console.log(signature.toString())
+
+          // const s2 = Buffer.concat([Buffer.from("1:"), Buffer.from(unixtime), Buffer.from(":"), Buffer.from(signature.toString(), "hex")]);
+          // const s3 = s2.toString('base64');
+          // console.log(s3)
           return Promise.all([
             fetch(
               `${state.proxyUrl}/https://mobile.bereal.com/api/feeds/friends-v1`,
@@ -142,14 +164,18 @@ const store = createStore({
                   accept: "application/json",
                   "content-type": "application/json",
                   "user-agent": "BeReal/7242 CFNetwork/1333.0.4 Darwin/21.5.0",
-                  "accept-language": "en-US,en;q=0.9",
                   authorization:
                     `Bearer ${localStorage.getItem("token")}` ?? "",
+<<<<<<< HEAD
                   "bereal-app-version-code": "14549",
                   "bereal-signature":
                     "MToxNzEwOTU0MTc2OmPlM3WPWqPWRq7EseRiT98fErcmwWg1yUatGmYZnzaH",
                   "bereal-timezone": "Europe/Paris",
                   "bereal-device-id": "937v3jb942b0h6u9",
+=======
+                  ...t
+
+>>>>>>> 6bf09f3 (updated)
                 },
               }
             )
@@ -177,13 +203,9 @@ const store = createStore({
                 accept: "application/json",
                 "content-type": "application/json",
                 "user-agent": "BeReal/7242 CFNetwork/1333.0.4 Darwin/21.5.0",
-                "accept-language": "en-US,en;q=0.9",
-                authorization: `Bearer ${localStorage.getItem("token")}` ?? "",
-                "bereal-app-version-code": "14549",
-                "bereal-signature":
-                  "MToxNzEwOTU0MTc2OmPlM3WPWqPWRq7EseRiT98fErcmwWg1yUatGmYZnzaH",
-                "bereal-timezone": "Europe/Paris",
-                "bereal-device-id": "937v3jb942b0h6u9",
+                authorization:
+                  `Bearer ${localStorage.getItem("token")}` ?? "",
+                ...t
               },
             })
               .then((res) => {

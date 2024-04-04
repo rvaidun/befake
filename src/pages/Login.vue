@@ -4,31 +4,18 @@
       <h1 class="font-bold mt-0 mb-6 text-7xl">BeFake</h1>
       <h3 class="text-2xl font-bold mb-8">A BeReal Viewer</h3>
     </div>
-    <div
-      class="flex items-center justify-center mt-[75%] flex-col sm:flex-row sm:mt-[15%]">
+    <div class="flex items-center justify-center mt-[75%] flex-col sm:flex-row sm:mt-[15%]">
       <VueCountryCode @asdfasdf="setCountryCode" />
-      <MyInput
-        @enterPressed="sendCode"
-        typeOfInput="tel"
-        v-model="phone"
-        placeholder="Phone Number"
-        class="max-w-sm" />
+      <MyInput @enterPressed="sendCode" typeOfInput="tel" v-model="phone" placeholder="Phone Number" class="max-w-sm" />
       <MyButton @clickedd="sendCode" :loading="loading">Send</MyButton>
     </div>
   </div>
 
   <div v-else>
-    <div
-      class="flex items-center justify-center mt-[75%] flex-col sm:flex-row sm:mt-[25%]">
-      <span class="mr-2 dark:text-white"
-        >Enter the OTP sent to your phone number:
+    <div class="flex items-center justify-center mt-[75%] flex-col sm:flex-row sm:mt-[25%]">
+      <span class="mr-2 dark:text-white">Enter the OTP sent to your phone number:
       </span>
-      <MyInput
-        @enterPressed="verifyCode"
-        v-model="code"
-        placeholder="123456"
-        class="max-w-sm"
-        typeOfInput="number" />
+      <MyInput @enterPressed="verifyCode" v-model="code" placeholder="123456" class="max-w-sm" typeOfInput="number" />
       <MyButton @clickedd="verifyCode" :loading="loading">Verify</MyButton>
     </div>
   </div>
@@ -104,7 +91,7 @@ export default {
         return;
       }
       fetch(
-        `${this.$store.state.proxyUrl}/https://www.googleapis.com/identitytoolkit/v3/relyingparty/verifyClient?key=AIzaSyDwjfEeparokD7sXPVQli9NsTuhT6fJ6iA`,
+        `${this.$store.state.proxyUrl}/https://www.googleapis.com/identitytoolkit/v3/relyingparty/verifyClient?key=AIzaSyCgNTZt6gzPMh-2voYXOvrt_UR_gpGl83Q`,
         {
           method: "POST",
           headers: {
@@ -128,7 +115,7 @@ export default {
         .then((data) => {
           console.log("this is the data receipt:", data.receipt);
           fetch(
-            `${this.$store.state.proxyUrl}/https://www.googleapis.com/identitytoolkit/v3/relyingparty/sendVerificationCode?key=AIzaSyDwjfEeparokD7sXPVQli9NsTuhT6fJ6iA`,
+            `${this.$store.state.proxyUrl}/https://www.googleapis.com/identitytoolkit/v3/relyingparty/sendVerificationCode?key=AIzaSyCgNTZt6gzPMh-2voYXOvrt_UR_gpGl83Q`,
             {
               method: "POST",
               headers: {
@@ -238,7 +225,7 @@ export default {
           })
           .then((vdata) =>
             fetch(
-              `${this.$store.state.proxyUrl}/https://www.googleapis.com/identitytoolkit/v3/relyingparty/verifyCustomToken?key=AIzaSyDwjfEeparokD7sXPVQli9NsTuhT6fJ6iA`,
+              `${this.$store.state.proxyUrl}/https://www.googleapis.com/identitytoolkit/v3/relyingparty/verifyCustomToken?key=AIzaSyCgNTZt6gzPMh-2voYXOvrt_UR_gpGl83Q`,
               {
                 method: "POST",
                 body: JSON.stringify({
@@ -270,7 +257,7 @@ export default {
         return;
       }
       fetch(
-        `${this.$store.state.proxyUrl}/https://www.googleapis.com/identitytoolkit/v3/relyingparty/verifyPhoneNumber?key=AIzaSyDwjfEeparokD7sXPVQli9NsTuhT6fJ6iA`,
+        `${this.$store.state.proxyUrl}/https://www.googleapis.com/identitytoolkit/v3/relyingparty/verifyPhoneNumber?key=AIzaSyCgNTZt6gzPMh-2voYXOvrt_UR_gpGl83Q`,
         {
           method: "POST",
           headers: {
