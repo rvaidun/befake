@@ -166,16 +166,8 @@ const store = createStore({
                   "user-agent": "BeReal/7242 CFNetwork/1333.0.4 Darwin/21.5.0",
                   authorization:
                     `Bearer ${localStorage.getItem("token")}` ?? "",
-<<<<<<< HEAD
-                  "bereal-app-version-code": "14549",
-                  "bereal-signature":
-                    "MToxNzEwOTU0MTc2OmPlM3WPWqPWRq7EseRiT98fErcmwWg1yUatGmYZnzaH",
-                  "bereal-timezone": "Europe/Paris",
-                  "bereal-device-id": "937v3jb942b0h6u9",
-=======
                   ...t
 
->>>>>>> 6bf09f3 (updated)
                 },
               }
             )
