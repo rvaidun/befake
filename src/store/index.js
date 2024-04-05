@@ -2,7 +2,7 @@ import { createStore } from "vuex";
 import { event } from "vue-gtag";
 import hmacSHA256 from 'crypto-js/hmac-sha256';
 import { Buffer } from "buffer";
-import { generateSignature } from "../utils.js";
+import { getHeaders } from "../happyheaders";
 const store = createStore({
   state() {
     return {
@@ -135,7 +135,7 @@ const store = createStore({
     async getPosts({ commit, state, dispatch }) {
       return dispatch("refresh")
         .then(() => {
-          const t = generateSignature();
+          const t = getHeaders();
           // console.log("asjdfaksjdfhkad", t);
           // console.log("successfully refreshed");
           // // make a new signature
