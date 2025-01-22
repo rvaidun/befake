@@ -157,7 +157,7 @@ const store = createStore({
           // console.log(s3)
           return Promise.all([
             fetch(
-              `${state.proxyUrl}/https://mobile-l7.bereal.com/api`,
+              `${state.proxyUrl}/https://mobile-l7.bereal.com/api/feeds/friends-v1`,
               {
                 method: "GET",
                 headers: {
