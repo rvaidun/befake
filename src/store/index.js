@@ -19,12 +19,20 @@ const store = createStore({
   },
   mutations: {
     error(state, payload) {
-      console.log("in error mutation");
-      state.error.text = payload;
+      console.error("Store error mutation:", payload);
+      let errorMessage = "An error occurred.";
+      if (payload instanceof Error) {
+        errorMessage = payload.message;
+      } else if (typeof payload === 'string') {
+        errorMessage = payload;
+      } else if (payload && payload.text) { // Assuming previous structure might pass an object
+        errorMessage = payload.text;
+      }
+
+      state.error.text = errorMessage;
       state.error.show = true;
       setTimeout(() => {
         state.error.show = false;
-        console.log("in error after timeout");
       }, 5000);
     },
     logout(state) {
@@ -58,6 +66,7 @@ const store = createStore({
       console.log("in refresh");
       if (Date.now() > localStorage.getItem("expiration")) {
         console.log("in refresh if");
+        console.log("in refresh if");
         return fetch(
           `${state.proxyUrl}/https://securetoken.googleapis.com/v1/token?key=AIzaSyCgNTZt6gzPMh-2voYXOvrt_UR_gpGl83Q`,
           {
@@ -81,13 +90,20 @@ const store = createStore({
             }),
           }
         )
-          .then((res) => {
+          .then(async (res) => {
             if (!res.ok) {
-              throw Error(res.statusText);
+              let errorData = await res.text();
+              try {errorData = JSON.parse(errorData);} catch (e) {}
+              console.error('API Error Response (securetoken.googleapis.com):', errorData);
+              throw new Error(typeof errorData === 'string' ? errorData : (errorData.error?.message || errorData.message || res.statusText));
             }
             return res.json();
           })
           .then((tokendata) => {
+            if (tokendata.error) { // Firebase token refresh can return 200 OK with error in body
+              console.error("Firebase refresh token error:", tokendata.error);
+              throw new Error(tokendata.error.message || "Failed to refresh Firebase token");
+            }
             localStorage.setItem("fbrefreshtoken", tokendata.refresh_token);
             localStorage.setItem("fbtoken", tokendata.id_token);
             localStorage.setItem("user_id", tokendata.user_id);
@@ -104,18 +120,25 @@ const store = createStore({
                 body: JSON.stringify({
                   grant_type: "firebase",
                   client_id: "android",
-                  client_secret: "F5A71DA-32C7-425C-A3E3-375B4DACA406",
+                  client_secret: "F5A71DA-32C7-425C-A3E3-375B4DACA406", // Consider if this secret should be exposed client-side
                   token: tokendata.id_token,
                 }),
               }
             )
-              .then((res) => {
+              .then(async (res) => {
                 if (!res.ok) {
-                  throw Error(res.statusText);
+                  let errorData = await res.text();
+                  try {errorData = JSON.parse(errorData);} catch (e) {}
+                  console.error('API Error Response (auth.bereal.team/token):', errorData);
+                  throw new Error(typeof errorData === 'string' ? errorData : (errorData.message || res.statusText));
                 }
                 return res.json();
               })
               .then((data) => {
+                if (data.error) { // Check for error in BeReal token exchange response body
+                  console.error("BeReal token exchange error:", data.error);
+                  throw new Error(data.error.message || data.error.type || "Failed to exchange Firebase token for BeReal token");
+                }
                 localStorage.setItem("token", data.access_token);
                 localStorage.setItem("refreshToken", data.refresh_token);
                 localStorage.expiration =
@@ -124,8 +147,11 @@ const store = createStore({
               });
           })
           .catch((err) => {
-            console.log("error while refreshing");
-            console.log(err);
+            console.error("Store action error (refresh):", err);
+            commit("error", err); // Commit the error object or err.message
+            // Optionally rethrow or return a rejected promise if calling code needs to know about failure
+            // throw err; 
+            return Promise.reject(err); // Ensure promise chain reflects failure
           });
       } else {
         return Promise.resolve(true);
@@ -171,11 +197,20 @@ const store = createStore({
                 },
               }
             )
-              .then((res) => {
-                if (!res.ok) throw new Error("Error getting posts");
+              .then(async (res) => {
+                if (!res.ok) {
+                  let errorData = await res.text();
+                  try {errorData = JSON.parse(errorData);} catch (e) {}
+                  console.error('API Error Response (feeds/friends-v1):', errorData);
+                  throw new Error(typeof errorData === 'string' ? errorData : (errorData.message || "Error getting posts"));
+                }
                 return res.json();
               })
               .then((data) => {
+                if (data.error) { // Check for error in friends-v1 response body
+                  console.error("Friends feed error:", data.error);
+                  throw new Error(data.error.message || "Failed to get friends feed");
+                }
                 // reverse data.friendsPosts
                 data.friendsPosts.reverse();
                 // for each post in data.friendsPosts reverse the posts
@@ -200,11 +235,20 @@ const store = createStore({
                 ...t
               },
             })
-              .then((res) => {
-                if (!res.ok) throw new Error("Error getting user");
+              .then(async (res) => {
+                if (!res.ok) {
+                  let errorData = await res.text();
+                  try {errorData = JSON.parse(errorData);} catch (e) {}
+                  console.error('API Error Response (person/me):', errorData);
+                  throw new Error(typeof errorData === 'string' ? errorData : (errorData.message || "Error getting user"));
+                }
                 return res.json();
               })
               .then((data) => {
+                if (data.error) { // Check for error in person/me response body
+                  console.error("Get user error:", data.error);
+                  throw new Error(data.error.message || "Failed to get user details");
+                }
                 commit("user", data);
               }),
           ]);
@@ -213,7 +257,10 @@ const store = createStore({
           return true;
         })
         .catch((err) => {
-          commit("error", err);
+          console.error("Store action error (getPosts):", err);
+          commit("error", err); // Commit the error object or err.message
+          // throw err;  // Optionally rethrow
+          return Promise.reject(err); // Ensure promise chain reflects failure
         });
     },
     async getUser({ commit, state, dispatch }) {
@@ -251,14 +298,21 @@ const store = createStore({
             uid: state.user.id,
           },
         }),
-      }).then((res) => {
-        if (res.ok) {
-          commit("setposted", false);
-          dispatch("getPosts");
-          event("post", "delete");
+      }).then(async (res) => {
+        if (!res.ok) {
+          let errorData = await res.text();
+          try {errorData = JSON.parse(errorData);} catch (e) {}
+          console.error('API Error Response (deletePost):', errorData);
+          commit("error", new Error(typeof errorData === 'string' ? errorData : (errorData.message || "Error deleting post")));
         } else {
-          commit("error", "Error deleting post");
+          // res.ok path
+          commit("setposted", false);
+          dispatch("getPosts"); // This might also need more robust error handling if getPosts can fail
+          event("post", "delete");
         }
+      }).catch(err => { // Catch for network errors or if the above throw wasn't caught by a .then
+          console.error("Store action error (deletePost):", err);
+          commit("error", err);
       });
     },
     async getMemories({ commit, state, dispatch }) {
@@ -272,10 +326,26 @@ const store = createStore({
           "accept-language": "en-US,en;q=0.9",
         },
       })
-        .then((res) => res.json())
+        .then(async (res) => {
+          if (!res.ok) {
+            let errorData = await res.text();
+            try {errorData = JSON.parse(errorData);} catch (e) {}
+            console.error('API Error Response (getMemories):', errorData);
+            throw new Error(typeof errorData === 'string' ? errorData : (errorData.message || "Error getting memories"));
+          }
+          return res.json();
+        })
         .then((data) => {
-          console.log(data);
-          state.memories = data.data;
+          if (data.error) {
+            console.error("Get memories error:", data.error);
+            throw new Error(data.error.message || "Failed to get memories");
+          }
+          console.log(data); // Success case
+          state.memories = data.data; // Assuming 'data.data' is correct structure for success
+        })
+        .catch(err => {
+          console.error("Store action error (getMemories):", err);
+          commit("error", err);
         });
     },
   },

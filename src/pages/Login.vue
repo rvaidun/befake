@@ -41,12 +41,53 @@ export default {
     };
   },
   methods: {
-    handleError(message) {
-      this.$store.commit("error", message);
-      event("error", {
-        event_category: "login",
-        event_label: message,
-      });
+    handleError(error) {
+      console.error("Login page error:", error);
+      let errorMessage = "An unexpected error occurred.";
+      if (error instanceof Error) {
+        errorMessage = error.message;
+      } else if (typeof error === 'string') {
+        errorMessage = error;
+      }
+
+      if (error && error.response) {
+        // Attempt to get more details from the response
+        error.response.text().then(text => {
+          console.error("Error response data:", text);
+          try {
+            const parsed = JSON.parse(text);
+            if (parsed && (parsed.message || parsed.error?.message)) {
+              errorMessage = parsed.message || parsed.error.message;
+            }
+          } catch (e) {
+            // text was not JSON, use it as is if not too long
+            if (text.length < 200) { // Avoid overly long messages
+              errorMessage = text;
+            }
+          }
+          this.$store.commit("error", errorMessage);
+          event("error", {
+            event_category: "login",
+            event_label: errorMessage,
+            error_object: JSON.stringify(error, Object.getOwnPropertyNames(error)) // Log full error object details
+          });
+        }).catch(e => {
+          console.error("Error reading response text:", e);
+          this.$store.commit("error", errorMessage);
+          event("error", {
+            event_category: "login",
+            event_label: errorMessage,
+            error_object: JSON.stringify(error, Object.getOwnPropertyNames(error))
+          });
+        });
+      } else {
+        this.$store.commit("error", errorMessage);
+        event("error", {
+          event_category: "login",
+          event_label: errorMessage,
+          error_object: JSON.stringify(error, Object.getOwnPropertyNames(error))
+        });
+      }
     },
     setCountryCode(country) {
       console.log(country);
@@ -135,12 +176,23 @@ export default {
               }),
             }
           )
-            .then((response) => response.json())
+            .then(async (response) => {
+              if (!response.ok) {
+                let errorData = await response.text();
+                try {errorData = JSON.parse(errorData);} catch (e) {}
+                console.error('API Error Response (sendVerificationCode):', errorData);
+                throw new Error(typeof errorData === 'string' ? errorData : (errorData.error?.message || errorData.message || response.statusText));
+              }
+              return response.json();
+            })
             .then((data) => {
-              if (data.error) {
-                if (data.error.message === "APP_NOT_VERIFIED") {
+              // The original code checked data.error here.
+              // If the new error handling for !response.ok is correct,
+              // data.error might not be present anymore if the server signaled error with HTTP status.
+              // However, some APIs might return 200 OK with an error in the body.
+              if (data.error && data.error.message === "APP_NOT_VERIFIED") {
                   // handle app not verified
-                  fetch(
+                  return fetch( // Ensure to return the promise chain here
                     `${this.$store.state.proxyUrl}/https://auth.bereal.team/api/vonage/request-code`,
                     {
                       method: "POST",
@@ -157,38 +209,47 @@ export default {
                       }),
                     }
                   )
-                    .then((response) => {
+                    .then(async (response) => { // vonage request-code
                       if (!response.ok) {
-                        console.log("vonage error");
+                        let errorData = await response.text();
+                        try {errorData = JSON.parse(errorData);} catch (e) {}
+                        console.error('API Error Response (vonage/request-code):', errorData);
+                        throw new Error(typeof errorData === 'string' ? errorData : (errorData.message || response.statusText));
                       }
                       return response.json();
                     })
                     .then((data2) => {
                       console.log("vonage data", data2);
+                      if (data2.error) { // Check for error in vonage response body
+                        throw new Error(data2.error.message || "Vonage request code failed");
+                      }
                       return {
                         sessionInfo: data2.vonageRequestId,
                         vonage: true,
                       };
                     });
-                } else {
-                  console.log(
-                    "sendVerificationCode responded with an error",
-                    data.error.message
+                } else if (data.error) { // Handle other errors from sendVerificationCode if response was ok
+                  console.error(
+                    "sendVerificationCode responded with an error in body:",
+                    data.error
                   );
+                  throw new Error(data.error.message || "Failed to send verification code");
                 }
-              } else {
-                return data; // this is the sessionInfo
+                return data; // this is the sessionInfo if no error or APP_NOT_VERIFIED handled
               }
             })
             .then((data) => {
-              this.sessionInfo = data.sessionInfo;
-              if (data.vonage) {
+              // data could be undefined if an error was thrown and caught by the main catch
+              if (data && data.sessionInfo) {
+                this.sessionInfo = data.sessionInfo;
+              }
+              if (data && data.vonage) {
                 this.vonage = true;
               }
               this.loading = false;
             })
-            .catch((error) => {
-              this.handleError(error);
+            .catch((error) => { // This is the main catch for the sendCode promise chain
+              this.handleError(error); // Pass the full error object
               this.loading = false;
             });
         });
@@ -217,14 +278,20 @@ export default {
             }),
           }
         )
-          .then((res) => {
+          .then(async (res) => {
             if (!res.ok) {
-              throw Error(res.statusText);
+              let errorData = await res.text();
+              try {errorData = JSON.parse(errorData);} catch(e) {}
+              console.error('API Error Response (vonage/check-code):', errorData);
+              throw new Error(typeof errorData === 'string' ? errorData : (errorData.message || res.statusText));
             }
             return res.json();
           })
-          .then((vdata) =>
-            fetch(
+          .then((vdata) => {
+            if (vdata.error) { // Check for error in vonage check-code response body
+              throw new Error(vdata.error.message || "Vonage check code failed");
+            }
+            return fetch(
               `${this.$store.state.proxyUrl}/https://www.googleapis.com/identitytoolkit/v3/relyingparty/verifyCustomToken?key=AIzaSyCgNTZt6gzPMh-2voYXOvrt_UR_gpGl83Q`,
               {
                 method: "POST",
@@ -233,25 +300,32 @@ export default {
                   returnSecureToken: true,
                 }),
               }
-            )
-          )
-          .then((res) => {
+            );
+          })
+          .then(async (res) => { // verifyCustomToken
             if (!res.ok) {
-              throw Error(res.statusText);
+              let errorData = await res.text();
+              try {errorData = JSON.parse(errorData);} catch(e) {}
+              console.error('API Error Response (verifyCustomToken):', errorData);
+              throw new Error(typeof errorData === 'string' ? errorData : (errorData.error?.message || errorData.message || res.statusText));
             }
             return res.json();
           })
           .then((idtokendata) => {
+            if (idtokendata.error) { // Check for error in verifyCustomToken response body
+              throw new Error(idtokendata.error.message || "Failed to verify custom token");
+            }
             // this needs to be set since the store is using it
             localStorage.setItem("fbrefreshtoken", idtokendata.refreshToken);
             return this.$store.dispatch("refresh");
           })
           .then(() => {
             this.loading = false;
-            this.$store.dispatch("login");
+            // Ensure login is dispatched only on success
+            return this.$store.dispatch("login");
           })
-          .catch((e) => {
-            this.handleError(e);
+          .catch((e) => { // Main catch for the vonage verify code path
+            this.handleError(e); // Pass the full error object
             this.loading = false;
           });
         return;
@@ -280,18 +354,30 @@ export default {
           }),
         }
       )
-        .then((res) => res.json())
+        .then(async (res) => { // verifyPhoneNumber
+            if (!res.ok) {
+              let errorData = await res.text();
+              try {errorData = JSON.parse(errorData);} catch(e) {}
+              console.error('API Error Response (verifyPhoneNumber):', errorData);
+              throw new Error(typeof errorData === 'string' ? errorData : (errorData.error?.message || errorData.message || res.statusText));
+            }
+            return res.json();
+        })
         .then((idtokendata) => {
+          if (idtokendata.error) { // Check for error in verifyPhoneNumber response body
+            throw new Error(idtokendata.error.message || "Failed to verify phone number");
+          }
           // this needs to be set since the store is using it
           localStorage.setItem("fbrefreshtoken", idtokendata.refreshToken);
           return this.$store.dispatch("refresh");
         })
         .then(() => {
           this.loading = false;
+          // Ensure login is dispatched only on success
           this.$store.dispatch("login");
         })
-        .catch((e) => {
-          this.handleError(e);
+        .catch((e) => { // Main catch for the standard verify code path
+          this.handleError(e); // Pass the full error object
           this.loading = false;
         });
     },
