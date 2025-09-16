@@ -1,5 +1,5 @@
 # BeFake
-## BeFake is currently broken
+## ⚠️⚠️ BeFake is not actively maintained ⚠️⚠️
 ## Features
 
 1. See friends' posts without posting anything yourself
